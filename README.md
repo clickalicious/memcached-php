@@ -1,4 +1,4 @@
 Memcached.php
 =============
 
-Memcached (PECL) compatible client implementation in plain vanilla PHP.
+Plain vanilla PHP Memcached client.
