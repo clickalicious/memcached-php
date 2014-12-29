@@ -54,6 +54,8 @@
 
 require_once MEMCACHED_BASE_PATH . 'MemcachedPhp.php';
 
+use \Clickalicious\MemcachedPhp\MemcachedPhp;
+
 /**
  * Memcached.php
  *
@@ -111,7 +113,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->key   = md5(microtime(true));
         $this->value = sha1($this->key);
 
-        $this->client = new \Clickalicious\MemcachedPhp\MemcachedPhp(
+        $this->client = new MemcachedPhp(
             $this->host
         );
     }
@@ -122,6 +124,15 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         $this->assertTrue($this->client->set($this->key, $this->value));
+    }
+
+    /**
+     * Test if a value could be get back
+     */
+    public function testGet()
+    {
+        $this->assertTrue($this->client->set($this->key, 1.01));
+        $this->assertTrue(is_double($this->client->get($this->key)));
     }
 
     /**

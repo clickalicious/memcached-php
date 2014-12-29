@@ -1220,7 +1220,8 @@ class MemcachedPhp
 
         // Strip all overhead if no metadata requested!
         if ($metadata === false) {
-            $result = array_column($result, 'value', 'key');
+            $result = array_column($result, 'value', 0);
+            $result = $result[0];
         }
 
         return $result;
