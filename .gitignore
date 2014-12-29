@@ -1,0 +1,15 @@
+*.bak
+*.tmp
+*.log
+__*/
+/.buildpath
+/.project
+doc/html/*
+/.settings
+/App/Data/Private/Temp/*.php
+/.externalToolBuilders
+/.idea
+/vendor
+
+/composer.lock
+/tests/Log

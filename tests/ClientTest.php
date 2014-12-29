@@ -4,7 +4,7 @@
 /**
  * Memcache.php
  *
- * Demo.php - Demonstration of Memcached.php Memcached Client.
+ * Demo.php - Unit tests for client functionality.
  *
  *
  * PHP versions 5
@@ -44,7 +44,7 @@
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_Tests
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
@@ -52,54 +52,83 @@
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once 'Lib\MemcachedPhp.php';
-
-use Clickalicious\MemcachedPhp\MemcachedPhp;
+require_once MEMCACHED_BASE_PATH . 'MemcachedPhp.php';
 
 /**
  * Memcached.php
  *
- * Demonstration of Memcached.php Memcached Client.
+ * Unit tests for client functionality.
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_Tests
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
+class ClientTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * The Host used for testing.
+     *
+     * @var string
+     * @access protected
+     */
+    protected $host = '127.0.0.1';
 
-// Create Memcached.php instance ...
-$memcached = new MemcachedPhp(
-    '127.0.0.1'
-);
+    /**
+     * Client instance
+     *
+     * @var \Clickalicious\MemcachedPhp\MemcachedPhp
+     * @access protected
+     */
+    protected $client;
 
-// Some setup for randomized key(s) for demonstration ...
-srand(microtime(true));
-$dummy = md5(rand(1111, 9999));
+    /**
+     * Key for test entries
+     *
+     * @var string
+     * @access protected
+     */
+    protected $key;
 
-// Try to do some stuff with memcached instance ...
-try {
+    /**
+     * Value for test entries
+     *
+     * @var string
+     * @access protected
+     */
+    protected $value;
 
-    $memcached->set($dummy, 1);
-    $memcached->increment($dummy, 2);
-    $memcached->increment($dummy, 2);
-    $memcached->increment($dummy, 2);
-    $memcached->decrement($dummy, 3);
 
-    $result = $memcached->get($dummy);
+    /**
+     * Prepare some stuff.
+     */
+    protected function setUp()
+    {
+        $this->key   = md5(microtime(true));
+        $this->value = sha1($this->key);
 
-    $memcached->delete($dummy);
+        $this->client = new \Clickalicious\MemcachedPhp\MemcachedPhp(
+            $this->host
+        );
+    }
 
-} catch (Exception $e) {
-    $result = $e->getMessage();
+    /**
+     * Test if a value could be set
+     */
+    public function testSet()
+    {
+        $this->assertTrue($this->client->set($this->key, $this->value));
+    }
 
+    /**
+     * Cleanup
+     */
+    protected function tearDown()
+    {
+        $this->client->delete($this->key);
+    }
 }
-
-echo '<pre>';
-var_dump(
-    $result
-);
-echo '</pre>';

@@ -1,57 +1,60 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+namespace Clickalicious\MemcachedPhp;
+
 /**
  * Memcached.php
  *
- * Memcached_Php.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
+ * MemcachedPhp.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
  *
  *
  * PHP versions 5
  *
  * LICENSE:
- * Memcached.php - Memcached (PECL) compatible client implementation in plain vanilla PHP.
+ * Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
  *
- * Copyright (c) 2014 - 2015, Benjamin Carl - All rights reserved.
+ * Copyright (c) 2014 - 2015, Benjamin Carl
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * - Redistributions of source code must retain the above copyright notice,
- *   this list of conditions and the following disclaimer.
+ * - Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
  * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * - All advertising materials mentioning features or use of this software
- *   must display the following acknowledgement: This product includes software
- *   developed by Benjamin Carl and other contributors.
- * - Neither the name Benjamin Carl nor the names of other contributors
- *   may be used to endorse or promote products derived from this
- *   software without specific prior written permission.
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * - Neither the name of Memcached.php nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * Please feel free to contact us via e-mail: opensource@clickalicious.de
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_MemcachedPhp
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @version    Git: $Id: $
+ * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
+
+require_once 'Memcached/Exception.php';
 
 /**
  * Memcached.php
@@ -60,14 +63,14 @@
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_MemcachedPhp
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @version    Git: $Id: $
+ * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
-class Memcached_Php
+class MemcachedPhp
 {
     /**
      * The persistent ID of the instance for sharing connections via static!
@@ -565,15 +568,6 @@ class Memcached_Php
     const DEFAULT_PORT = 11211;
 
     /**
-     * The default weight of a host added.
-     *
-     * @var int
-     * @access public
-     * @const
-     */
-    const DEFAULT_WEIGHT = 0;
-
-    /**
      * The separator for building commandline for Memcached instance.
      *
      * @var string
@@ -618,8 +612,18 @@ class Memcached_Php
      */
     const ERROR_SERVER = 'SERVER_ERROR';
 
+    /**
+     * The default bitmask to detect serialization support.
+     *
+     * @var int
+     * @access public
+     * @const
+     */
     const DEFAULT_BITMASK = 1;
 
+    /**
+     * Memcached Constant Values
+     */
     const RESULT_SUCCESS = 0;
     const RESULT_FAILURE = 1;
     const RESULT_DATA_EXISTS = 12;
@@ -638,7 +642,7 @@ class Memcached_Php
      *                             share the same connection.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return Memcached_Php
+     * @return MemcachedPhp
      * @access public
      */
     public function __construct(
@@ -653,7 +657,7 @@ class Memcached_Php
                 ->port($port);
         }
 
-        // Generate persisten Id if not passed
+        // Generate persistent Id if not passed
         if ($persistentId === null) {
             srand(time());
             $persistentId = sha1(rand(0, 99999999));
@@ -756,47 +760,6 @@ class Memcached_Php
     }
 
     /**
-     * Setter for weight.
-     *
-     * @param string $weight The weight to set.
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return void
-     * @access public
-     */
-    public function setWeight($weight)
-    {
-        $this->weight = $weight;
-    }
-
-    /**
-     * Setter for weight.
-     *
-     * @param string $weight The weight to set.
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return $this Instance for chaining
-     * @access public
-     */
-    public function weight($weight)
-    {
-        $this->setWeight($weight);
-        return $this;
-    }
-
-    /**
-     * Getter for weight.
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return string|null The weight if set, otherwise NULL.
-     * @access public
-     */
-    public function getWeight()
-    {
-        return $this->weight;
-    }
-
-    /**
      * Sends a command to a Memcached instance and returns the parsed result.
      *
      * @param string $command The command to send to Memcached daemon
@@ -805,13 +768,13 @@ class Memcached_Php
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return mixed The result from Memcached daemon
      * @access public
-     * @throws Exception
+     * @throws Memcached_Exception
      */
     public function send($command, $data = '')
     {
         // Check if command is allowed
         if (in_array($command, $this->allowedCommands) === false) {
-            throw new Exception(
+            throw new Memcached_Exception(
                 sprintf('The command "%s" is not allowed!', $command)
             );
         }
@@ -824,7 +787,7 @@ class Memcached_Php
 
         // Check for valid resource ...
         if (is_resource($socket) === false) {
-            throw new Exception(
+            throw new Memcached_Exception(
                 sprintf('Can\'t connect to %s:%s', $this->getHost(), $this->getPort())
             );
         }
@@ -865,7 +828,7 @@ class Memcached_Php
 
         // Check for
         if ($this->getLastResult() !== 0) {
-            throw new Exception(
+            throw new Memcached_Exception(
                 sprintf(
                     'Error while issuing command "%s" on host "%s"', $command, $this->getHost() . ':' . $this->getPort()
                 )
@@ -988,16 +951,32 @@ class Memcached_Php
      * @return mixed The response for command set
      * @access public
      */
-    public function set($key, $value, $expiration = 0, $flags = self::DEFAULT_BITMASK, $bytes = null)
+    public function set($key, $value, $expiration = 0, $flags = 0, $bytes = null)
     {
         /**
          * set <key> <flags> <exptime> <bytes> [noreply]\r\n
          * <value>\r\n
          */
 
-        if ($this->bitmask($flags, array(1)) === true) {
-            $value = serialize($value);
-            $bytes = null;
+        // Bit 1 = serialize (e.g. Classes or Arrays, Strings ...)
+        if (
+            $this->isSerializable($value)    === true &&
+            $this->bitmask($flags, array(1)) === true
+        ) {
+            // Activate default bit to detect serialization
+            $flags &= self::DEFAULT_BITMASK;
+            $value  = serialize($value);
+            $bytes  = null;
+
+        } else {
+            // Real numbers should keep real numbers
+            // Bit 2 = int , 3 = double/float
+            if (is_double($value) === true) {
+                $flags |= 4;
+
+            } elseif (is_int($value) === true) {
+                $flags |= 2;
+            }
         }
 
         // Calculate bytes if not precalculated
@@ -1012,6 +991,28 @@ class Memcached_Php
             $value                . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_SET, $data);
+    }
+
+    /**
+     * Returns TRUE if value can be serialized, otherwise FALSE.
+     *
+     * We do not convert numbers cause memcached cant increase them otherwise!
+     *
+     * @param mixed $value The value to check
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return bool TRUE if is serializable, otherwise FALSE
+     * @access public
+     */
+    protected function isSerializable($value)
+    {
+        $type = gettype($value);
+
+        return (
+            $type !== "float"   &&
+            $type !== "double"  &&
+            $type !== "integer"
+        );
     }
 
     /**
@@ -1467,7 +1468,7 @@ class Memcached_Php
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return bool|mixed FALSE on error, otherwise parsed response
      * @access protected
-     * @throws Exception
+     * @throws Memcached_Exception
      */
     protected function parseResponse($command, $buffer)
     {
@@ -1500,7 +1501,7 @@ class Memcached_Php
 
                 // Ensure we did not receive trash
                 if ($metaData[0] !== self::RESPONSE_VALUE) {
-                    throw new Exception(
+                    throw new Memcached_Exception(
                         sprint('Awaited "%s" but received "%s"', self::RESPONSE_VALUE, $metaData[0])
                     );
                 }
@@ -1522,7 +1523,7 @@ class Memcached_Php
                 // Ensure that we are able to return exactly the same types as stored ...
                 $result[$key] = array(
                     // 1st bit set = we use un-/serialize to keep the values intact ...
-                    'value' => ($this->bitmask($flags, array(1)) === true) ? unserialize($value) : $value,
+                    'value' => $value,
                     'key'   => $key,
                     'meta'  => array(
                         'key'    => $key,
@@ -1532,6 +1533,23 @@ class Memcached_Php
                         'frames' => $frame
                     )
                 );
+
+                // Check for value converting and length fixing
+                if ($this->bitmask($flags, array(self::DEFAULT_BITMASK)) === true) {
+                    $value = unserialize($value);
+                    $length = strlen($value);
+
+                } elseif ($this->bitmask($flags, array(2)) === true) {
+                    $value = intval($value);
+                    $length = strlen($value);
+
+                } elseif ($this->bitmask($flags, array(4)) === true) {
+                    $value  = doubleval($value);
+                    $length = strlen($value);
+                }
+
+                $result[$key]['value']          = $value;
+                $result[$key]['meta']['length'] = $length;
 
                 // Increment by one and check
                 $line += 1 + $frame;
@@ -1619,7 +1637,7 @@ class Memcached_Php
 
                 // Ensure we did not receive trash
                 if ($metaData[0] !== self::RESPONSE_STAT && $metaData[0] !== self::RESPONSE_ITEM) {
-                    throw new Exception(
+                    throw new Memcached_Exception(
                         sprintf('Awaited "%s" but received "%s"', self::RESPONSE_STAT, $metaData[0])
                     );
                 }
@@ -1704,8 +1722,12 @@ class Memcached_Php
         return $result;
     }
 
-
-
+    /**
+     * Parser for all read operations:
+     * <>,
+     *
+     *
+     */
     protected function parseReadResponse()
     {
 
@@ -1720,9 +1742,6 @@ class Memcached_Php
     {
 
     }
-
-
-
 
     /**
      * Checks the bit positions of bits in value and return bool result.
@@ -1762,9 +1781,9 @@ class Memcached_Php
      * @access protected
      */
     protected function formatValueResponse(
-        $value = null,
-        $flags = 0,
-        $bytes = 0,
+              $value = null,
+              $flags = 0,
+              $bytes = 0,
         array $merge = null
     ) {
         $response = array(
@@ -1792,8 +1811,8 @@ class Memcached_Php
      * @access protected
      */
     protected function formatStatsResponse(
-        $value = null,
-        $bytes = 0,
+              $value = null,
+              $bytes = 0,
         array $merge = null
     ) {
         $response = array(
@@ -1817,7 +1836,7 @@ class Memcached_Php
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return resource|null The resource (socket) on success, otherwise NULL
      * @access protected
-     * @throws Exception
+     * @throws Memcached_Exception
      */
     protected function connect($host, $port)
     {
@@ -1828,7 +1847,7 @@ class Memcached_Php
                 self::$connections[$this->getPersistentId()][$uuid] = @fsockopen($host, $port);
 
             } catch (Exception $e) {
-                throw new Exception(
+                throw new Memcached_Exception(
                     sprintf('Error while connecting to Memcached on host: "%s:%s" (%s)', $host, $port, $uuid)
                 );
             }

@@ -1,0 +1,41 @@
+{
+  "name": "clickalicious/memcached.php",
+  "description": "Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.",
+  "authors": [
+    {
+      "name": "Benjamin Carl",
+      "email": "opensource@clickalicious.de",
+      "homepage": "http://www.clickalicious.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {},
+  "autoload": {
+      "psr-0": {
+          "DoozR": "Lib/"
+      }
+  },
+  "include-path": ["Lib/"],
+  "minimum-stability": "dev",
+  "keywords": [
+    "Memcached",
+    "Client",
+    "PHP",
+    "clickalicious"
+  ],
+  "homepage": "https://github.com/clickalicious/Memcached.php",
+  "license": [
+    "The BSD License"
+  ],
+  "support": {
+    "email": "opensource@clickalicious.de",
+    "issues": "https://github.com/clickalicious/Memcached.php/issues",
+    "wiki": "https://github.com/clickalicious/Memcached.php/wiki"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/clickalicious/Memcached.php.git"
+    }
+  ]
+}

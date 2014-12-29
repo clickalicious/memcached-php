@@ -1,10 +1,12 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+namespace Clickalicious\MemcachedPhp;
+
 /**
- * Memcache.php
+ * Memcached.php
  *
- * Demo.php - Demonstration of Memcached.php Memcached Client.
+ * Exception.php - Exception of Memcached.php package.
  *
  *
  * PHP versions 5
@@ -44,62 +46,29 @@
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_Exception
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
-
-require_once 'Lib\MemcachedPhp.php';
-
-use Clickalicious\MemcachedPhp\MemcachedPhp;
 
 /**
  * Memcached.php
  *
- * Demonstration of Memcached.php Memcached Client.
+ * Exception of Memcached.php package.
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_Exception
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
-
-// Create Memcached.php instance ...
-$memcached = new MemcachedPhp(
-    '127.0.0.1'
-);
-
-// Some setup for randomized key(s) for demonstration ...
-srand(microtime(true));
-$dummy = md5(rand(1111, 9999));
-
-// Try to do some stuff with memcached instance ...
-try {
-
-    $memcached->set($dummy, 1);
-    $memcached->increment($dummy, 2);
-    $memcached->increment($dummy, 2);
-    $memcached->increment($dummy, 2);
-    $memcached->decrement($dummy, 3);
-
-    $result = $memcached->get($dummy);
-
-    $memcached->delete($dummy);
-
-} catch (Exception $e) {
-    $result = $e->getMessage();
-
+class Memcached_Exception extends \Exception
+{
+    // Namespace
 }
-
-echo '<pre>';
-var_dump(
-    $result
-);
-echo '</pre>';
