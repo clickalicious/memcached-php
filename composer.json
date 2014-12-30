@@ -12,10 +12,10 @@
   "require": {},
   "autoload": {
       "psr-0": {
-          "DoozR": "Lib/"
+          "DoozR": "lib/"
       }
   },
-  "include-path": ["Lib/"],
+  "include-path": ["lib/"],
   "minimum-stability": "dev",
   "keywords": [
     "Memcached",

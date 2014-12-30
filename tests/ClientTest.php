@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Memcache.php
+ * Memcached.php
  *
  * Demo.php - Unit tests for client functionality.
  *
@@ -52,9 +52,9 @@
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once MEMCACHED_BASE_PATH . 'MemcachedPhp.php';
+require_once CLICKALICIOUS_MEMCACHED_BASE_PATH . 'Clickalicious\Memcached\Client.php';
 
-use \Clickalicious\MemcachedPhp\MemcachedPhp;
+use \Clickalicious\Memcached\Client;
 
 /**
  * Memcached.php
@@ -83,7 +83,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
     /**
      * Client instance
      *
-     * @var \Clickalicious\MemcachedPhp\MemcachedPhp
+     * @var \Clickalicious\Memcached\Client
      * @access protected
      */
     protected $client;
@@ -113,13 +113,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->key   = md5(microtime(true));
         $this->value = sha1($this->key);
 
-        $this->client = new MemcachedPhp(
+        $this->client = new Client(
             $this->host
         );
     }
 
     /**
-     * Test if a value could be set
+     * Test: Setting a value
      */
     public function testSet()
     {
@@ -127,12 +127,234 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if a value could be get back
+     * Test: Setting a value and retrieve it back
      */
     public function testGet()
     {
-        $this->assertTrue($this->client->set($this->key, 1.01));
+        $this->assertTrue($this->client->set($this->key, $this->value));
+        $this->assertEquals(
+            $this->value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Adding a value
+     */
+    public function testAdd()
+    {
+        // Should here return TRUE cause key does not exist
+        $this->assertTrue($this->client->add($this->key, $this->value));
+        $this->assertEquals(
+            $this->value,
+            $this->client->get($this->key)
+        );
+        // Should now return FALSE cause key already exists
+        $this->assertFalse($this->client->add($this->key, $this->value));
+    }
+
+    /**
+     * Test: Replacing a value
+     */
+    public function testReplace()
+    {
+        srand(microtime(true));
+        $value = md5(rand(1, 65535));
+
+        $this->assertFalse($this->client->replace($this->key, $value));
+
+        // Should here return TRUE cause key does not exist
+        $this->assertTrue($this->client->set($this->key, $this->value));
+        $this->assertTrue($this->client->replace($this->key, $value));
+
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Appending a value
+     */
+    public function testAppend()
+    {
+        srand(microtime(true));
+        $value = md5(rand(1, 65535));
+
+        $this->assertFalse($this->client->append($this->key, $value));
+
+        // Should here return TRUE cause key does not exist
+        $this->assertTrue($this->client->set($this->key, $this->value));
+        $this->assertTrue($this->client->append($this->key, $value));
+
+        $this->assertEquals(
+            $this->value . $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Prepending a value
+     */
+    public function testPrepend()
+    {
+        srand(microtime(true));
+        $value = md5(rand(1, 65535));
+
+        $this->assertFalse($this->client->prepend($this->key, $value));
+
+        $this->assertTrue($this->client->set($this->key, $this->value));
+        $this->assertTrue($this->client->prepend($this->key, $value));
+
+        $this->assertEquals(
+            $value . $this->value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Command CAS
+     */
+    public function testCas()
+    {
+        // Random 32 Bit decimal (wrong CAS emulate)
+        srand(microtime(true));
+        $value = rand(0, 65535);
+
+        $this->assertFalse($this->client->cas($value, $this->key, $value));
+
+        $this->assertTrue($this->client->set($this->key, $this->value));
+
+        $value = $this->client->gets(array($this->key), true);
+
+        $this->assertTrue($this->client->cas($value[$this->key]['meta']['cas'], $this->key, 'bar'));
+
+        $this->assertArrayHasKey(
+            $this->key,
+            $this->client->gets(array($this->key))
+        );
+
+        $this->assertEquals(
+            'bar',
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Send command (Freestyle) to daemon.
+     * @throws \Clickalicious\Memcached\Exception
+     */
+    public function testSend()
+    {
+        $testCommand = Client::COMMAND_VERSION . Client::COMMAND_TERMINATOR;
+
+        $this->assertRegExp(
+            '/\d[\.]\d[\.]\d[\-\w]+/u',
+            $this->client->send(Client::COMMAND_VERSION, $testCommand)
+        );
+    }
+
+    /**
+     * Test: Command version
+     */
+    public function testVersion()
+    {
+        $this->assertRegExp(
+            '/\d[\.]\d[\.]\d[\-\w]+/u',
+            $this->client->version()
+        );
+    }
+
+    /**
+     * Test: Send wrong command (Freestyle) to daemon.
+     * @expectedException \Clickalicious\Memcached\Exception
+     */
+    public function testSendWrongCommand()
+    {
+        $testCommand = 'foo' . Client::COMMAND_TERMINATOR;
+        $this->client->send('foo', $testCommand);
+        $this->setHost('128.0.0.1');
+        $testCommand = Client::COMMAND_VERSION . Client::COMMAND_TERMINATOR;
+        $this->client->send(Client::COMMAND_VERSION, $testCommand);
+    }
+
+    /**
+     * Test: Handling of string values
+     */
+    public function testString()
+    {
+        $value = 'Hello World!';
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertTrue(is_string($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Handling of double values
+     */
+    public function testDouble()
+    {
+        $value = 5.23;
+
+        $this->assertTrue($this->client->set($this->key, $value));
         $this->assertTrue(is_double($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Handling of integer values
+     */
+    public function testInteger()
+    {
+        $value = 523;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertTrue(is_int($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Handling of increment
+     * @depends testInteger
+     */
+    public function testIncrement()
+    {
+        $value = 523;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertEquals($value + 2, $this->client->increment($this->key, 2));
+        $this->assertEquals($value + 4, $this->client->incr($this->key, 2));
+        $this->assertEquals(
+            $value + 4,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Handling of decrement
+     * @depends testInteger
+     */
+    public function testDecrement()
+    {
+        $value = 525;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertEquals($value - 2, $this->client->decrement($this->key, 2));
+        $this->assertEquals($value - 4, $this->client->decr($this->key, 2));
+        $this->assertEquals(
+            $value - 4,
+            $this->client->get($this->key)
+        );
     }
 
     /**

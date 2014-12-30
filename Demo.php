@@ -52,9 +52,9 @@
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once 'Lib\MemcachedPhp.php';
+require_once 'Lib\Clickalicious\Memcached\Client.php';
 
-use Clickalicious\MemcachedPhp\MemcachedPhp;
+use Clickalicious\Memcached\Client;
 
 /**
  * Memcached.php
@@ -72,7 +72,7 @@ use Clickalicious\MemcachedPhp\MemcachedPhp;
  */
 
 // Create Memcached.php instance ...
-$memcached = new MemcachedPhp(
+$memcached = new Client(
     '127.0.0.1'
 );
 
@@ -99,6 +99,8 @@ try {
 }
 
 echo '<pre>';
+echo '<h1>Simple Demonstration</h1>';
+echo 'Result should be (int)4:<br />';
 var_dump(
     $result
 );

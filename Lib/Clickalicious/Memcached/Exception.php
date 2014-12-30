@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-namespace Clickalicious\MemcachedPhp;
+namespace Clickalicious\Memcached;
 
 /**
  * Memcached.php
@@ -68,7 +68,7 @@ namespace Clickalicious\MemcachedPhp;
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
-class Memcached_Exception extends \Exception
+class Exception extends \Exception
 {
     // Namespace
 }
