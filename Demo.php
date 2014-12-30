@@ -44,7 +44,7 @@
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_Demo
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
@@ -63,7 +63,7 @@ use Clickalicious\Memcached\Client;
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Memcached_Php
+ * @subpackage Clickalicious_Memcached_Demo
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
