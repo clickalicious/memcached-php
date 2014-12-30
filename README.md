@@ -52,7 +52,7 @@ The recommended way to install this library is through [Composer](http://getcomp
 }
 ```
 
-**Memcached.php** is also available as [download from github packed as zip-file](https://github.com/clickalicious/Memcached.php/archive/master.zip "zip package containing library for download") or via git clone: `git clone https://github.com/clickalicious/Memcached.php.git .`.
+**Memcached.php** is also available as [download from github packed as zip-file](https://github.com/clickalicious/Memcached.php/archive/master.zip "zip package containing library for download") or via `git clone https://github.com/clickalicious/Memcached.php.git .`.
 
 ## Usage
 
