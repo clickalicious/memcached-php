@@ -358,6 +358,24 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test: Handling of array values
+     */
+    public function testArray()
+    {
+        $value = array(
+            5,
+            23,
+        );
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertTrue(is_array($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
      * Cleanup
      */
     protected function tearDown()

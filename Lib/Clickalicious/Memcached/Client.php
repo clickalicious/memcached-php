@@ -1631,8 +1631,8 @@ class Client
 
                 // Check for value converting and length fixing
                 if ($this->bitmask($flags, array(self::DEFAULT_FLAGS)) === true) {
-                    $value = unserialize($value);
                     $length = strlen($value);
+                    $value  = unserialize($value);
 
                 } elseif ($this->bitmask($flags, array(2)) === true) {
                     $value = intval($value);
