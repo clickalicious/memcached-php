@@ -74,9 +74,14 @@ $client->get('foo');
 
 You will find a `Demo.php` showing in detail how to use the **Memcached.php** `client`.
 
-## Flags
+## Metadata
 
-**Memcached.php** makes use of the clients` flags field. The first **16 Bits** (Decimal up to 65.535) are reserved by this client library. The bitmask (flags) is also propagated to the public API so you can use it too. But be aware of the reservation: You can start using Bit **17 - 32** (the field is 32 Bit unsigned as Decimal interpretation).
+`Memcached` provides a 32 Bit (Version > 1.2.1) unsigned Integer field for meta data. From the `Memcached` protocol specification: 
+> Note that in memcached 1.2.1 and higher, flags may be 32-bits, instead
+of 16, but you might want to restrict yourself to 16 bits for
+compatibility with older versions.
+
+**Memcached.php** uses this field for its meta data. The meta data is required to mark data for serialization and stuff like this. This meta data is stored via the clients` flags field. The first **8 Bits** are reserved by **Memcached.php**. The other half of the 16 Bits can be used by your app.
 
 ## Documentation
 
