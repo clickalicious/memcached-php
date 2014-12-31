@@ -49,7 +49,7 @@ namespace Clickalicious\Memcached;
  * @subpackage Clickalicious_Memcached_Client
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
@@ -70,7 +70,7 @@ use \Clickalicious\Memcached\Exception;
  * @subpackage Clickalicious_Memcached_Client
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
@@ -122,7 +122,7 @@ class Client
      * @var int
      * @access protected
      */
-    protected $lastResult = 0;
+    protected $lastResponse = 0;
 
     /**
      * Signals for transfer ended. Send as terminator by Memcached instance.
@@ -572,6 +572,15 @@ class Client
     const DEFAULT_PORT = 11211;
 
     /**
+     * The default timeout when connecting to instance.
+     *
+     * @var mixed
+     * @access public
+     * @const
+     */
+    const DEFAULT_TIMEOUT = null;
+
+    /**
      * The separator for building commandline for Memcached instance.
      *
      * @var string
@@ -767,18 +776,56 @@ class Client
     }
 
     /**
-     * Resets state to clean fresh as new instantiated.
+     * Connects to a Memcached host.
+     *
+     * @param string $host    The host to connect to
+     * @param int    $port    The port the Memcached daemon is listening on
+     * @param int    $timeout Timeout used when connecting to instance
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return $this Instance for chaining
-     * @access protected
+     * @return resource|null The resource (socket) on success, otherwise NULL
+     * @access public
+     * @throws \Clickalicious\Memcached\Exception
      */
-    protected function reset()
+    public function connect($host, $port, $timeout = self::DEFAULT_TIMEOUT)
     {
-        return
-            $this
-                ->lastResult(0);
+        $uuid = $this->uuid($host, $port);
 
+        // The error variables
+        $errorNumber = null;
+        $errorString = 'n.a.';
+
+        if (isset(self::$connections[$this->getPersistentId()][$uuid]) === false) {
+            $connection = @fsockopen(
+                $host,
+                $port,
+                $errorNumber,
+                $errorString,
+                $timeout
+            );
+
+            // Check for failed connection
+            if (is_resource($connection) === false || $errorNumber !== 0) {
+                throw new Exception(
+                    sprintf(
+                        'Error "%s: %s" while connecting to Memcached on host: %s:%s (UUID: %s)',
+                        $errorNumber,
+                        $errorString,
+                        $host,
+                        $port,
+                        $uuid
+                    )
+                );
+            }
+
+            // Store for further access/use ...
+            self::$connections[$this->getPersistentId()][$uuid] = $connection;
+
+        } else {
+            $connection = self::$connections[$this->getPersistentId()][$uuid];
+        }
+
+        return $connection;
     }
 
     /**
@@ -810,13 +857,6 @@ class Client
         // The buffer to be filled with response
         $buffer = '';
 
-        // Check for valid resource ...
-        if (is_resource($socket) === false) {
-            throw new Exception(
-                sprintf('Can\'t connect to %s:%s', $this->getHost(), $this->getPort())
-            );
-        }
-
         // Dispatch command in some different ways ... depending on command ...
         fwrite($socket, $data);
 
@@ -837,25 +877,14 @@ class Client
             }
         }
 
-        // Check for HARD errors. Not an unsuccessful response from command -> here = real errors
-        if (preg_match('/' . self::ERROR . '(.*)\R/mu', $buffer, $error) > 0) {
-            // ERROR\r\n
-            $this->lastResult(self::RESULT_FAILURE);
-
-        } elseif (preg_match('/' . self::ERROR_CLIENT . '(.*)\R/mu', $buffer, $error) > 0) {
-            // CLIENT_ERROR\r\n
-            $this->lastResult(self::RESPONSE_CLIENT_ERROR);
-
-        } elseif (preg_match('/' . self::ERROR_SERVER . '(.*)\R/mu', $buffer, $error) > 0) {
-            // SERVER_ERROR\r\n
-            $this->lastResult(self::ERROR_SERVER);
-        }
-
-        // Check for
-        if ($this->getLastResult() !== 0) {
+        // Check if response is parseable ...
+        if ($this->checkResponse($buffer) !== true) {
             throw new Exception(
                 sprintf(
-                    'Error while issuing command "%s" on host "%s"', $command, $this->getHost() . ':' . $this->getPort()
+                    'Error "%s" sending command "%s" to host "%s"',
+                    $this->getLastResponse(),
+                    $command,
+                    $this->getHost() . ':' . $this->getPort()
                 )
             );
         }
@@ -1042,29 +1071,6 @@ class Client
             $value                . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_SET, $data);
-    }
-
-    /**
-     * Returns TRUE if value can be serialized, otherwise FALSE.
-     *
-     * We do not convert numbers cause memcached cant increase them otherwise!
-     *
-     * @param mixed $value The value to check
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return bool TRUE if is serializable, otherwise FALSE
-     * @access public
-     */
-    protected function isSerializable($value)
-    {
-        $type = gettype($value);
-
-        return (
-            $type !== "float"   &&
-            $type !== "double"  &&
-            $type !== "integer" &&
-            $type !== "string"
-        );
     }
 
     /**
@@ -1370,27 +1376,55 @@ class Client
             $argument2 .
             self::COMMAND_TERMINATOR;
 
-        $result = $this->send(self::COMMAND_STATS, $data);
-
         // Slabs stats delivers data twice?! and needs some special handling
         if ($type === self::COMMAND_SEPARATOR . self::STATS_TYPE_SLABS) {
-            // Every call after slabs returns memory data? ... so we use it here ...
-            $memory = $this->send(self::COMMAND_STATS, $data);
 
-            foreach ($memory as $host => $slabs) {
-                foreach ($slabs as $key => $value) {
-                    if (is_numeric($key) === true) {
-                        $result[$host][$key] = array_merge($result[$host][$key], $value);
-                    } else {
-                        $result[$host][$key] = $value;
+            // Initial fetch ...
+            $result = $this->send(self::COMMAND_STATS, $data);
+
+            // Now read until whole structure contains finally "active_slabs" key!
+            while (isset($result[$this->getHost() . ':' . $this->getPort()]['active_slabs']) === false) {
+
+                // Issue stat command ...
+                $memory = $this->send(self::COMMAND_STATS, $data);
+
+                // Iterate Hosts
+                foreach ($memory as $host => $slabs) {
+
+                    // Iterate Slabs from response
+                    foreach ($slabs as $key => $value) {
+
+                        // Now check for slabId or meta-data key. Slab = numeric, otherwise String.
+                        if (is_numeric($key) === true) {
+                            // Slab!
+                            if (isset($result[$host][$key]) === false) {
+                                $result[$host][$key] = array();
+                            }
+
+                            $result[$host][$key] = array_merge($result[$host][$key], $value);
+
+                        } else {
+                            // Meta!
+                            $result[$host][$key] = $value;
+
+                        }
                     }
                 }
             }
 
-            $uuid = $this->uuid($this->getHost(), $this->getPort()); //md5($this->getHost() . ':' . $this->getPort());
-            fclose(self::$connections[$this->getPersistentId()][$uuid]);
-            unset(self::$connections[$this->getPersistentId()][$uuid]);
+        } else {
+            // Issue stat command ...
+            $result = $this->send(self::COMMAND_STATS, $data);
         }
+
+        /**
+         * @ugly This is an ugly but required workaround. After issueing the <stats slabs> command
+         * we need to fetch as long as we receive the last slabs package?! and afterwards the memcached
+         * daemon returns nonsense? ... This here fixes it - but only temporary
+         */
+        $uuid = $this->uuid($this->getHost(), $this->getPort());
+        fclose(self::$connections[$this->getPersistentId()][$uuid]);
+        unset(self::$connections[$this->getPersistentId()][$uuid]);
 
         return $result;
     }
@@ -1502,7 +1536,7 @@ class Client
     }
 
     /**
-     * Setter for lastResult.
+     * Setter for lastResponse.
      *
      * @param int $response The response
      *
@@ -1510,13 +1544,13 @@ class Client
      * @return void
      * @access protected
      */
-    protected function setLastResult($response)
+    protected function setLastResponse($response)
     {
-        $this->lastResult = $response;
+        $this->lastResponse = $response;
     }
 
     /**
-     * Setter for lastResult.
+     * Setter for lastResponse.
      *
      * @param int $response The response array (command => buffer)
      *
@@ -1524,22 +1558,22 @@ class Client
      * @return $this Instance for chaining
      * @access protected
      */
-    protected function lastResult($response)
+    protected function lastResponse($response)
     {
-        $this->setLastResult($response);
+        $this->setLastResponse($response);
         return $this;
     }
 
     /**
-     * Getter for lastResult.
+     * Getter for lastResponse.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return int The last response
      * @access protected
      */
-    protected function getLastResult()
+    protected function getLastResponse()
     {
-        return $this->lastResult;
+        return $this->lastResponse;
     }
 
     /**
@@ -1553,6 +1587,383 @@ class Client
     {
         return sha1(implode('.', func_get_args()));
     }
+
+    /**
+     * Returns TRUE if value can be serialized, otherwise FALSE.
+     *
+     * We do not convert numbers cause memcached cant increase them otherwise!
+     *
+     * @param mixed $value The value to check
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return bool TRUE if is serializable, otherwise FALSE
+     * @access public
+     */
+    protected function isSerializable($value)
+    {
+        $type = gettype($value);
+
+        return (
+            $type !== "float"   &&
+            $type !== "double"  &&
+            $type !== "integer" &&
+            $type !== "string"
+        );
+    }
+
+    /**
+     * Resets state to clean fresh as new instantiated.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return $this Instance for chaining
+     * @access protected
+     */
+    protected function reset()
+    {
+        return
+            $this
+                ->lastResponse(0);
+
+    }
+
+    /**
+     * Parses the buffer of a read response.
+     *
+     * @param string $buffer The buffer raw and unmodified
+     * @param array  $lines  The buffer separated into single lines in a collection
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return array|bool FALSE on error, otherwise parsed response
+     * @access protected
+     * @throws \Clickalicious\Memcached\Exception
+     */
+    protected function parseReadResponse($buffer, $lines)
+    {
+        // The result
+        $result = array();
+
+        // Iterator for lines ...
+        $line  = 0;
+
+        // Loop as long as line is !== END\r\n Terminator (1 line META 1 line DATA)
+        while ($lines[$line] !== self::RESPONSE_END) {
+            /**
+             * Try to fetch metadata. Why try? Cause we can receive multiple lines for a value. If the current key
+             * reference to a simple value like an integer (65000 for example) then we have one line <meta> data and
+             * one line <value> data. But if the value contains a "\r\n" itself it breaks this simple assumption so
+             * that we must
+             */
+            $metaData = explode(self::COMMAND_SEPARATOR, $lines[$line]);
+
+            // @codeCoverageIgnoreStart
+            // Ensure we did not receive trash - develop code removed with stable
+            if ($metaData[0] !== self::RESPONSE_VALUE) {
+                throw new Exception(
+                    sprintf('Awaited "%s" but received "%s"', self::RESPONSE_VALUE, $metaData[0])
+                );
+            }
+            // @codeCoverageIgnoreEnd
+
+            // Value must be at least starting on next line - and can continue to spawn on n following lines ...
+            $key    = $metaData[1];
+            $value  = '';
+            $flags  = $metaData[2];
+            $length = $metaData[3];
+            $cas    = (isset($metaData[4])) ? (double)$metaData[4] : null;
+            $frame  = 0;
+
+            // Fetch whole & complete value!
+            while (strlen($value) < $length) {
+                ++$frame;
+                $value .= $lines[$line + $frame];
+            }
+
+            // Ensure that we are able to return exactly the same types as stored ...
+            $result[$key] = array(
+                // 1st bit set = we use un-/serialize to keep the values intact ...
+                'value' => $value,
+                'key'   => $key,
+                'meta'  => array(
+                    'key'    => $key,
+                    'flags'  => $flags,
+                    'length' => $length,
+                    'cas'    => $cas,
+                    'frames' => $frame
+                )
+            );
+
+            // Check for value converting and length fixing
+            if ($this->bitmask($flags, array(self::DEFAULT_FLAGS)) === true) {
+                $length = strlen($value);
+                $value  = unserialize($value);
+
+            } elseif ($this->bitmask($flags, array(2)) === true) {
+                $value = intval($value);
+                $length = strlen($value);
+
+            } elseif ($this->bitmask($flags, array(4)) === true) {
+                $value  = doubleval($value);
+                $length = strlen($value);
+            }
+
+            $result[$key]['value']          = $value;
+            $result[$key]['meta']['length'] = $length;
+
+            // Increment by one and check
+            $line += 1 + $frame;
+        }
+
+        // Check for response!
+        if (count($result) > 0) {
+            // Inject finally the global metadata from response ...
+            $result['meta'] = $buffer;
+
+            // Memcached compatible success
+            $this->lastResponse(self::RESULT_SUCCESS);
+
+        } else {
+            $result = false;
+            $this->lastResponse(self::RESULT_NOTFOUND);
+
+        }
+
+        return $result;
+    }
+
+    protected function parseWriteResponse($buffer)
+    {
+        // At this point we retrieve a raw response containing at least a trailing terminator - rip it
+        $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
+
+        // The result
+        $result = array();
+
+        // Helper required for parsing ...
+        $lines = explode(self::COMMAND_TERMINATOR, $response);
+
+        /**
+         * "STORED\r\n", to indicate success.
+         *
+         * "NOT_STORED\r\n" to indicate the data was not stored, but not because of an error. This normally means
+         * that the condition for an "add" or a "replace" command was not met.
+         *
+         * "EXISTS\r\n" to indicate that the item you are trying to store with a "cas" command has been modified
+         * since you last fetched it.
+         *
+         * "NOT_FOUND\r\n" to indicate that the item you are trying to store with a "cas" command did not exist.
+         */
+        $result = ($buffer === self::RESPONSE_STORED . self::COMMAND_TERMINATOR);
+
+        if ($result === true) {
+            // success
+            $this->lastResponse(self::RESULT_SUCCESS);
+
+        } else {
+            // Default error case
+            $this->lastResponse(self::RESULT_FAILURE);
+
+            // Set detailed error in error case
+            if (
+                $lines[0] === self::RESPONSE_NOT_STORED
+            ) {
+                $this->lastResponse(self::RESULT_NOTSTORED);
+            } elseif (
+                $lines[0] === self::RESPONSE_EXISTS
+            ) {
+                $this->lastResponse(self::RESULT_DATA_EXISTS);
+            } elseif (
+                $lines[0] === self::RESPONSE_NOT_FOUND
+            ) {
+                $this->lastResponse(self::RESULT_NOTFOUND);
+            }
+        }
+
+        return $result;
+    }
+
+    protected function parseDeleteResponse($buffer)
+    {
+        // At this point we retrieve a raw response containing at least a trailing terminator - rip it
+        $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
+
+        // The result
+        $result = array();
+
+        // Helper required for parsing ...
+        $lines = explode(self::COMMAND_TERMINATOR, $response);
+
+        /**
+         * SUCCESS = RESPONSE = "DELETED"
+         * FAILED  = RESPONSE = "NOT_FOUND"
+         */
+        $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
+
+        $result = ($metaData[0] === self::RESPONSE_DELETED);
+
+        return $result;
+    }
+
+    protected function parseStatsResponse($buffer)
+    {
+        // At this point we retrieve a raw response containing at least a trailing terminator - rip it
+        $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
+
+        // The result
+        $result = array();
+
+        // Helper required for parsing ...
+        $lines = explode(self::COMMAND_TERMINATOR, $response);
+
+        // Iterator for lines ...
+        $line = 0;
+
+        if ($lines[count($lines) - 1] !== self::RESPONSE_END) {
+            $lines[] = self::RESPONSE_END;
+        }
+
+        // Loop as long as line is !== END\r\n Terminator (1 line META 1 line DATA)
+        while ($lines[$line] !== self::RESPONSE_END) {
+            /**
+             * Try to fetch in this way: split descriptor/key from value - each stats entry is on one line
+             * STAT <key> <value>\r\n
+             */
+            $metaData = explode(self::COMMAND_SEPARATOR, $lines[$line]);
+
+            // @codeCoverageIgnoreStart
+            // Ensure we did not receive trash - develop code - will be removed in stable
+            if ($metaData[0] !== self::RESPONSE_STAT && $metaData[0] !== self::RESPONSE_ITEM) {
+                throw new Exception(
+                    sprintf('Awaited "%s" but received "%s"', self::RESPONSE_STAT, $metaData[0])
+                );
+            }
+            // @codeCoverageIgnoreEnd
+
+            $nodes      = explode(':', $metaData[1]);
+            $countNodes = count($nodes);
+
+            if ($countNodes === 2) {
+                // Slab set?
+                if (isset($result[$nodes[0]]) === false) {
+                    $result[$nodes[0]] = array();
+                }
+
+                $result[$nodes[0]][$nodes[1]] = $metaData[2];
+
+            } elseif ($countNodes === 3) {
+                // ???
+                if (isset($result[$nodes[0]]) === false) {
+                    $result[$nodes[0]] = array();
+
+                    if (isset($result[$nodes[0]][$nodes[1]]) === false) {
+                        $result[$nodes[0]][$nodes[1]] = array();
+                    }
+
+                }
+
+                $result[$nodes[0]][$nodes[1]][$nodes[2]] = $metaData[2];
+
+            } else {
+                //
+                $identifier = array_shift($metaData);
+                $key        = array_shift($metaData);
+                $value      = implode(self::COMMAND_SEPARATOR, $metaData);
+
+                $result[$key] = $value;
+            };
+
+            // Next line
+            ++$line;
+        }
+
+        $result = array(
+            $this->getHost() . ':' . $this->getPort() => $result
+        );
+
+        return $result;
+    }
+
+    protected function parseVersionResponse($buffer)
+    {
+        // At this point we retrieve a raw response containing at least a trailing terminator - rip it
+        $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
+
+        // The result
+        $result = false;
+
+        // Helper required for parsing ...
+        $lines = explode(self::COMMAND_TERMINATOR, $response);
+
+        /**
+         * SUCCESS = RESPONSE = "\r\n"
+         * FAILED  = RESPONSE = "???"
+         */
+        $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
+
+        if ($metaData[0] === strtoupper(self::COMMAND_VERSION)) {
+            $result = $metaData[1];
+        }
+
+        return $result;
+    }
+
+    protected function parseArithmeticResponse($buffer)
+    {
+        // At this point we retrieve a raw response containing at least a trailing terminator - rip it
+        $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
+
+        // The result
+        $result = false;
+
+        // Helper required for parsing ...
+        $lines = explode(self::COMMAND_TERMINATOR, $response);
+
+        /**
+         * SUCCESS = RESPONSE = "NEW VALUE AFTER OPERATION [2 will incr to X] OR [1 will decr to Y] ..."
+         * FAILED  = RESPONSE = "NOT_FOUND"
+         */
+        $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
+
+        if ($buffer !== self::RESPONSE_NOT_FOUND . self::COMMAND_TERMINATOR) {
+            // Insert the response (= new value) as result
+            $result = (double)$metaData[0];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Checks if a response contains some sort of hard errors or if it is parsable
+     * by the further process.
+     *
+     * @param $buffer
+     * @return bool
+     */
+    protected function checkResponse($buffer)
+    {
+        // Assume response invalid = some error
+        $result = false;
+
+        // Check for HARD errors. Not an unsuccessful response from command -> here = real errors
+        if (preg_match('/' . self::ERROR . '(.*)\R/mu', $buffer, $error) > 0) {
+            // ERROR\r\n
+            $this->lastResponse(self::RESULT_FAILURE);
+
+        } elseif (preg_match('/' . self::ERROR_CLIENT . '(.*)\R/mu', $buffer, $error) > 0) {
+            // CLIENT_ERROR\r\n
+            $this->lastResponse(self::RESPONSE_CLIENT_ERROR);
+
+        } elseif (preg_match('/' . self::ERROR_SERVER . '(.*)\R/mu', $buffer, $error) > 0) {
+            // SERVER_ERROR\r\n
+            $this->lastResponse(self::ERROR_SERVER);
+
+        } else {
+            $result = true;
+            $this->lastResponse(0);
+        }
+
+        return $result;
+    }
+
 
     /**
      * Parses a response from a Memcached daemon
@@ -1569,102 +1980,15 @@ class Client
     {
         // At this point we retrieve a raw response containing at least a trailing terminator - rip it
         $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
+        $lines    = explode(self::COMMAND_TERMINATOR, $response);
 
-        // The result
-        $result = array();
-
-        // Helper required for parsing ...
-        $lines = explode(self::COMMAND_TERMINATOR, $response);
-
-            // PARSER for <get> <gets>
         if (
             $command === self::COMMAND_GET ||
             $command === self::COMMAND_GETS
         ) {
-            // Iterator for lines ...
-            $line  = 0;
+            // PARSER for <get> <gets>
+            $result = $this->parseReadResponse($buffer, $lines);
 
-            // Loop as long as line is !== END\r\n Terminator (1 line META 1 line DATA)
-            while ($lines[$line] !== self::RESPONSE_END) {
-                /**
-                 * Try to fetch metadata. Why try? Cause we can receive multiple lines for a value. If the current key
-                 * reference to a simple value like an integer (65000 for example) then we have one line <meta> data and
-                 * one line <value> data. But if the value contains a "\r\n" itself it breaks this simple assumption so
-                 * that we must
-                 */
-                $metaData = explode(self::COMMAND_SEPARATOR, $lines[$line]);
-
-                // Ensure we did not receive trash
-                if ($metaData[0] !== self::RESPONSE_VALUE) {
-                    throw new Exception(
-                        sprint('Awaited "%s" but received "%s"', self::RESPONSE_VALUE, $metaData[0])
-                    );
-                }
-
-                // Value must be at least starting on next line - and can continue to spawn on n following lines ...
-                $key    = $metaData[1];
-                $value  = '';
-                $flags  = $metaData[2];
-                $length = $metaData[3];
-                $cas    = (isset($metaData[4])) ? (double)$metaData[4] : null;
-                $frame  = 0;
-
-                // Fetch whole & complete value!
-                while (strlen($value) < $length) {
-                    ++$frame;
-                    $value .= $lines[$line + $frame];
-                }
-
-                // Ensure that we are able to return exactly the same types as stored ...
-                $result[$key] = array(
-                    // 1st bit set = we use un-/serialize to keep the values intact ...
-                    'value' => $value,
-                    'key'   => $key,
-                    'meta'  => array(
-                        'key'    => $key,
-                        'flags'  => $flags,
-                        'length' => $length,
-                        'cas'    => $cas,
-                        'frames' => $frame
-                    )
-                );
-
-                // Check for value converting and length fixing
-                if ($this->bitmask($flags, array(self::DEFAULT_FLAGS)) === true) {
-                    $length = strlen($value);
-                    $value  = unserialize($value);
-
-                } elseif ($this->bitmask($flags, array(2)) === true) {
-                    $value = intval($value);
-                    $length = strlen($value);
-
-                } elseif ($this->bitmask($flags, array(4)) === true) {
-                    $value  = doubleval($value);
-                    $length = strlen($value);
-                }
-
-                $result[$key]['value']          = $value;
-                $result[$key]['meta']['length'] = $length;
-
-                // Increment by one and check
-                $line += 1 + $frame;
-            }
-
-            // Check for response!
-            if (count($result) > 0) {
-                // Inject finally the global metadata from response ...
-                $result['meta'] = $buffer;
-
-                // Memcached compatible success
-                $this->lastResult(self::RESULT_SUCCESS);
-
-            } else {
-                $result = false;
-                $this->lastResult(self::RESULT_NOTFOUND);
-
-            }
-
-            // PARSER for <set> <add> <replace> <append> <prepend> <cas>
         } elseif (
             $command === self::COMMAND_SET     ||
             $command === self::COMMAND_ADD     ||
@@ -1673,177 +1997,36 @@ class Client
             $command === self::COMMAND_PREPEND ||
             $command === self::COMMAND_CAS
         ) {
-            /**
-             * "STORED\r\n", to indicate success.
-             *
-             * "NOT_STORED\r\n" to indicate the data was not stored, but not because of an error. This normally means
-             * that the condition for an "add" or a "replace" command was not met.
-             *
-             * "EXISTS\r\n" to indicate that the item you are trying to store with a "cas" command has been modified
-             * since you last fetched it.
-             *
-             * "NOT_FOUND\r\n" to indicate that the item you are trying to store with a "cas" command did not exist.
-             */
-            $result = ($buffer === self::RESPONSE_STORED . self::COMMAND_TERMINATOR);
-
-            if ($result === true) {
-                // success
-                $this->lastResult(self::RESULT_SUCCESS);
-
-            } else {
-                // Set detailed error in error case
-                if (
-                    $lines[0] === self::RESPONSE_NOT_STORED
-                ) {
-                    $this->lastResult(self::RESULT_NOTSTORED);
-                } elseif (
-                    $lines[0] === self::RESPONSE_EXISTS
-                ) {
-                    $this->lastResult(self::RESULT_DATA_EXISTS);
-                } elseif (
-                    $lines[0] === self::RESPONSE_NOT_FOUND
-                ) {
-                    $this->lastResult(self::RESULT_NOTFOUND);
-                } else {
-                    $this->lastResult(self::RESULT_FAILURE);
-                }
-            }
-
-            // PARSER for <delete>
-        } elseif ($command === self::COMMAND_DELETE) {
-            /**
-             * SUCCESS = RESPONSE = "DELETED"
-             * FAILED  = RESPONSE = "NOT_FOUND"
-             */
-            $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
-
-            $result = ($metaData[0] === self::RESPONSE_DELETED);
+            // PARSER for <set> <add> <replace> <append> <prepend> <cas>
+            $result = $this->parseWriteResponse($buffer);
 
         } elseif (
-            // PARSER for <stats>*
+            $command === self::COMMAND_DELETE
+        ) {
+            // PARSER for <delete>
+            $result = $this->parseDeleteResponse($buffer);
+
+        } elseif (
             $command === self::COMMAND_STATS
         ) {
-            // Iterator for lines ...
-            $line = 0;
+            // PARSER for <stats>*
+            $result = $this->parseStatsResponse($buffer);
 
-            if ($lines[count($lines) - 1] !== self::RESPONSE_END) {
-                $lines[] = self::RESPONSE_END;
-            }
+        } elseif (
+            $command === self::COMMAND_VERSION
+        ) {
+            // PARSER for <version>
+            $result = $this->parseVersionResponse($buffer);
 
-            // Loop as long as line is !== END\r\n Terminator (1 line META 1 line DATA)
-            while ($lines[$line] !== self::RESPONSE_END) {
-                /**
-                 * Try to fetch in this way: split descriptor/key from value - each stats entry is on one line
-                 * STAT <key> <value>\r\n
-                 */
-                $metaData = explode(self::COMMAND_SEPARATOR, $lines[$line]);
-
-                // Ensure we did not receive trash
-                if ($metaData[0] !== self::RESPONSE_STAT && $metaData[0] !== self::RESPONSE_ITEM) {
-                    throw new Exception(
-                        sprintf('Awaited "%s" but received "%s"', self::RESPONSE_STAT, $metaData[0])
-                    );
-                }
-
-                $nodes      = explode(':', $metaData[1]);
-                $countNodes = count($nodes);
-
-                if ($countNodes === 2) {
-                    // Slab set?
-                    if (isset($result[$nodes[0]]) === false) {
-                        $result[$nodes[0]] = array();
-                    }
-
-                    $result[$nodes[0]][$nodes[1]] = $metaData[2];
-
-                } elseif ($countNodes === 3) {
-                    // ???
-                    if (isset($result[$nodes[0]]) === false) {
-                        $result[$nodes[0]] = array();
-
-                        if (isset($result[$nodes[0]][$nodes[1]]) === false) {
-                            $result[$nodes[0]][$nodes[1]] = array();
-                        }
-
-                    }
-
-                    $result[$nodes[0]][$nodes[1]][$nodes[2]] = $metaData[2];
-
-                } else {
-                    //
-                    $identifier = array_shift($metaData);
-                    $key        = array_shift($metaData);
-                    $value      = implode(self::COMMAND_SEPARATOR, $metaData);
-
-                    $result[$key] = $value;
-                };
-
-                // Next line
-                ++$line;
-            }
-
-            $result = array(
-                $this->getHost() . ':' . $this->getPort() => $result
-            );
-
-        } elseif ($command === self::COMMAND_VERSION) {
-            /**
-             * SUCCESS = RESPONSE = "\r\n"
-             * FAILED  = RESPONSE = "???"
-             */
-            $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
-
-            if ($metaData[0] === strtoupper(self::COMMAND_VERSION)) {
-                $result = $metaData[1];
-            } else {
-                $result = false;
-            }
-
-        } elseif ($command === self::COMMAND_INCR || $command === self::COMMAND_DECR) {
-            /**
-             * SUCCESS = RESPONSE = "NEW VALUE AFTER OPERATION [2 will incr to X] OR [1 will decr to Y] ..."
-             * FAILED  = RESPONSE = "NOT_FOUND"
-             */
-            $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
-
-            if ($buffer === self::RESPONSE_NOT_FOUND . self::COMMAND_TERMINATOR) {
-                $result = false;
-
-            } else {
-                // Insert the response (= new value) as result
-                $result = (double)$metaData[0];
-            }
-
-        } else {
-            echo 'Babäm!';
-            echo '<pre>';
-            var_dump($buffer);
-            echo '</pre>';
-            die;
+        } elseif (
+            $command === self::COMMAND_INCR ||
+            $command === self::COMMAND_DECR
+        ) {
+            // PARSER for <incr> & <decr>
+            $result = $this->parseArithmeticResponse($buffer);
         }
 
         return $result;
-    }
-
-    /**
-     * Parser for all read operations:
-     * <>,
-     *
-     *
-     */
-    protected function parseReadResponse()
-    {
-
-    }
-
-    protected function parseWriteResponse()
-    {
-
-    }
-
-    protected function parseStatisticResponse()
-    {
-
     }
 
     /**
@@ -1869,94 +2052,6 @@ class Client
         }
 
         return $result;
-    }
-
-    /**
-     * Formats a response for a "get" request accordingly to responded data.
-     *
-     * @param null  $value The value returned for a key (NULL = invalid key)
-     * @param int   $flags The flags for the stored data
-     * @param int   $bytes The length of the stored data in bytes
-     * @param array $merge An optional array to merge with response
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return array The combined values as an array
-     * @access protected
-     */
-    protected function formatValueResponse(
-              $value = null,
-              $flags = 0,
-              $bytes = 0,
-        array $merge = null
-    ) {
-        $response = array(
-            'value' => $value,
-            'flags' => $flags,
-            'bytes' => $bytes,
-        );
-
-        if ($merge !== null) {
-            $response = array_merge($response, $merge);
-        }
-
-        return $response;
-    }
-
-    /**
-     * Formats a response for a "stats" request accordingly to responded data.
-     *
-     * @param null  $value The value returned for a key (NULL = invalid key)
-     * @param int   $bytes The length of the stored data in bytes
-     * @param array $merge An optional array to merge with response
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return array The combined values as an array
-     * @access protected
-     */
-    protected function formatStatsResponse(
-              $value = null,
-              $bytes = 0,
-        array $merge = null
-    ) {
-        $response = array(
-            'value' => $value,
-            'bytes' => $bytes,
-        );
-
-        if ($merge !== null) {
-            $response = array_merge($response, $merge);
-        }
-
-        return $response;
-    }
-
-    /**
-     * Connects to a Memcached host.
-     *
-     * @param string $host The host to connect to
-     * @param int    $port The port the Memcached daemon is listening on
-     *
-     * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return resource|null The resource (socket) on success, otherwise NULL
-     * @access protected
-     * @throws \Clickalicious\Memcached\Exception
-     */
-    protected function connect($host, $port)
-    {
-        $uuid = $this->uuid($this->getHost(), $this->getPort()); //md5($host . ':' . $port);
-
-        if (isset(self::$connections[$this->getPersistentId()][$uuid]) === false) {
-            try {
-                self::$connections[$this->getPersistentId()][$uuid] = @fsockopen($host, $port);
-
-            } catch (\Exception $e) {
-                throw new Exception(
-                    sprintf('Error while connecting to Memcached on host: "%s:%s" (%s)', $host, $port, $uuid)
-                );
-            }
-        }
-
-        return self::$connections[$this->getPersistentId()][$uuid];
     }
 }
 

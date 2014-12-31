@@ -25,7 +25,7 @@
   ],
   "homepage": "https://github.com/clickalicious/Memcached.php",
   "license": [
-    "The BSD License"
+    "BSD-3-Clause"
   ],
   "support": {
     "email": "opensource@clickalicious.de",

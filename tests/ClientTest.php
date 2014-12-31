@@ -47,7 +47,7 @@
  * @subpackage Clickalicious_Memcached_Tests
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
@@ -66,7 +66,7 @@ use \Clickalicious\Memcached\Client;
  * @subpackage Clickalicious_Memcached_Tests
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
@@ -131,11 +131,15 @@ class ClientTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
+        // Test success (ask for existing key)
         $this->assertTrue($this->client->set($this->key, $this->value));
         $this->assertEquals(
             $this->value,
             $this->client->get($this->key)
         );
+
+        // Test failure (ask for not existing key)
+        $this->assertFalse($this->client->get(md5($this->key)));
     }
 
     /**
@@ -234,6 +238,8 @@ class ClientTest extends PHPUnit_Framework_TestCase
             $this->client->gets(array($this->key))
         );
 
+        $this->assertFalse($this->client->cas($value[$this->key]['meta']['cas'], $this->key, $this->value));
+
         $this->assertEquals(
             'bar',
             $this->client->get($this->key)
@@ -242,7 +248,6 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test: Send command (Freestyle) to daemon.
-     * @throws \Clickalicious\Memcached\Exception
      */
     public function testSend()
     {
@@ -372,6 +377,100 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             $value,
             $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Handling of boolean values
+     */
+    public function testBoolean()
+    {
+        $value = true;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertTrue(is_bool($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Connection - real with success as well as failure.
+     * @expectedException \Clickalicious\Memcached\Exception
+     */
+    public function testConnect()
+    {
+        $this->assertTrue(
+            is_resource(
+                $this->client->connect($this->host, Client::DEFAULT_PORT)
+            )
+        );
+
+        // Now connect to a fake host/port with little timeout - just to get the exception tested
+        $this->client->connect('1.2.3.4', '11211', 1);
+    }
+
+    /**
+     * Test: Stats
+     */
+    public function testStats()
+    {
+        $stats = $this->client->stats();
+
+        $this->assertTrue($this->client->set($this->key, $this->value));
+        $this->assertEquals(
+            $this->value,
+            $this->client->get($this->key)
+        );
+
+        $this->assertArrayHasKey(
+            $this->host . ':11211',
+            $stats
+        );
+
+        $this->assertArrayHasKey(
+            'version',
+            $stats[$this->host . ':11211']
+        );
+
+        $stats = $this->client->stats(Client::STATS_TYPE_ITEMS);
+
+        $this->assertArrayHasKey(
+            'items',
+            $stats[$this->host . ':11211']
+        );
+
+        $stats = $this->client->stats(Client::STATS_TYPE_SLABS);
+
+        $this->assertArrayHasKey(
+            'active_slabs',
+            $stats[$this->host . ':11211']
+        );
+
+        $this->assertGreaterThanOrEqual(
+            1,
+            $stats[$this->host . ':11211']['active_slabs']
+        );
+
+        $slabs = $stats[$this->host . ':11211']['active_slabs'];
+
+        $cachedump = array();
+
+        for ($i = 1; $i <= $slabs; ++$i) {
+            $cachedump = array_merge_recursive(
+                $cachedump,
+                $this->client->stats(
+                    Client::STATS_TYPE_CACHEDUMP,
+                    $i,
+                    Client::CACHEDUMP_ITEMS_MAX
+                )
+            );
+        }
+
+        $this->assertArrayHasKey(
+            $this->key,
+            $cachedump[$this->host . ':11211']
         );
     }
 

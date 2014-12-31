@@ -13,7 +13,7 @@ Plain vanilla PHP `Memcached` client library with nearly full support of the `Me
  - Connection sharing  
  - Configurable connection close behavior
 
-**Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code base is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is above 75%. The library supports storing of all (8) [PHP variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types"). It supports \<incr\> and \<decr\> command on stored integers. The [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification.
+**Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code base is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is above 90%. The library supports storing of all (8) [PHP variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types"). It supports \<incr\> and \<decr\> command on stored integers. The [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification.
 
 ## Purpose
 
@@ -89,13 +89,16 @@ The best and currently only existing documentation is the inline documentation o
 
 ## Tests
 
-**Memcached.php** is unit tested and the coverage is above 75%. You will find a PHPUnit configuration including testsuites in directory `tests/`. 
+**Memcached.php** is unit-tested and the coverage is above 90%. You will find a PHPUnit configuration including testsuites in directory `tests/`. 
 
 To run tests you only need to execute the following command on `cli`:
 
 ```sh
 phpunit -c tests/phpunit.xml
 ```
+
+**Info** 
+The unit-tests are fired against an existing and real `Memcached` daemon. This is not the perfect way i know but the only one currently working for me. Please be aware that you need a running `Memcached` deamon on the host you run the unit-tests listening on the default `Memcached` port (127.0.0.1:11211). So the unit-tests are not isolated but more bound to the `Memcached` daemon and network as well. Meanwhile i think about a better solution ;)
 
 ## Future
 

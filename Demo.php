@@ -47,7 +47,7 @@
  * @subpackage Clickalicious_Memcached_Demo
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
@@ -66,7 +66,7 @@ use Clickalicious\Memcached\Client;
  * @subpackage Clickalicious_Memcached_Demo
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
@@ -82,6 +82,39 @@ $dummy = md5(rand(1111, 9999));
 
 // Try to do some stuff with memcached instance ...
 try {
+
+    /*
+    // Fetch all keys and all values ...
+    $allSlabs  = $memcached->stats(Client::STATS_TYPE_SLABS);
+    $items     = $memcached->stats(Client::STATS_TYPE_ITEMS);
+
+    foreach ($allSlabs as $server => $slabs) {
+
+        if (isset($slabs['active_slabs']) === true) {
+            unset($slabs['active_slabs']);
+        }
+
+        if (isset($slabs['total_malloced']) === true) {
+            unset($slabs['total_malloced']);
+        }
+
+        foreach ($slabs AS $slabId => $slabMeta) {
+            $cachedump = $memcached->stats(
+                Client::STATS_TYPE_CACHEDUMP,
+                (int)$slabId,
+                Client::CACHEDUMP_ITEMS_MAX
+            );
+
+            foreach($cachedump as $serverToo => $arrVal) {
+                foreach($arrVal as $k => $v) {
+                    $fetched = sprintf('Fetched key "%s" with value "%s"', $k, $memcached->get($k));
+                    echo $fetched . PHP_EOL;
+                }
+            }
+        }
+    }
+    die;
+    */
 
     $memcached->set($dummy, 1);
     $memcached->increment($dummy, 2);

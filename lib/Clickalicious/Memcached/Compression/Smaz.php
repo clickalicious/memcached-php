@@ -57,7 +57,7 @@ namespace Clickalicious\Memcached\Compression;
  * @subpackage Clickalicious_Memcached_Compression
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  * @see        https://github.com/zhenhao/smaz.php
@@ -73,7 +73,7 @@ namespace Clickalicious\Memcached\Compression;
  * @subpackage Clickalicious_Memcached_Compression
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://www.opensource.org/licenses/bsd-license.php The BSD License
+ * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  * @see        https://github.com/zhenhao/smaz.php
