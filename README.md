@@ -1,7 +1,7 @@
 Memcached.php
 =============
 
-Plain vanilla PHP `Memcached` client library with nearly full support of the `Memcached` protocol specification.
+Plain vanilla PHP `Memcached` client library with nearly full support of the `Memcached` ASCII-protocol specification.
 
 [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php)
 <a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=Memcached.php%20-%20Plain%20vanilla%20PHP%20Memcached%20client%20library%20https%3A%2F%2Fgithub.com%2Fclickalicious%2FMemcached.php&tw_p=tweetbutton" target="_blank">
@@ -19,6 +19,10 @@ Plain vanilla PHP `Memcached` client library with nearly full support of the `Me
  - Configurable connection close behavior
 
 **Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code base is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is nearly 99%. The library supports seven of eight [PHP variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types"). It supports \<incr\> and \<decr\> command on stored integers (strings). The [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification.
+
+## Requirements
+
+ - PHP >= 5.5 (will be fixed soon to support PHP >= 5.3 ;)
 
 ## Philosophy
 
@@ -39,10 +43,11 @@ two compound types:
     array
     object
 
-and finally two special types:
+and finally one special type:
 
-    resource (NOT_SUPPORTED)
     NULL
+
+`resource` is the only type not supported!
 
 `String-`, `Integer-` and `Float/Double-types` are never modified by this library. Those types will be stored by `Memcached`'s internal system - while all other types will be serialized by this client and can optionally be stored compressed - in one of the next releases of this library. I'm working on an PoC implementation of `Smaz - a short string compression library` (https://github.com/zhenhao/smaz.php) and on a german translation of the translation table used by `Smaz`.
 
