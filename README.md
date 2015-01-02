@@ -134,6 +134,9 @@ phpunit -c tests/phpunit.xml --testdox
 
 The unit-tests are fired against an existing and real `Memcached` daemon. This is not the perfect way i know but the only one currently working for me. Please be aware that you need a running `Memcached` deamon on the host you run the unit-tests listening on the default `Memcached` port (127.0.0.1:11211). So the unit-tests are not isolated but more bound to the `Memcached` daemon and network as well. Meanwhile i think about a better solution ;)
 
+## Versioning
+For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0` http://semver.org. Its easy to understand, very common and known by many other software products. Starting with release 0.1.0 (see releases) soon. 
+
 ## Upcoming
 
 Friends I work a lot on this project :) In detail I'm working on:
