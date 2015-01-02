@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The base path to /Lib/ if we don't have Composer we need to know root path
+ * The base path to /lib/ if we don't have Composer we need to know root path
  */
 define(
     'CLICKALICIOUS_MEMCACHED_BASE_PATH',
