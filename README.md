@@ -20,16 +20,7 @@ Plain vanilla PHP `Memcached` client library with nearly full support of the `Me
 
 **Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code base is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is nearly 99%. The library supports seven of eight [PHP variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types"). It supports \<incr\> and \<decr\> command on stored integers (strings). The [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification.
 
-## Requirements
-
- - PHP >= 5.5 (will be fixed soon to support PHP >= 5.3 ;)
-
-## Philosophy
-
-This client is neither tested nor designed to be used in heavy load environments. It was designed and developed by me as a client library for my `phpMemAdmin` project. So I was able to remove dependencies of both `Memcache` + `Memcached` (PECL) extensions - which are btw a bit weired designed and both do a spooky mix of different responsibilities (like pool management in `Memcached` or `stats` layering in `Memcache`). I've tried to align 100% with the Memcached protocol specification. In some cases I didn't liked the naming convention of the `Memcached` protocol specification and so I created some proxies. As an example: I decided to implement increment() as proxy to incr() and decrement() as proxy to decr(). I will add some more responsibilities in some more classes like a [PSR compatible](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md "PSR Cache proposal") Caching proxy and a Pool/Cluster Class for management operations.
-
-## PHP data types
-PHP supports seven of the eight primitive types. And so this library supports those types as well. These types are  
+**Memcached.php** supports seven of PHP's eight primitive types. Those types are ...  
 
 four scalar types:
 
@@ -50,6 +41,14 @@ and finally one special type:
 `resource` is the only type not supported!
 
 `String-`, `Integer-` and `Float/Double-types` are never modified by this library. Those types will be stored by `Memcached`'s internal system - while all other types will be serialized by this client and can optionally be stored compressed - in one of the next releases of this library. I'm working on an PoC implementation of `Smaz - a short string compression library` (https://github.com/zhenhao/smaz.php) and on a german translation of the translation table used by `Smaz`.
+
+## Requirements
+
+ - PHP >= 5.5 (will be fixed soon to support PHP >= 5.3 ;)
+
+## Philosophy
+
+This client is neither tested nor designed to be used in heavy load environments. It was designed and developed by me as a client library for my `phpMemAdmin` project. So I was able to remove dependencies of both `Memcache` + `Memcached` (PECL) extensions - which are btw a bit weired designed and both do a spooky mix of different responsibilities (like pool management in `Memcached` or `stats` layering in `Memcache`). I've tried to align 100% with the Memcached protocol specification. In some cases I didn't liked the naming convention of the `Memcached` protocol specification and so I created some proxies. As an example: I decided to implement increment() as proxy to incr() and decrement() as proxy to decr(). I will add some more responsibilities in some more classes like a [PSR compatible](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md "PSR Cache proposal") Caching proxy and a Pool/Cluster Class for management operations.
 
 ## Installation
 
@@ -81,9 +80,6 @@ $client->set('foo', 1.00);
 // Returns 1.00 as PHP's type float!     
 $client->get('foo');   
 ``` 
-
-## Demo
-
 You will find a `Demo.php` showing in detail how to use the **Memcached.php** `client`.
 
 ## Metadata
@@ -136,10 +132,9 @@ phpunit -c tests/phpunit.xml --testdox
      - [x] Trigger and handle client error
      - [x] Trigger and handle server error
 
-**Info** 
 The unit-tests are fired against an existing and real `Memcached` daemon. This is not the perfect way i know but the only one currently working for me. Please be aware that you need a running `Memcached` deamon on the host you run the unit-tests listening on the default `Memcached` port (127.0.0.1:11211). So the unit-tests are not isolated but more bound to the `Memcached` daemon and network as well. Meanwhile i think about a better solution ;)
 
-## Future
+## Upcoming
 
 Friends I work a lot on this project :) In detail I'm working on:
 
