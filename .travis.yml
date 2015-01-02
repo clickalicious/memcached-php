@@ -6,4 +6,7 @@ php:
   - 5.3
   - hhvm
 
+services:
+  - memcached
+
 script: phpunit --configuration tests/phpunit.xml --testdox
