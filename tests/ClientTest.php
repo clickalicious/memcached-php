@@ -52,7 +52,7 @@
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once CLICKALICIOUS_MEMCACHED_BASE_PATH . 'Clickalicious\Memcached\Client.php';
+require_once CLICKALICIOUS_MEMCACHED_BASE_PATH . 'Clickalicious/Memcached/Client.php';
 
 use \Clickalicious\Memcached\Client;
 
