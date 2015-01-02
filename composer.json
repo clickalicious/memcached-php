@@ -12,7 +12,8 @@
   "require": {},
   "autoload": {
       "psr-0": {
-          "Clickalicious": "lib/"
+          "Clickalicious": "lib/",
+          "Psr": "lib/"
       }
   },
   "include-path": ["lib/"],

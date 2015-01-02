@@ -4,7 +4,7 @@
 /**
  * Memcached.php
  *
- * Demo.php - Unit tests for client functionality.
+ * ClientTest.php - Unit tests for client functionality.
  *
  *
  * PHP versions 5
@@ -107,6 +107,10 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * Prepare some stuff.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
     protected function setUp()
     {
@@ -119,17 +123,25 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Setting a value
+     * Test: Set a key value pair.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testSet()
+    public function testSetAKeyValuePair()
     {
         $this->assertTrue($this->client->set($this->key, $this->value));
     }
 
     /**
-     * Test: Setting a value and retrieve it back
+     * Test: Get a value by key.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testGet()
+    public function testGetAValueByKey()
     {
         // Test success (ask for existing key)
         $this->assertTrue($this->client->set($this->key, $this->value));
@@ -143,9 +155,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Adding a value
+     * Test: Add a key value pair.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testAdd()
+    public function testAddAKeyValuePair()
     {
         // Should here return TRUE cause key does not exist
         $this->assertTrue($this->client->add($this->key, $this->value));
@@ -158,9 +174,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Replacing a value
+     * Test: Replace an existing value.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testReplace()
+    public function testReplaceAnExistingValue()
     {
         srand(microtime(true));
         $value = md5(rand(1, 65535));
@@ -178,9 +198,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Appending a value
+     * Test: Append a value to an existing one.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testAppend()
+    public function testAppendAValueToAnExistingOne()
     {
         srand(microtime(true));
         $value = md5(rand(1, 65535));
@@ -198,9 +222,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Prepending a value
+     * Test: Prepend a value to an existing one.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testPrepend()
+    public function testPrependAValueToAnExistingOne()
     {
         srand(microtime(true));
         $value = md5(rand(1, 65535));
@@ -217,9 +245,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Command CAS
+     * Test: Cas set a key value pair.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testCas()
+    public function testCasSetAKeyValuePair()
     {
         // Random 32 Bit decimal (wrong CAS emulate)
         srand(microtime(true));
@@ -247,9 +279,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Send command (Freestyle) to daemon.
+     * Test: Send a valid custom command string.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testSend()
+    public function testSendAValidCustomCommandString()
     {
         $testCommand = Client::COMMAND_VERSION . Client::COMMAND_TERMINATOR;
 
@@ -260,21 +296,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Command version
-     */
-    public function testVersion()
-    {
-        $this->assertRegExp(
-            '/\d[\.]\d[\.]\d[\-\w]+/u',
-            $this->client->version()
-        );
-    }
-
-    /**
-     * Test: Send wrong command (Freestyle) to daemon.
+     * Test: Send an invalid command string.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      * @expectedException \Clickalicious\Memcached\Exception
      */
-    public function testSendWrongCommand()
+    public function testSendAnInvalidCustomCommandString()
     {
         $testCommand = 'foo' . Client::COMMAND_TERMINATOR;
         $this->client->send('foo', $testCommand);
@@ -283,10 +312,30 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->client->send(Client::COMMAND_VERSION, $testCommand);
     }
 
+
     /**
-     * Test: Handling of string values
+     * Test: Retrieve version.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testString()
+    public function testRetrieveVersion()
+    {
+        $this->assertRegExp(
+            '/\d[\.]\d[\.]\d[\-\w]+/u',
+            $this->client->version()
+        );
+    }
+
+    /**
+     * Test: Storing PHP type string.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     */
+    public function testStoringPhpTypeString()
     {
         $value = 'Hello World!';
 
@@ -299,14 +348,18 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Handling of double values
+     * Test: Storing PHP type float.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testDouble()
+    public function testStoringPhpTypeFloat()
     {
         $value = 5.23;
 
         $this->assertTrue($this->client->set($this->key, $value));
-        $this->assertTrue(is_double($this->client->get($this->key)));
+        $this->assertTrue(is_float($this->client->get($this->key)));
         $this->assertEquals(
             $value,
             $this->client->get($this->key)
@@ -314,9 +367,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Handling of integer values
+     * Test: Storing PHP type integer.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testInteger()
+    public function testStoringPhpTypeInteger()
     {
         $value = 523;
 
@@ -329,43 +386,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Handling of increment
-     * @depends testInteger
+     * Test: Storing PHP type array.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testIncrement()
-    {
-        $value = 523;
-
-        $this->assertTrue($this->client->set($this->key, $value));
-        $this->assertEquals($value + 2, $this->client->increment($this->key, 2));
-        $this->assertEquals($value + 4, $this->client->incr($this->key, 2));
-        $this->assertEquals(
-            $value + 4,
-            $this->client->get($this->key)
-        );
-    }
-
-    /**
-     * Test: Handling of decrement
-     * @depends testInteger
-     */
-    public function testDecrement()
-    {
-        $value = 525;
-
-        $this->assertTrue($this->client->set($this->key, $value));
-        $this->assertEquals($value - 2, $this->client->decrement($this->key, 2));
-        $this->assertEquals($value - 4, $this->client->decr($this->key, 2));
-        $this->assertEquals(
-            $value - 4,
-            $this->client->get($this->key)
-        );
-    }
-
-    /**
-     * Test: Handling of array values
-     */
-    public function testArray()
+    public function testStoringPhpTypeArray()
     {
         $value = array(
             5,
@@ -381,9 +408,52 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Handling of boolean values
+     * Test: Storing PHP type object.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testBoolean()
+    public function testStoringPhpTypeObject()
+    {
+        $value = new \stdClass();
+        $value->{$this->key} = $this->value;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertTrue(is_object($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Storing PHP type null.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     */
+    public function testStoringPhpTypeNull()
+    {
+        $value = null;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertTrue(is_null($this->client->get($this->key)));
+        $this->assertEquals(
+            $value,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: Storing PHP type boolean.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     */
+    public function testStoringPhpTypeBoolean()
     {
         $value = true;
 
@@ -396,10 +466,56 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test: <increment> a stored value.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     * @depends testStoringPhpTypeInteger
+     */
+    public function testIncrementAStoredValue()
+    {
+        $value = 523;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertEquals($value + 2, $this->client->increment($this->key, 2));
+        $this->assertEquals($value + 4, $this->client->incr($this->key, 2));
+        $this->assertEquals(
+            $value + 4,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
+     * Test: <decrement> a stored value.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     * @depends testStoringPhpTypeInteger
+     */
+    public function testDecrementAStoredValue()
+    {
+        $value = 525;
+
+        $this->assertTrue($this->client->set($this->key, $value));
+        $this->assertEquals($value - 2, $this->client->decrement($this->key, 2));
+        $this->assertEquals($value - 4, $this->client->decr($this->key, 2));
+        $this->assertEquals(
+            $value - 4,
+            $this->client->get($this->key)
+        );
+    }
+
+    /**
      * Test: Connection - real with success as well as failure.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      * @expectedException \Clickalicious\Memcached\Exception
      */
-    public function testConnect()
+    public function testConnectToAMemcachedDaemon()
     {
         $this->assertTrue(
             is_resource(
@@ -412,9 +528,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test: Stats
+     * Test: Retrieve Stats from memcached daemon.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
-    public function testStats()
+    public function testRetrieveStats()
     {
         $stats = $this->client->stats();
 
@@ -425,57 +545,97 @@ class ClientTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArrayHasKey(
-            $this->host . ':11211',
+            'pid',
             $stats
-        );
-
-        $this->assertArrayHasKey(
-            'version',
-            $stats[$this->host . ':11211']
         );
 
         $stats = $this->client->stats(Client::STATS_TYPE_ITEMS);
 
         $this->assertArrayHasKey(
             'items',
-            $stats[$this->host . ':11211']
+            $stats
         );
 
         $stats = $this->client->stats(Client::STATS_TYPE_SLABS);
 
         $this->assertArrayHasKey(
             'active_slabs',
-            $stats[$this->host . ':11211']
+            $stats
         );
 
         $this->assertGreaterThanOrEqual(
             1,
-            $stats[$this->host . ':11211']['active_slabs']
+            $stats['active_slabs']
         );
 
-        $slabs = $stats[$this->host . ':11211']['active_slabs'];
+        $slabs = $stats['active_slabs'];
 
         $cachedump = array();
 
         for ($i = 1; $i <= $slabs; ++$i) {
+            $cachedumpTemp = $this->client->stats(
+                Client::STATS_TYPE_CACHEDUMP,
+                $i,
+                Client::CACHEDUMP_ITEMS_MAX
+            );
+
             $cachedump = array_merge_recursive(
                 $cachedump,
-                $this->client->stats(
-                    Client::STATS_TYPE_CACHEDUMP,
-                    $i,
-                    Client::CACHEDUMP_ITEMS_MAX
-                )
+                $cachedumpTemp
             );
         }
 
         $this->assertArrayHasKey(
             $this->key,
-            $cachedump[$this->host . ':11211']
+            $cachedump
         );
     }
 
     /**
-     * Cleanup
+     * Test: Trigger and handle ERROR.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     * @expectedException \Clickalicious\Memcached\Exception
+     */
+    public function testTriggerAndHandleError()
+    {
+        $this->client->send(Client::COMMAND_PHPUNIT, Client::COMMAND_PHPUNIT . Client::COMMAND_TERMINATOR);
+    }
+
+    /**
+     * Test: Trigger and handle CLIENT ERROR.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     * @expectedException \Clickalicious\Memcached\Exception
+     */
+    public function testTriggerAndHandleClientError()
+    {
+        $this->client->send(Client::COMMAND_PHPUNIT, Client::COMMAND_PHPUNIT . "\r" . Client::COMMAND_TERMINATOR);
+    }
+
+    /**
+     * Test: Trigger and handle SERVER ERROR.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
+     * @expectedException \Clickalicious\Memcached\Exception
+     */
+    public function testTriggerAndHandleServerError()
+    {
+        $this->client->send(Client::COMMAND_PHPUNIT, Client::COMMAND_PHPUNIT . "\r" . Client::COMMAND_TERMINATOR);
+    }
+
+    /**
+     * Cleanup after single test. Remove the key created for tests.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access protected
      */
     protected function tearDown()
     {

@@ -5,8 +5,7 @@
 __*/
 /.buildpath
 /.project
-#docs/*/
-#docs/*
+/docs/*
 /.settings
 /.externalToolBuilders
 /.idea

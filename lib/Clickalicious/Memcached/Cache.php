@@ -1,10 +1,13 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
+namespace Clickalicious\Memcached;
+
 /**
- * Memcache.php
+ * Memcached.php
  *
- * Demo.php - Demonstration of Memcached.php Memcached Client.
+ * Cache.php - PSR compatbile Cache-Client() based on Client() - Plain vanilla PHP Memcached client with full
+ * support of Memcached protocol.
  *
  *
  * PHP versions 5
@@ -44,7 +47,7 @@
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Demo
+ * @subpackage Clickalicious_Memcached_Cache
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
@@ -52,57 +55,30 @@
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once 'Lib\Clickalicious\Memcached\Client.php';
+require_once 'Client.php';
+require_once '../../Psr/Cache/CacheItemInterface.php';
+require_once '../../Psr/Cache/CacheException.php';
 
-use Clickalicious\Memcached\Client;
+use \Psr\Cache\CacheItemInterface;
 
 /**
  * Memcached.php
  *
- * Demonstration of Memcached.php Memcached Client.
+ * PSR compatbile Cache-Client() based on Client() - Plain vanilla PHP Memcached client with full
+ * support of Memcached protocol.
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Demo
+ * @subpackage Clickalicious_Memcached_Cache
  * @author     Benjamin Carl <opensource@clickalicious.de>
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
  * @link       https://github.com/clickalicious/Memcached.php
  */
-
-// Create Memcached.php instance ...
-$memcached = new Client(
-    '127.0.0.1'
-);
-
-// Some setup for randomized key(s) for demonstration ...
-srand(microtime(true));
-$dummy = md5(rand(1111, 9999));
-
-// Try to do some stuff with memcached instance ...
-try {
-
-    $memcached->set($dummy, 1);
-    $memcached->increment($dummy, 2);
-    $memcached->increment($dummy, 2);
-    $memcached->increment($dummy, 2);
-    $memcached->decrement($dummy, 3);
-    $memcached->increment($dummy, 1);
-
-    $result = $memcached->get($dummy);
-
-    $memcached->delete($dummy);
-
-} catch (Exception $e) {
-    $result = $e->getMessage();
-
+class Cache extends Client implements CacheItemInterface
+{
+    /**
+     *
+     */
 }
-
-echo '<pre>';
-echo '<h1>Simple Demonstration</h1>';
-echo 'Result should be (int)5:<br />';
-var_dump(
-    $result
-);
-echo '</pre>';
