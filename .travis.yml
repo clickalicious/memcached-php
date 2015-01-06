@@ -11,7 +11,7 @@ script: phpunit --configuration tests/phpunit.xml
 after_success:
   # Push coverage to github pages branch
   - chmod +x ./bin/update-gh-pages.sh
-  - ./bin/update-gh-pages.sh
+  - bash ./bin/update-gh-pages.sh
   # CREATE GIT TAG
   - git config --global user.email "builds@travis-ci.org"
   - git config --global user.name "Travis"
