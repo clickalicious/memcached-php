@@ -9,8 +9,10 @@ services:
 script: phpunit --configuration tests/phpunit.xml
 
 after_success:
-  # CREATE GIT TAG
+  # Push coverage to github pages branch
+  - chmod +x ./bin/update-gh-pages.sh
   - ./bin/update-gh-pages.sh
+  # CREATE GIT TAG
   - git config --global user.email "builds@travis-ci.org"
   - git config --global user.name "Travis"
   - export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d")-$TRAVIS_BUILD_NUMBER
