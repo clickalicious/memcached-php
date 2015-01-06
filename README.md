@@ -7,6 +7,7 @@ Plain vanilla PHP `Memcached` client library with nearly full support of the `Me
 <a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=Memcached.php%20-%20Plain%20vanilla%20PHP%20Memcached%20client%20library%20https%3A%2F%2Fgithub.com%2Fclickalicious%2FMemcached.php&tw_p=tweetbutton" target="_blank">
   <img src="http://jpillora.com/github-twitter-button/img/tweet.png"></img>
 </a>
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/clickalicious/memcached.php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 
 ## Features
@@ -169,7 +170,7 @@ See [BSD-3-Clause](http://opensource.org/licenses/BSD-3-Clause "BSD-3-Clause") o
 
 
 ## Sponsors  
-Thanks to our sponsors and supporters:
+Thanks to our sponsors and supporters:  
 <a href="https://www.jetbrains.com/phpstorm/" title="PHP IDE :: JetBrains PhpStorm" target="_blank">
     <img src="https://www.jetbrains.com/phpstorm/documentation/docs/logo_phpstorm.png"></img>
 </a>
