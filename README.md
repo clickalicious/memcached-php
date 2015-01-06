@@ -46,7 +46,7 @@ So `resource` is the only type not supported.
 
 ## Philosophy
 
-This client is neither tested nor designed to be used in heavy load environments. It was designed and developed by me as a client library for my `phpMemAdmin` project. So I was able to remove dependencies of both `Memcache` + `Memcached` (PECL) extensions - both are designed in a way i don't like. I've tried to align 100% with the Memcached protocol specification. In some cases I didn't liked the naming convention and so I created some proxies. As an example - I decided to implement increment() as proxy to incr() and decrement() as proxy to decr(). I will add some more responsibilities in some more classes like a [PSR compatible](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md "PSR Cache proposal") Caching proxy and a Pool/Cluster Class for management operations soon.
+This client is neither tested nor designed to be used in heavy load environments. It was designed and developed by me as a client library for my [phpMemAdmin](https://github.com/clickalicious/phpMemAdmin "phpMemAdmin on github") project. So I was able to remove dependencies of both `Memcache` + `Memcached` (PECL) extensions - both are designed in a way i don't like. I've tried to align 100% with the Memcached protocol specification. In some cases I didn't liked the naming convention and so I created some proxies. As an example - I decided to implement increment() as proxy to incr() and decrement() as proxy to decr(). I will add some more responsibilities in some more classes like a [PSR compatible](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md "PSR Cache proposal") Caching proxy and a Pool/Cluster Class for management operations soon.
 
 
 ## Installation
