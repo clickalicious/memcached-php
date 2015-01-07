@@ -104,9 +104,10 @@ The best and currently only existing documentation is the inline documentation o
 
 ## Tests
 
-**Memcached.php** is unit-tested and the coverage is above 90%. You will find a PHPUnit configuration including testsuites in directory `tests/`.
+**Memcached.php** is unit-tested and the code coverage is above 90%. For an in-detail view have a look at this always up to date [Code Coverage report](http://clickalicious.github.io/Memcached.php/dashboard.html "Code Coverage").
 
-To run tests execute the following command on `cli`:
+Running the Tests  
+You will find a PHPUnit configuration including testsuites in directory `tests/`. To run those configuration execute the following command on `cli`:
 
 ```sh
 phpunit -c tests/phpunit.xml --testdox
