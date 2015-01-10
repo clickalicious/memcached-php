@@ -544,8 +544,15 @@ class ClientTest extends PHPUnit_Framework_TestCase
             $this->client->get($this->key)
         );
 
+        # Mostly the first key
         $this->assertArrayHasKey(
             'pid',
+            $stats
+        );
+
+        # Mostly the last key
+        $this->assertArrayHasKey(
+            'evictions',
             $stats
         );
 

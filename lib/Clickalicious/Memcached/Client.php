@@ -1446,8 +1446,24 @@ class Client
             $argument2 .
             self::COMMAND_TERMINATOR;
 
-        // Slabs stats delivers data twice?! and needs some special handling
-        if ($type === self::COMMAND_SEPARATOR . self::STATS_TYPE_SLABS) {
+        // Generic stats requires us to fetch as long as data arrives ...
+        if ($type === '') {
+
+            // Initial fetch ...
+            $result = $this->send(self::COMMAND_STATS, $data);
+
+            // Now read until whole structure contains finally "active_slabs" key!
+            while (isset($result['evictions']) === false) {
+                // Issue stat command ...
+                $memory = $this->send(self::COMMAND_STATS, $data);
+
+                // Iterate Slabs from response
+                foreach ($memory as $key => $value) {
+                    $result[$key] = $value;
+                }
+            }
+
+        } elseif ($type === self::COMMAND_SEPARATOR . self::STATS_TYPE_SLABS) {
 
             // Initial fetch ...
             $result = $this->send(self::COMMAND_STATS, $data);
