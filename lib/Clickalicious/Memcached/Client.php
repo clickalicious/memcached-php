@@ -54,10 +54,10 @@ namespace Clickalicious\Memcached;
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once 'Compression/Smaz.php';
+#require_once 'Compression/Smaz.php';
 require_once 'Exception.php';
 
-use \Clickalicious\Memcached\Compression\Smaz;
+#use \Clickalicious\Memcached\Compression\Smaz;
 use \Clickalicious\Memcached\Exception;
 
 /**
@@ -655,7 +655,20 @@ class Client
      * @access public
      * @const
      */
-    const DEFAULT_FLAGS = 1;
+    const FLAG_DEFAULT = 4;
+
+    /**
+     * Flags for PHP types
+     *
+     * (Memcached PHP extension compatible)
+     * @access public
+     * @const
+     */
+    const FLAG_DECIMAL_STRING     = 0;  // PHP Type "string"            Mask - Decimal: 0 - Bit(s): 0
+    const FLAG_DECIMAL_INTEGER    = 1;  // PHP Type "integer"           Mask - Decimal: 1 - Bit(s): 1
+    const FLAG_DECIMAL_FLOAT      = 2;  // PHP Type "float"             Mask - Decimal: 2 - Bit(s): 2
+    const FLAG_DECIMAL_BOOLEAN    = 3;  // PHP Type "boolean"           Mask - Decimal: 3 - Bit(s): 1 & 2
+    const FLAG_DECIMAL_SERIALIZED = 4;  // PHP Type "object" || "array" Mask - Decimal: 4 - Bit(s): 4
 
     /**
      * Memcached Constant Values
@@ -1096,38 +1109,19 @@ class Client
      * @return mixed The response for command set
      * @access public
      */
-    public function set($key, $value, $expiration = 0, $flags = self::DEFAULT_FLAGS, $bytes = null)
+    public function set($key, $value, $expiration = 0, $flags = 0, $bytes = null)
     {
         /**
          * set <key> <flags> <exptime> <bytes> [noreply]\r\n
          * <value>\r\n
          */
 
-        // Bit 1 = serialize (e.g. Classes or Arrays, Strings ...)
-        if (
-            $this->isSerializable($value)                      === true &&
-            $this->bitmask($flags, array(self::DEFAULT_FLAGS)) === true
-        ) {
-            // Activate default bit to detect serialization
-            $flags &= self::DEFAULT_FLAGS;
-            $value  = serialize($value);
-            $bytes  = null;
+        // Run through our serializer
+        $serialized = $this->serializeValue($value, $flags, $bytes);
 
-        } else {
-            // Real numbers should keep real numbers
-            // Bit 2 = int , 3 = double/float
-            if (is_float($value) === true) {
-                $flags = 4;
-
-            } elseif (is_int($value) === true) {
-                $flags = 2;
-
-            } else {
-                // strings will never get serialized! or touched in any other way.
-                // Otherwise append() & prepend() won't work!
-                $flags = 0;
-            }
-        }
+        $value = $serialized['value'];
+        $flags = $serialized['flags'];
+        $bytes = $serialized['bytes'];
 
         // Calculate bytes if not precalculated
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
@@ -1165,6 +1159,13 @@ class Client
          * <value>\r\n
          */
 
+        // Run through our serializer
+        $serialized = $this->serializeValue($value, $flags, $bytes);
+
+        $value = $serialized['value'];
+        $flags = $serialized['flags'];
+        $bytes = $serialized['bytes'];
+
         // Calculate bytes if not precalculated
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
@@ -1201,6 +1202,13 @@ class Client
          * <value>\r\n
          */
 
+        // Run through our serializer
+        $serialized = $this->serializeValue($value, $flags, $bytes);
+
+        $value = $serialized['value'];
+        $flags = $serialized['flags'];
+        $bytes = $serialized['bytes'];
+
         // Calculate bytes if not precalculated
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
@@ -1229,7 +1237,7 @@ class Client
      * @return mixed The response for command append
      * @access public
      */
-    public function append($key, $value, $expiration = 0, $flags = 0, $bytes = null)
+    public function append($key, $value, $expiration = 0, $flags = self::FLAG_DEFAULT, $bytes = null)
     {
         /**
          * replace <key> <flags> <exptime> <bytes> [noreply]\r\n
@@ -1264,7 +1272,7 @@ class Client
      * @return mixed The response for command prepend
      * @access public
      */
-    public function prepend($key, $value, $expiration = 0, $flags = 0, $bytes = null)
+    public function prepend($key, $value, $expiration = 0, $flags = self::FLAG_DEFAULT, $bytes = null)
     {
         /**
          * replace <key> <flags> <exptime> <bytes> [noreply]\r\n
@@ -1286,8 +1294,9 @@ class Client
     }
 
     /**
-     * Prepends data to an existing key before existing data.
-     * "prepend" means "add this data to an existing key before existing data".
+     * Tries to set a key value pair by using a cas token.
+     * If value was updated between the moment when retrieving the cas-value and the
+     * moment now calling this method the cas has changed and update will fail.
      *
      * @param string   $token      a unique 64-bit value of an existing entry.
      *                             Clients should use the value returned from the
@@ -1302,12 +1311,19 @@ class Client
      * @return mixed The response for command cas
      * @access public
      */
-    public function cas($token, $key, $value, $expiration = 0, $flags = 0, $bytes = null)
+    public function cas($token, $key, $value, $expiration = 0, $flags = self::FLAG_DEFAULT, $bytes = null)
     {
         /**
          * cas <key> <flags> <exptime> <bytes> <cas unique> [noreply]\r\n
          * <value>\r\n
          */
+
+        // Run through our serializer
+        $serialized = $this->serializeValue($value, $flags, $bytes);
+
+        $value = $serialized['value'];
+        $flags = $serialized['flags'];
+        $bytes = $serialized['bytes'];
 
         // Calculate bytes if not precalculated
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
@@ -1687,10 +1703,11 @@ class Client
         $type = gettype($value);
 
         return (
-            $type !== "float"   &&
-            $type !== "double"  &&
-            $type !== "integer" &&
-            $type !== "string"
+            $type !== "string"  &&      // Mask - Decimal: 0 - Bit(s): 0
+            $type !== "integer" &&      // Mask - Decimal: 1 - Bit(s): 1
+            $type !== "double"  &&      // Mask - Decimal: 2 - Bit(s): 2
+            $type !== "boolean"         // Mask - Decimal: 3 - Bit(s): 1 & 2
+                                        // Mask - Decimal: 4 - Bit(s): 4
         );
     }
 
@@ -1750,7 +1767,7 @@ class Client
             // Value must be at least starting on next line - and can continue to spawn on n following lines ...
             $key    = $metaData[1];
             $value  = '';
-            $flags  = $metaData[2];
+            $flags  = (int)$metaData[2];
             $length = $metaData[3];
             $cas    = (isset($metaData[4])) ? (float)$metaData[4] : null;
             $frame  = 0;
@@ -1764,7 +1781,7 @@ class Client
             // Ensure that we are able to return exactly the same types as stored ...
             $result[$key] = array(
                 // 1st bit set = we use un-/serialize to keep the values intact ...
-                'value' => $value,
+                //'value' => $value,
                 'key'   => $key,
                 'meta'  => array(
                     'key'    => $key,
@@ -1775,17 +1792,20 @@ class Client
                 )
             );
 
-            // Check for value converting and length fixing
-            if ($this->bitmask($flags, array(self::DEFAULT_FLAGS)) === true) {
+            if ($this->isFlagSet($flags, self::FLAG_DECIMAL_SERIALIZED) === true) {
                 $length = strlen($value);
                 $value  = unserialize($value);
 
-            } elseif ($this->bitmask($flags, array(2)) === true) {
-                $value = intval($value);
+            } elseif ($this->isFlagSet($flags, self::FLAG_DECIMAL_BOOLEAN) === true) {
+                $value  = boolval($value);
                 $length = strlen($value);
 
-            } elseif ($this->bitmask($flags, array(4)) === true) {
+            } elseif ($this->isFlagSet($flags, self::FLAG_DECIMAL_FLOAT) === true) {
                 $value  = floatval($value);
+                $length = strlen($value);
+
+            } elseif ($this->isFlagSet($flags, self::FLAG_DECIMAL_INTEGER) === true) {
+                $value  = intval($value);
                 $length = strlen($value);
             }
 
@@ -2120,6 +2140,148 @@ class Client
     }
 
     /**
+     * Serializes a value if it is serializable in our meaning.
+     *
+     * @param mixed $value The value to serialize
+     * @param int   $flags The flags
+     * @param int   $bytes The number of bytes
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return array ...
+     * @access protected
+     * @throws \Clickalicious\Memcached\Exception
+     */
+    protected function serializeValue($value, $flags, $bytes)
+    {
+        if ($this->isSerializable($value) === true) {
+            // Activate default bit to detect serialization
+            $value = serialize($value);
+            $bytes = strlen($value);
+            $flags = self::FLAG_DECIMAL_SERIALIZED;
+
+        } else {
+            // Real numbers should keep real numbers - Bit 2 = int , 3 = double/float
+            if (is_int($value) === true) {
+                $flags = self::FLAG_DECIMAL_INTEGER;
+
+            } elseif (is_float($value) === true) {
+                $flags = self::FLAG_DECIMAL_FLOAT;
+
+            } elseif (is_string($value) === true) {
+                // Never serialize strings! Otherwise append() & prepend() won't work!
+                $flags = self::FLAG_DECIMAL_STRING;
+
+            } elseif (is_bool($value) === true) {
+                $value = strval($value);
+                $flags = self::FLAG_DECIMAL_BOOLEAN;
+
+            } else {
+                throw new Exception(
+                    sprintf('Unhandable value. Don\'t know how to process!')
+                );
+            }
+
+            $bytes = strlen($value);
+        }
+
+        return array(
+            'value' => $value,
+            'flags' => $flags,
+            'bytes' => $bytes,
+        );
+    }
+
+    /**
+     * Note: these functions are protected to prevent outside code
+     * from falsely setting BITS. See how the extending class 'User'
+     * handles this.
+     *
+     *
+     */
+    protected function isFlagSet($flags, $flag)
+    {
+        return (($flags & $flag) === $flag);
+    }
+
+    protected function setFlag($flags, $flag)
+    {
+        return $flags |= $flag;
+    }
+
+
+
+    private static function mb_str_split($str) {
+        return preg_split('/(?<!^)(?!$)/u', $str);
+    }
+
+    private static function charCodeAt($c, $i) {
+        return self::uniord($c[$i]);
+    }
+
+    private static function unichr($i) {
+        return mb_convert_encoding(pack('n', $i), 'UTF-8', 'UTF-16BE');
+    }
+
+    private static function uniord($c) {
+        list(, $ord) = unpack('N', mb_convert_encoding($c, "UCS-4BE", 'UTF-8'));
+        return $ord;
+    }
+
+    public static function compressLzw($s) {
+        $dict = array();
+        $data = str_split($s."");
+        $out = array();
+        $currChar = "";
+        $phrase = $data[0];
+        $code = 256;
+        for ($i = 1; $i < count($data); ++$i) {
+            $currChar = $data[$i];
+            if (isset($dict[$phrase.$currChar])) {
+                $phrase .= $currChar;
+            }
+            else {
+                $out[] = strlen($phrase) > 1 ? $dict[$phrase] : self::charCodeAt($phrase,0);
+                $dict[$phrase.$currChar] = $code;
+                $code++;
+                $phrase = $currChar;
+            }
+        }
+        $out[] = strlen($phrase) > 1 ? $dict[$phrase] : self::charCodeAt($phrase,0);
+
+        for ($i = 0; $i < count($out); ++$i) {
+            $out[$i] = self::unichr($out[$i]);
+        }
+
+        return implode("", $out);
+    }
+
+    public static function decompressLzw($s) {
+        $dict = array();
+        $data = self::mb_str_split($s);
+        $currChar = $data[0];
+        $oldPhrase = $currChar;
+        $out = array($currChar);
+        $code = 256;
+        $phrase = "";
+
+        for ($i = 1; $i < count($data); ++$i) {
+            $currCode = self::uniord($data[$i]);
+            if ($currCode < 256) {
+                $phrase = $data[$i];
+            }
+            else {
+                $phrase = isset($dict[$currCode]) ? $dict[$currCode] : $oldPhrase.$currChar;
+            }
+            $out[] = $phrase;
+            $currChar = $phrase[0];
+            $dict[$code] = $oldPhrase.$currChar;
+            $code++;
+            $oldPhrase = $phrase;
+        }
+        return implode("", $out);
+    }
+
+    /**
      * Checks the bit positions of bits in value and return bool result.
      *
      * @param int   $value The value to check
@@ -2129,6 +2291,7 @@ class Client
      * @return bool TRUE if all bits from $bits set, otherwise FALSE
      * @access protected
      */
+    /*
     protected function bitmask($value, array $bits)
     {
         // Assume true and the first false will return false and break
@@ -2143,5 +2306,6 @@ class Client
 
         return $result;
     }
+    */
 }
 
