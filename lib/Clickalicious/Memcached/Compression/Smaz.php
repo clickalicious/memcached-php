@@ -81,115 +81,22 @@ namespace Clickalicious\Memcached\Compression;
 class Smaz
 {
     /**
-     * compress function.
-     * @param $str
-     * @return string
+     * The encode book.
+     *
+     * @var array
+     * @access private
+     * @static
      */
-    public static function encode($str)
-    {
-        $inLen = strlen($str);
-        $inIdx = 0;
-        $encodeBook = SmazConf::getEncodeBook();
-
-        $output = '';
-        $verbatim = '';
-        while($inIdx < $inLen)
-        {
-            $encode = false;
-            for($j = min(7, $inLen - $inIdx); $j > 0; $j--)
-            {
-                $code = isset($encodeBook[substr($str, $inIdx, $j)]) ?
-                    $encodeBook[substr($str, $inIdx, $j)] : null;
-                if($code != null)
-                {
-                    if(strlen($verbatim))
-                    {
-                        $output .= self::flush_verbatim($verbatim);
-                        $verbatim = '';
-                    }
-                    $output .= chr($code);
-                    $inIdx += $j;
-                    $encode = true;
-                    break;
-                }
-            }
-            if(!$encode)
-            {
-                $verbatim .= $str[$inIdx];
-                $inIdx++;
-                if(strlen($verbatim) == 255)
-                {
-                    $output .= self::flush_verbatim($verbatim);
-                    $verbatim = '';
-                }
-            }
-        }
-        if(strlen($verbatim))
-        {
-            $output .= self::flush_verbatim($verbatim);
-        }
-        return $output;
-    }
+    private static $encodeBook;
 
     /**
-     * decompress funciton.
-     * @param $str
-     * @return string
+     * The decode book.
+     *
+     * @var array
+     * @access private
+     * @static
      */
-    public static function decode($str)
-    {
-        $decodeBook = SmazConf::getDecodeBook();
-        $output = '';
-        $i = 0;
-        while ($i < strlen($str)) {
-            $code = ord($str[$i]);
-
-            if ($code == 254) {
-                $output .= $str[$i + 1];
-                $i += 2;
-            } else if($code == 255) {
-                $len = ord($str[$i + 1]);
-                $output .= substr($str, $i + 2, $len);
-                $i += 2 + $len;
-            } else {
-                $output .= $decodeBook[$code];
-                $i++;
-            }
-        }
-        return $output;
-    }
-
-    private static function flush_verbatim($verbatim)
-    {
-        $output = '';
-        if(!strlen($verbatim))
-        {
-            return $output;
-        }
-
-        if(strlen($verbatim) > 1)
-        {
-            $output .= chr(255);
-            $output .= chr(strlen($verbatim));
-        }
-        else
-        {
-            $output .= chr(254);
-        }
-        $output .= $verbatim;
-        return $output;
-    }
-}
-
-/**
- * Class SmazConf.
- *
- * define smaz encode book and decode book.
- */
-class SmazConf
-{
-    private static $_encodeBook = null;
-    private static $_decodeBook = array(
+    private static $decodeBook = array(
         " ", "the", "e", "t", "a", "of", "o", "and", "i", "n", "s", "e ", "r", " th",
         " t", "in", "he", "th", "h", "he ", "to", "\r\n", "l", "s ", "d", " a", "an",
         "er", "c", " o", "d ", "on", " of", "re", "of ", "t ", ", ", "is", "u", "at",
@@ -213,17 +120,147 @@ class SmazConf
         "e, ", " it", "whi", " ma", "ge", "x", "e c", "men", ".com"
     );
 
-    public static function getEncodeBook()
+    /**
+     * Compresses a buffer.
+     *
+     * @param string $buffer The buffer to compress
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return string The compressed input
+     * @access protected
+     */
+    public function compress($buffer)
     {
-        if(!self::$_encodeBook)
-        {
-            self::$_encodeBook = array_flip(self::$_decodeBook);
+        $inLen      = strlen($buffer);
+        $inIdx      = 0;
+        $encodeBook = $this->getEncodeBook();
+        $output     = '';
+        $verbatim   = '';
+
+        while ($inIdx < $inLen) {
+            $encode = false;
+
+            for ($j = min(7, $inLen - $inIdx); $j > 0; --$j) {
+                $code = isset($encodeBook[substr($buffer, $inIdx, $j)]) ?
+                    $encodeBook[substr($buffer, $inIdx, $j)] : null;
+
+                if($code != null) {
+                    if(strlen($verbatim)) {
+                        $output .= $this->flushVerbatim($verbatim);
+                        $verbatim = '';
+                    }
+
+                    $output .= chr($code);
+                    $inIdx  += $j;
+                    $encode  = true;
+
+                    break;
+                }
+            }
+
+            if(!$encode) {
+                $verbatim .= $buffer[$inIdx];
+                $inIdx++;
+
+                if(strlen($verbatim) == 255) {
+                    $output .= $this->flushVerbatim($verbatim);
+                    $verbatim = '';
+                }
+            }
         }
-        return self::$_encodeBook;
+
+        if(strlen($verbatim)) {
+            $output .= $this->flushVerbatim($verbatim);
+        }
+
+        return $output;
     }
 
-    public static function getDecodeBook()
+    /**
+     * Decompress function.
+     *
+     * @param $buffer
+     * @return string
+     */
+    public function decompress($buffer)
     {
-        return self::$_decodeBook;
+        $decodeBook = $this->getDecodeBook();
+        $output     = '';
+        $i          = 0;
+
+        while ($i < strlen($buffer)) {
+            $code = ord($buffer[$i]);
+
+            if ($code == 254) {
+                $output .= $buffer[$i + 1];
+                $i      += 2;
+
+            } else if($code == 255) {
+                $len     = ord($buffer[$i + 1]);
+                $output .= substr($buffer, $i + 2, $len);
+                $i      += 2 + $len;
+
+            } else {
+                $output .= $decodeBook[$code];
+                $i++;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Flushes ...
+     *
+     * @param $verbatim
+     * @return string
+     */
+    protected function flushVerbatim($verbatim)
+    {
+        $output = '';
+
+        if (!strlen($verbatim)) {
+            return $output;
+        }
+
+        if (strlen($verbatim) > 1) {
+            $output .= chr(255);
+            $output .= chr(strlen($verbatim));
+
+        } else {
+            $output .= chr(254);
+        }
+
+        $output .= $verbatim;
+
+        return $output;
+    }
+
+    /**
+     * Returns the book used to encode.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return array The encode book
+     * @access protected
+     */
+    protected function getEncodeBook()
+    {
+        if (!self::$encodeBook) {
+            self::$encodeBook = array_flip(self::$decodeBook);
+        }
+
+        return self::$encodeBook;
+    }
+
+    /**
+     * Returns the book used to decode.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return array The decode book
+     * @access protected
+     */
+    protected function getDecodeBook()
+    {
+        return self::$decodeBook;
     }
 }

@@ -54,10 +54,12 @@ namespace Clickalicious\Memcached;
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-#require_once 'Compression/Smaz.php';
+require_once 'Compression/Smaz.php';
+require_once 'Compression/Lzw.php';
 require_once 'Exception.php';
 
-#use \Clickalicious\Memcached\Compression\Smaz;
+use \Clickalicious\Memcached\Compression\Smaz;
+use \Clickalicious\Memcached\Compression\Lzw;
 use \Clickalicious\Memcached\Exception;
 
 /**
@@ -1743,7 +1745,7 @@ class Client
         $result = array();
 
         // Iterator for lines ...
-        $line  = 0;
+        $line = 0;
 
         // Loop as long as line is !== END\r\n Terminator (1 line META 1 line DATA)
         while ($lines[$line] !== self::RESPONSE_END) {
@@ -1772,10 +1774,14 @@ class Client
             $cas    = (isset($metaData[4])) ? (float)$metaData[4] : null;
             $frame  = 0;
 
-            // Fetch whole & complete value!
-            while (strlen($value) < $length) {
-                ++$frame;
-                $value .= $lines[$line + $frame];
+            if ($length > 0) {
+                // Fetch whole & complete value!
+                while (strlen($value) < $length) {
+                    ++$frame;
+                    $value .= $lines[$line + $frame];
+                }
+            } else {
+                $frame = 1;
             }
 
             // Ensure that we are able to return exactly the same types as stored ...
@@ -2192,120 +2198,28 @@ class Client
     }
 
     /**
-     * Note: these functions are protected to prevent outside code
-     * from falsely setting BITS. See how the extending class 'User'
-     * handles this.
+     * Checks if a decimal flag ($flag) is set in passed ($flags).
      *
-     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return bool TRUE if flag is set in flags, otherwise FALSE
+     * @access protected
      */
     protected function isFlagSet($flags, $flag)
     {
         return (($flags & $flag) === $flag);
     }
 
-    protected function setFlag($flags, $flag)
-    {
-        return $flags |= $flag;
-    }
-
-
-
-    private static function mb_str_split($str) {
-        return preg_split('/(?<!^)(?!$)/u', $str);
-    }
-
-    private static function charCodeAt($c, $i) {
-        return self::uniord($c[$i]);
-    }
-
-    private static function unichr($i) {
-        return mb_convert_encoding(pack('n', $i), 'UTF-8', 'UTF-16BE');
-    }
-
-    private static function uniord($c) {
-        list(, $ord) = unpack('N', mb_convert_encoding($c, "UCS-4BE", 'UTF-8'));
-        return $ord;
-    }
-
-    public static function compressLzw($s) {
-        $dict = array();
-        $data = str_split($s."");
-        $out = array();
-        $currChar = "";
-        $phrase = $data[0];
-        $code = 256;
-        for ($i = 1; $i < count($data); ++$i) {
-            $currChar = $data[$i];
-            if (isset($dict[$phrase.$currChar])) {
-                $phrase .= $currChar;
-            }
-            else {
-                $out[] = strlen($phrase) > 1 ? $dict[$phrase] : self::charCodeAt($phrase,0);
-                $dict[$phrase.$currChar] = $code;
-                $code++;
-                $phrase = $currChar;
-            }
-        }
-        $out[] = strlen($phrase) > 1 ? $dict[$phrase] : self::charCodeAt($phrase,0);
-
-        for ($i = 0; $i < count($out); ++$i) {
-            $out[$i] = self::unichr($out[$i]);
-        }
-
-        return implode("", $out);
-    }
-
-    public static function decompressLzw($s) {
-        $dict = array();
-        $data = self::mb_str_split($s);
-        $currChar = $data[0];
-        $oldPhrase = $currChar;
-        $out = array($currChar);
-        $code = 256;
-        $phrase = "";
-
-        for ($i = 1; $i < count($data); ++$i) {
-            $currCode = self::uniord($data[$i]);
-            if ($currCode < 256) {
-                $phrase = $data[$i];
-            }
-            else {
-                $phrase = isset($dict[$currCode]) ? $dict[$currCode] : $oldPhrase.$currChar;
-            }
-            $out[] = $phrase;
-            $currChar = $phrase[0];
-            $dict[$code] = $oldPhrase.$currChar;
-            $code++;
-            $oldPhrase = $phrase;
-        }
-        return implode("", $out);
-    }
-
     /**
-     * Checks the bit positions of bits in value and return bool result.
-     *
-     * @param int   $value The value to check
-     * @param array $bits  The bits to check in value
+     * Sets a decimal flag ($lfag) in passed flags ($flags).
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return bool TRUE if all bits from $bits set, otherwise FALSE
+     * @return int The flags after setting new flag
      * @access protected
      */
-    /*
-    protected function bitmask($value, array $bits)
+    protected function setFlag($flags, $flag)
     {
-        // Assume true and the first false will return false and break
-        $result = true;
-
-        foreach ($bits as $bit) {
-            $result = $result && ($value & $bit);
-            if (!$result) {
-                break;
-            }
-        }
-
-        return $result;
+        $flags |= $flag;
+        return $flags;
     }
-    */
 }
 
