@@ -3,7 +3,7 @@ Memcached.php
 
 Plain vanilla PHP `Memcached` client library with nearly full support of the `Memcached` ASCII-protocol specification.
 
-[![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php)
+[![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) [![Coverage Status](https://coveralls.io/repos/clickalicious/Memcached.php/badge.png)](https://coveralls.io/r/clickalicious/Memcached.php)
 <a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=Memcached.php%20-%20Plain%20vanilla%20PHP%20Memcached%20client%20library%20https%3A%2F%2Fgithub.com%2Fclickalicious%2FMemcached.php&tw_p=tweetbutton" target="_blank">
   <img src="http://jpillora.com/github-twitter-button/img/tweet.png"></img>
 </a>
