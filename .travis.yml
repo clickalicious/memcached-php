@@ -1,4 +1,5 @@
-language: php
+language:
+  - php
 
 php:
   - 5.3
@@ -10,6 +11,9 @@ php:
 services:
   - memcached
 
+before_install:
+  - composer self-update
+
 before_script:
   - composer install --dev --prefer-source
   - mkdir -p ./build/logs
@@ -18,7 +22,7 @@ script:
   - phpunit --configuration tests/phpunit.xml --coverage-clover ./build/logs/clover.xml
 
 after_script:
-  - php vendor/bin/coveralls -v
+  - php vendor/bin/coveralls
 
 after_success:
   # Push coverage to github pages branch
