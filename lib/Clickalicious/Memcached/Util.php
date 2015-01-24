@@ -84,7 +84,7 @@ namespace Clickalicious\Memcached;
  * @license http://opensource.org/licenses/MIT MIT
  * @codeCoverageIgnore
  */
-if (!function_exists('array_column')) {
+if (!function_exists('array_column2')) {
 
     /**
      * Returns the values from a single column of the input array, identified by
@@ -104,7 +104,7 @@ if (!function_exists('array_column')) {
      * @return array
      * @codeCoverageIgnore
      */
-    function array_column($input = null, $columnKey = null, $indexKey = null)
+    function array_column2($input = null, $columnKey = null, $indexKey = null)
     {
         // Using func_get_args() in order to check for proper number of
         // parameters and trigger errors exactly as the built-in array_column()
@@ -163,7 +163,7 @@ if (!function_exists('array_column')) {
             $key = $value = null;
             $keySet = $valueSet = false;
 
-            if ($paramsIndexKey !== null && array_key_exists($paramsIndexKey, $row)) {
+            if ($paramsIndexKey !== null && is_array($row) && array_key_exists($paramsIndexKey, $row)) {
                 $keySet = true;
                 $key = (string) $row[$paramsIndexKey];
             }
