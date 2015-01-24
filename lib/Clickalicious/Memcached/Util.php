@@ -187,7 +187,30 @@ if (!function_exists('array_column')) {
 
         return $resultArray;
     }
-
 }
 
+/**
+ * Alternative implementation of boolval() for PHP releases < 5.5.
+ *
+ * @param mixed $boolean The potential boolean
+ *
+ * @author Benjamin Carl <opensource@clickalicious.de>
+ * @return bool TRUE || FALSE depending on input.
+ * @access public
+ */
+if (!function_exists('boolval')) {
 
+    function boolval($boolean)
+    {
+        if (is_string($boolean) == true) {
+            $boolean = strtoupper($boolean);
+        }
+
+        if (in_array($boolean, array(true, 1, 'TRUE', 'YES', 'Y', 'ON', '1'), true) === true) {
+            return true;
+        }
+
+        // at least let PHP decide :)
+        return $boolean ? true : false;
+    }
+}
