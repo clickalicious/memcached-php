@@ -3,6 +3,7 @@
 *.log
 *.old
 __*/
+build/*
 /.buildpath
 /.project
 /docs/*
