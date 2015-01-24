@@ -20,7 +20,7 @@ Plain vanilla PHP `Memcached` client library with nearly full support of the `Me
  - Efficient connection sharing  
  - Configurable connection close behavior
 
-**Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is above 90%. The library supports \<incr\> and \<decr\> command on stored integers (strings) and the [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification. Last but not least it supports seven of [PHP's eight variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types") - in detail four scalar types:
+**Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is high. The library supports \<incr\> and \<decr\> command on stored integers (strings) and the [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification. Last but not least it supports seven of [PHP's eight variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types") - in detail four scalar types:
 
     boolean
     integer
