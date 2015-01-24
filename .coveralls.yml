@@ -1,6 +1,4 @@
 
-service_name:
-  - travis-ci
+service_name: travis-ci
 
-src_dir:
-  - lib/Clickalicious
+src_dir: lib/Clickalicious
