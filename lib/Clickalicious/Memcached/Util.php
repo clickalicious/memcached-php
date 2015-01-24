@@ -84,7 +84,7 @@ namespace Clickalicious\Memcached;
  * @license http://opensource.org/licenses/MIT MIT
  * @codeCoverageIgnore
  */
-if (!function_exists('array_column2')) {
+if (!function_exists('array_column')) {
 
     /**
      * Returns the values from a single column of the input array, identified by
