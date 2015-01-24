@@ -10,7 +10,7 @@ namespace Clickalicious\Memcached;
  * support of Memcached protocol.
  *
  *
- * PHP versions 5.5
+ * PHP versions 5.3
  *
  * LICENSE:
  * Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.

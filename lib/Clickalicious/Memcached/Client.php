@@ -9,7 +9,7 @@ namespace Clickalicious\Memcached;
  * Client.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
  *
  *
- * PHP versions 5.5
+ * PHP versions 5.3
  *
  * LICENSE:
  * Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
@@ -54,6 +54,7 @@ namespace Clickalicious\Memcached;
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
+require_once 'Util.php';
 require_once 'Compression/Smaz.php';
 require_once 'Compression/Lzw.php';
 require_once 'Exception.php';
@@ -300,6 +301,7 @@ class Client
         self::COMMAND_TOUCH,
         self::COMMAND_VERSION,
         self::COMMAND_STATS,
+        self::COMMAND_FLUSH_ALL,
         self::COMMAND_PHPUNIT,
     );
 
@@ -430,7 +432,20 @@ class Client
     const COMMAND_STATS = 'stats';
 
     /**
+     * The command for flushing all keys from a Memcached instance.
+     *
+     * @var string
+     * @access public
+     * @const
+     */
+    const COMMAND_FLUSH_ALL = 'flush_all';
+
+    /**
      * The command which will fail for unit testing.
+     *
+     * @var string
+     * @access public
+     * @const
      */
     const COMMAND_PHPUNIT = 'phpunit';
 
@@ -862,9 +877,9 @@ class Client
     /**
      * Connects to a Memcached host.
      *
-     * @param string   $host    The host to connect to
-     * @param int      $port    The port the Memcached daemon is listening on
-     * @param int|null $timeout Timeout used when connecting to instance
+     * @param string         $host    The host to connect to
+     * @param int            $port    The port the Memcached daemon is listening on
+     * @param int|null|mixed $timeout Timeout used when connecting to instance
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return resource|null The resource (socket) on success, otherwise NULL
@@ -1004,8 +1019,7 @@ class Client
     }
 
     /**
-     * Increments an existing key by offset.
-     * Does currently not support the creation of not existing keys.
+     * Proxy to: incr()
      *
      * @param string $key          The key to increment
      * @param int    $offset       How much to increment
@@ -1018,21 +1032,10 @@ class Client
      */
     public function increment($key, $offset = 1, $initialValue = 0, $expiration = 0)
     {
-        /**
-         * incr <key> <value> [noreply]\r\n
-         */
-
-        // Build packet to send ...
-        $data = self::COMMAND_INCR . self::COMMAND_SEPARATOR   .
-            $key                   . self::COMMAND_SEPARATOR   .
-            $offset                . self::COMMAND_TERMINATOR;
-
-        return $this->send(self::COMMAND_INCR, $data);
+        return $this->incr($key, $offset, $initialValue, $expiration);
     }
 
     /**
-     * Proxy to increment().
-     *
      * Increments an existing key by offset.
      * Does currently not support the creation of not existing keys.
      *
@@ -1047,12 +1050,20 @@ class Client
      */
     public function incr($key, $offset = 1, $initialValue = 0, $expiration = 0)
     {
-        return $this->increment($key, $offset, $initialValue, $expiration);
+        /**
+         * incr <key> <value> [noreply]\r\n
+         */
+
+        // Build packet to send ...
+        $data = self::COMMAND_INCR . self::COMMAND_SEPARATOR   .
+                $key                   . self::COMMAND_SEPARATOR   .
+                $offset                . self::COMMAND_TERMINATOR;
+
+        return $this->send(self::COMMAND_INCR, $data);
     }
 
     /**
-     * Decrements an existing key by offset.
-     * Does currently not support the creation of not existing keys.
+     * Proxy to: decr().
      *
      * @param string $key          The key to decrement
      * @param int    $offset       How much to decrement
@@ -1065,21 +1076,10 @@ class Client
      */
     public function decrement($key, $offset = 1, $initialValue = 0, $expiration = 0)
     {
-        /**
-         * decr <key> <value> [noreply]\r\n
-         */
-
-        // Build packet to send ...
-        $data = self::COMMAND_DECR . self::COMMAND_SEPARATOR   .
-            $key                   . self::COMMAND_SEPARATOR   .
-            $offset                . self::COMMAND_TERMINATOR;
-
-        return $this->send(self::COMMAND_DECR, $data);
+        return $this->decr($key, $offset, $initialValue, $expiration);
     }
 
     /**
-     * Proxy to decrement().
-     *
      * Decrements an existing key by offset.
      * Does currently not support the creation of not existing keys.
      *
@@ -1094,7 +1094,16 @@ class Client
      */
     public function decr($key, $offset = 1, $initialValue = 0, $expiration = 0)
     {
-        return $this->decrement($key, $offset, $initialValue, $expiration);
+        /**
+         * decr <key> <value> [noreply]\r\n
+         */
+
+        // Build packet to send ...
+        $data = self::COMMAND_DECR . self::COMMAND_SEPARATOR   .
+                $key                   . self::COMMAND_SEPARATOR   .
+                $offset                . self::COMMAND_TERMINATOR;
+
+        return $this->send(self::COMMAND_DECR, $data);
     }
 
     /**
@@ -1548,6 +1557,37 @@ class Client
         return $this->send(self::COMMAND_VERSION, $data);
     }
 
+    /**
+     * Proxy to: flush_all()
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return mixed The response for command version
+     * @access public
+     */
+    public function flush()
+    {
+        return $this->flush_all();
+    }
+
+    /**
+     * Flush - sends the flush_all command to Memcached instance and returns the result.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return mixed The response for command version
+     * @access public
+     */
+    public function flush_all()
+    {
+        /**
+         * flush_all\r\n
+         */
+
+        // Build packet to send ...
+        $data = self::COMMAND_FLUSH_ALL . self::COMMAND_TERMINATOR;
+
+        return $this->send(self::COMMAND_FLUSH_ALL, $data);
+    }
+
     /*------------------------------------------------------------------------------------------------------------------
     | Internal Setter + Getter (protected)
     +-----------------------------------------------------------------------------------------------------------------*/
@@ -1889,6 +1929,24 @@ class Client
     }
 
     /**
+     * Parser for response of flush operation: <flush_all>
+     *
+     * SUCCESS = RESPONSE = "OK"
+     * FAILED  = RESPONSE = "?"
+     *
+     * @param string $buffer We do only need the buffer.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return bool TRUE if flush operation was successful (STORED), otherwise (ALL OTHER CASE) FALSE
+     * @access protected
+     */
+    protected function parseFlushResponse($buffer)
+    {
+        // We assume that everything beside "OK" is an error case ...
+        return ($buffer === self::RESPONSE_OK . self::COMMAND_TERMINATOR);
+    }
+
+    /**
      * Parser for response of delete operation: <delete>
      *
      * SUCCESS = RESPONSE = "DELETED"
@@ -2140,6 +2198,11 @@ class Client
         ) {
             // PARSER for <incr> & <decr>
             $result = $this->parseArithmeticResponse($buffer, $lines);
+        } elseif (
+            $command === self::COMMAND_FLUSH_ALL
+        ) {
+            // PARSER for <flush_all>
+            $result = $this->parseFlushResponse($lines);
         }
 
         return $result;

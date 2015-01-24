@@ -9,7 +9,7 @@ namespace Clickalicious\Memcached;
  * Bootstrap.php - Bootstrapping of directories and so on.
  *
  *
- * PHP versions 5.5
+ * PHP versions 5.3
  *
  * LICENSE:
  * Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.

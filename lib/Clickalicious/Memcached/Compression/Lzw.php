@@ -14,7 +14,7 @@ namespace Clickalicious\Memcached\Compression;
  * Originally from: https://code.google.com/p/smt2/
  *
  *
- * PHP versions 5.5
+ * PHP versions 5.3
  *
  * LICENSE:
  * Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.

@@ -41,7 +41,7 @@ So `resource` is the only type not supported.
 
 ## Requirements
 
- - PHP >= 5.5 (will be fixed soon to support PHP >= 5.3 ;)
+ - PHP >= 5.3
 
 
 ## Philosophy
@@ -56,7 +56,7 @@ The recommended way to install this library is through [Composer](http://getcomp
 ```json
 {
     "require": {
-        "clickalicious/memcached.php": "dev-master"
+        "clickalicious/memcached.php": "0.3.*"
     }
 }
 ```
@@ -84,7 +84,7 @@ You will find a demonstration (`Demo.php`) showing in detail how to use the **Me
 
 ## Data
 
-`String-`, `Integer-` and `Float/Double-types` are never modified by this library. Those types will be stored by `Memcached`'s internal system - while all other types will be serialized by this client and can optionally be stored compressed - in one of the next releases of this library. I'm working on an PoC implementation of `Smaz - a short string compression library` (https://github.com/zhenhao/smaz.php) and on a german translation of the translation table used by `Smaz`.
+`Strings`, `Integers` and `Float-Values` are never modified by this library in any way. Those types will be stored by `Memcached`'s internal system - while all other types will be serialized by this client and can optionally be stored compressed (*LZW*/*Smaz*) - in one of the next releases of this library - targeting 0.4.0. I'm working on an PoC implementation of `Smaz - a short string compression library` (https://github.com/zhenhao/smaz.php) and on a german translation of the translation table used by `Smaz`.
 
 
 ## Metadata
@@ -104,7 +104,7 @@ The best and currently only existing documentation is the inline documentation o
 
 ## Tests
 
-**Memcached.php** is unit-tested and the code coverage is above 90%. For an in-detail view have a look at this always up to date [Code Coverage report](http://clickalicious.github.io/Memcached.php/dashboard.html "Code Coverage").
+**Memcached.php** is unit-tested and the code coverage is high. For an in-detail view have a look at this always up to date [Code Coverage report](http://clickalicious.github.io/Memcached.php/dashboard.html "Code Coverage").
 
 Running the Tests  
 You will find a PHPUnit configuration including testsuites in directory `tests/`. To run those configuration execute the following command on `cli`:
@@ -145,7 +145,7 @@ The unit-tests are fired against an existing and real `Memcached` daemon. Please
 
 
 ## Versioning
-For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0` http://semver.org. Its easy to understand, very common and known by many other software products. Starting with release 0.1.0 (see releases) soon. 
+For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0` http://semver.org. Its easy to understand, very common and known from many other software projects. 
 
 
 ## Roadmap
