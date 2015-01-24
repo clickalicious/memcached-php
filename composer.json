@@ -1,6 +1,7 @@
 {
   "name": "clickalicious/memcached.php",
   "description": "Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.",
+  "type": "library",
   "authors": [
     {
       "name": "Benjamin Carl",

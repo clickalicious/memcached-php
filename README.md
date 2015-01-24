@@ -39,9 +39,9 @@ and finally one special type:
 So `resource` is the only type not supported.
 
 
-## Requirements
+## Requirements / PHP-Version(s)
 
- - PHP >= 5.3
+ - PHP >= 5.3 (compatible up to version 5.6 - but **not compatible** with *hhvm*)
 
 
 ## Philosophy
