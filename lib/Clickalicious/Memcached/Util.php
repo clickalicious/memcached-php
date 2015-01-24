@@ -104,7 +104,7 @@ if (!function_exists('array_column2')) {
      * @return array
      * @codeCoverageIgnore
      */
-    function array_column2($input = null, $columnKey = null, $indexKey = null)
+    function array_column($input = null, $columnKey = null, $indexKey = null)
     {
         // Using func_get_args() in order to check for proper number of
         // parameters and trigger errors exactly as the built-in array_column()
