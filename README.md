@@ -1,13 +1,10 @@
-Memcached.php
-=============
+![Logo of Memcached.php](docs/logo-large.png)
+Plain vanilla PHP `Memcached` client library.
 
-Plain vanilla PHP `Memcached` client library with nearly full support of the `Memcached` ASCII-protocol specification.
 
-[![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) [![Coverage Status](https://coveralls.io/repos/clickalicious/Memcached.php/badge.png)](https://coveralls.io/r/clickalicious/Memcached.php)
-<a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=Memcached.php%20-%20Plain%20vanilla%20PHP%20Memcached%20client%20library%20https%3A%2F%2Fgithub.com%2Fclickalicious%2FMemcached.php&tw_p=tweetbutton" target="_blank">
-  <img src="http://jpillora.com/github-twitter-button/img/tweet.png"></img>
-</a>
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/clickalicious/memcached.php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+| [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/Memcached.php.svg)](https://scrutinizer-ci.com/g/clickalicious/Memcached.php/) 	| [![clickalicious premium](https://img.shields.io/badge/clickalicious-premium-green.svg?style=flat)](https://www.clickalicious.de/) 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached.php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause) 	|
+|---	|---	|---	|---	|
+| [![GitHub issues](https://img.shields.io/github/issues/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/issues) 	| [![Coverage Status](https://coveralls.io/repos/clickalicious/Memcached.php/badge.svg)](https://coveralls.io/r/clickalicious/Memcached.php/)  	| [![GitHub release](https://img.shields.io/github/release/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/releases) 	| [![GitHub stars](https://img.shields.io/github/stars/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/stargazers)  	|
 
 
 ## Features
@@ -39,7 +36,7 @@ and finally one special type:
 So `resource` is the only type not supported.
 
 
-## Requirements / PHP-Version(s)
+## Requirements
 
  - PHP >= 5.3 (compatible up to version 5.6 - but **not compatible** with *hhvm*)
 
@@ -79,7 +76,7 @@ $client->set('foo', 1.00);
 // Returns 1.00 as PHP's type float!     
 $client->get('foo');   
 ``` 
-You will find a demonstration (`Demo.php`) showing in detail how to use the **Memcached.php** `client`.
+You will find a demonstration `Demo.php` showing in detail how to use the **Memcached.php** `client`.
 
 
 ## Data
@@ -160,15 +157,19 @@ For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0`
 If you are interested in any of these features too - please let me know. Maybe we can adjust the priority and speed things up ...
 
 
-## Participate
+## Participate & share
 
 ... yeah. If you're a code monkey too - maybe we can build a force ;) If you would like to participate in either **Code**, **Comments**, **Documentation**, **Wiki**, **Bug-Reports**, **Unit-Tests**, **Bug-Fixes**, **Feedback** and/or **Critic** then please let me know as well!
+<a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=%23Memcached.php%20-%20Plain%20vanilla%20PHP%20%40Memcached%20client%20https%3A%2F%2Fgithub.com%2Fclickalicious%2FMemcached.php&tw_p=tweetbutton" target="_blank">
+  <img src="http://jpillora.com/github-twitter-button/img/tweet.png"></img>
+</a>
 
 
-## License
-**BSD-3-Clause** 
-See [BSD-3-Clause](http://opensource.org/licenses/BSD-3-Clause "BSD-3-Clause") or LICENSE file for details.
+## Author
 
+| [![Benjamin Carl](http://de.gravatar.com/userimage/10744805/d0a6316a34accd0f2921519dfe4dee48.jpg?size=100)](http://www.clickalicious.de) |
+|---|
+| [Benjamin Carl](http://www.clickalicious.de) |
 
 ## Sponsors  
 Thanks to our sponsors and supporters:  

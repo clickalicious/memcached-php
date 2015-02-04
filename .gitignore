@@ -1,13 +1,23 @@
+# Project specific
+/app/.config
+/docs/*
+/logs/*
+
+# General
 *.bak
 *.tmp
 *.log
 *.old
 __*/
-build/*
 /.buildpath
 /.project
-/docs/*
 /.settings
 /.externalToolBuilders
 /.idea
+
+# Composer
 /vendor
+composer.lock
+
+# Node & npm
+/npm_modules
