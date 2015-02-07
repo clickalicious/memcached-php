@@ -10,7 +10,7 @@ Plain vanilla PHP `Memcached` client library.
 ## Features
 
  - Nearly 100% of `Memcached` ASCII-protocol specification covered
- - Clean & well documented code 
+ - Clean & well documented code
  - Unit-Tested
  - Support for storing native PHP variable types (arrays, objects ...)
  - Increment & Decrement support
@@ -53,29 +53,29 @@ The recommended way to install this library is through [Composer](http://getcomp
 ```json
 {
     "require": {
-        "clickalicious/memcached.php": "0.3.*"
+        "clickalicious/memcached.php": "~0.1"
     }
 }
 ```
 
-**Memcached.php** is also available as [download from github packed as zip-file](https://github.com/clickalicious/Memcached.php/archive/master.zip "zip package containing library for download") or via `git clone https://github.com/clickalicious/Memcached.php.git .`.
+**Memcached.php** is also available as [download from github packed as zip-file](https://github.com/clickalicious/Memcached.php/archive/master.zip "zip package containing library for download") or via `git clone https://github.com/clickalicious/Memcached.php.git .`
 
 ## Usage
 
 Simple demonstration to get started:
  - Create a `client` instance and connect it (*lazy*) to `Memcached` daemon on host *127.0.0.1* (on default port [11211])
- - Set *key* **foo** with *value* **1.00** 
+ - Set *key* **foo** with *value* **1.00**
  - Retrieve *value* for *key* **foo**
 
 ```php
 $client = new \Clickalicious\Memcached\Client('127.0.0.1');
 
-// Set a value of type float   
+// Set a value of type float
 $client->set('foo', 1.00);
 
-// Returns 1.00 as PHP's type float!     
-$client->get('foo');   
-``` 
+// Returns 1.00 as PHP's type float!
+$client->get('foo');
+```
 You will find a demonstration `Demo.php` showing in detail how to use the **Memcached.php** `client`.
 
 
@@ -86,7 +86,7 @@ You will find a demonstration `Demo.php` showing in detail how to use the **Memc
 
 ## Metadata
 
-`Memcached` provides a 32 Bit (Version > 1.2.1) unsigned Integer field for meta data. From the `Memcached` protocol specification: 
+`Memcached` provides a 32 Bit (Version > 1.2.1) unsigned Integer field for meta data. From the `Memcached` protocol specification:
 > Note that in memcached 1.2.1 and higher, flags may be 32-bits, instead
 of 16, but you might want to restrict yourself to 16 bits for
 compatibility with older versions.
@@ -142,13 +142,13 @@ The unit-tests are fired against an existing and real `Memcached` daemon. Please
 
 
 ## Versioning
-For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0` http://semver.org. Its easy to understand, very common and known from many other software projects. 
+For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0` http://semver.org. Its easy to understand, very common and known from many other software projects.
 
 
 ## Roadmap
 
  - [ ] `\Clickalicious\Memcached\Proxy`  
-   This should become a proxy implementation which is able to act as `Memcache` or `Memcached` (both PECL) extension (emulate) for testing (primary mocking/stubbing). 
+   This should become a proxy implementation which is able to act as `Memcache` or `Memcached` (both PECL) extension (emulate) for testing (primary mocking/stubbing).
  - [ ] `\Clickalicious\Memcached\Server`  
    This should become a virtual (emulated) mode which emulates a complete `Memcached` backend.
  - [ ] Refactoring the ugly parts in code.
