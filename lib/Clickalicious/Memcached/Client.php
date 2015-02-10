@@ -971,7 +971,7 @@ class Client
             }
 
             foreach ($this->sigsEnd as $sigEnd) {
-                if (preg_match('/(' . $sigEnd . '.*\R)/imu', $buffer)) {
+                if (preg_match('/^' . $sigEnd . '/imu', $buffer)) {
                     break 2;
                 }
             }
@@ -2202,7 +2202,7 @@ class Client
             $command === self::COMMAND_FLUSH_ALL
         ) {
             // PARSER for <flush_all>
-            $result = $this->parseFlushResponse($lines);
+            $result = $this->parseFlushResponse($buffer);
         }
 
         return $result;
