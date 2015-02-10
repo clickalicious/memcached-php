@@ -151,8 +151,9 @@ For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0`
    This should become a proxy implementation which is able to act as `Memcache` or `Memcached` (both PECL) extension (emulate) for testing (primary mocking/stubbing).
  - [ ] `\Clickalicious\Memcached\Server`  
    This should become a virtual (emulated) mode which emulates a complete `Memcached` backend.
- - [ ] Refactoring the ugly parts in code.
+ - [ ] Refactor the ugly parts in code.
  - [ ] Replace explodes and array operations for data anlysis with regular expressions.
+ - [ ] Increase coverage and cover (currently unused compression classes) more parts.
 
 If you are interested in any of these features too - please let me know. Maybe we can adjust the priority and speed things up ...
 
