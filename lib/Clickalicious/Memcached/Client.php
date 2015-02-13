@@ -770,7 +770,7 @@ class Client
     public function __construct(
         $host         = null,
         $port         = self::DEFAULT_PORT,
-        $timeout      = null,
+        $timeout      = self::DEFAULT_TIMEOUT,
         $persistentId = null,
         $compression  = true
     ) {
@@ -796,7 +796,7 @@ class Client
         $this
             ->persistentId($persistentId)
             ->compression($compression)
-            ->timeout(self::DEFAULT_TIMEOUT);
+            ->timeout($timeout);
     }
 
     /*------------------------------------------------------------------------------------------------------------------
