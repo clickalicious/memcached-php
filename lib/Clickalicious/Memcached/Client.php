@@ -104,6 +104,14 @@ class Client
     protected $port;
 
     /**
+     * The timeout for connecting in seconds
+     *
+     * @var int
+     * @access protected
+     */
+    protected $timeout;
+
+    /**
      * Weather compression enabled
      *
      * @var bool
@@ -748,6 +756,7 @@ class Client
      *
      * @param string $host         The host name this instance works on
      * @param int    $port         The port to connect to.
+     * @param int    $timeout      The timeout for connecting in seconds
      * @param string $persistentId By default the Memcached instances are destroyed at the end of the request.
      *                             To create an instance that persists between requests, use persistent_id to specify a
      *                             unique ID for the instance. All instances created with the same persistent_id will
@@ -761,6 +770,7 @@ class Client
     public function __construct(
         $host         = null,
         $port         = self::DEFAULT_PORT,
+        $timeout      = null,
         $persistentId = null,
         $compression  = true
     ) {
@@ -785,7 +795,8 @@ class Client
         // Execute fluent stuff
         $this
             ->persistentId($persistentId)
-            ->compression($compression);
+            ->compression($compression)
+            ->timeout(self::DEFAULT_TIMEOUT);
     }
 
     /*------------------------------------------------------------------------------------------------------------------
@@ -875,33 +886,87 @@ class Client
     }
 
     /**
+     * Setter for timeout.
+     *
+     * @param int $timeout Timeout for connecting in seconds!!!
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return void
+     * @access public
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+    }
+
+    /**
+     * Setter for timeout.
+     *
+     * @param int $timeout Timeout for connecting in seconds!!!
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return $this Instance for chaining
+     * @access public
+     */
+    public function timeout($timeout)
+    {
+        $this->setTimeout($timeout);
+        return $this;
+    }
+
+    /**
+     * Getter for timeout.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return int|null The timeout in seconds or NULL
+     * @access public
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
      * Connects to a Memcached host.
      *
-     * @param string         $host    The host to connect to
-     * @param int            $port    The port the Memcached daemon is listening on
-     * @param int|null|mixed $timeout Timeout used when connecting to instance
+     * @param string   $host    The host to connect to
+     * @param int      $port    The port the Memcached daemon is listening on
+     * @param int|null $timeout Timeout in seconds
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return resource|null The resource (socket) on success, otherwise NULL
      * @access public
      * @throws \Clickalicious\Memcached\Exception
      */
-    public function connect($host, $port, $timeout = self::DEFAULT_TIMEOUT)
+    public function connect($host, $port, $timeout = null)
     {
         $uuid = $this->uuid($host, $port);
+
+        if ($timeout === null) {
+            $timeout = $this->getTimeout();
+        }
 
         // The error variables
         $errorNumber = null;
         $errorString = 'n.a.';
 
         if (isset(self::$connections[$this->getPersistentId()][$uuid]) === false) {
-            $connection = @fsockopen(
-                $host,
-                $port,
-                $errorNumber,
-                $errorString,
-                $timeout
-            );
+            if ($timeout !== null) {
+                $connection = @fsockopen(
+                    $host,
+                    $port,
+                    $errorNumber,
+                    $errorString,
+                    $timeout
+                );
+            } else {
+                $connection = @fsockopen(
+                    $host,
+                    $port,
+                    $errorNumber,
+                    $errorString
+                );
+            }
 
             // Check for failed connection
             if (is_resource($connection) === false || $errorNumber !== 0) {
