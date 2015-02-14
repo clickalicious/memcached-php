@@ -622,7 +622,7 @@ class Client
     /**
      * The default timeout when connecting to instance.
      *
-     * @var mixed
+     * @var null
      * @access public
      * @const
      */
@@ -754,14 +754,14 @@ class Client
     /**
      * Constructor.
      *
-     * @param string $host         The host name this instance works on
-     * @param int    $port         The port to connect to.
-     * @param int    $timeout      The timeout for connecting in seconds
-     * @param string $persistentId By default the Memcached instances are destroyed at the end of the request.
-     *                             To create an instance that persists between requests, use persistent_id to specify a
-     *                             unique ID for the instance. All instances created with the same persistent_id will
-     *                             share the same connection.
-     * @param bool   $compression  TRUE to enable compression (default), FALSE to disable
+     * @param string   $host         The host name this instance works on
+     * @param int      $port         The port to connect to.
+     * @param int|null $timeout      The timeout for connecting in seconds
+     * @param string   $persistentId By default the Memcached instances are destroyed at the end of the request.
+     *                               To create an instance that persists between requests, use persistent_id to specify a
+     *                               unique ID for the instance. All instances created with the same persistent_id will
+     *                               share the same connection.
+     * @param bool   $compression    TRUE to enable compression (default), FALSE to disable
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return Client
