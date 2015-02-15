@@ -55,12 +55,14 @@ namespace Clickalicious\Memcached;
  */
 
 require_once 'Util.php';
-require_once 'Compression/Smaz.php';
 require_once 'Compression/Lzw.php';
+require_once 'Compression/Zlib.php';
+require_once 'Compression/Smaz.php';
 require_once 'Exception.php';
 
-use \Clickalicious\Memcached\Compression\Smaz;
 use \Clickalicious\Memcached\Compression\Lzw;
+use \Clickalicious\Memcached\Compression\Zlib;
+use \Clickalicious\Memcached\Compression\Smaz;
 use \Clickalicious\Memcached\Exception;
 
 /**
