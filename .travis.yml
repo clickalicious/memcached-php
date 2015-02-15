@@ -23,6 +23,8 @@ script:
 
 after_script:
   - php vendor/bin/coveralls
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --access-token=$SCRUTINIZERKEY --format=php-clover ./build/logs/clover.xml > /dev/null 2>&1
 
 after_success:
   # Push coverage to github pages branch
