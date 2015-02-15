@@ -111,33 +111,7 @@ phpunit -c tests/phpunit.xml --testdox
 ```
 
 
-### Latest Tests
-Client
- - [x] Set a key value pair
- - [x] Get a value by key
- - [x] Add a key value pair
- - [x] Replace an existing value
- - [x] Append a value to an existing one
- - [x] Prepend a value to an existing one
- - [x] Cas set a key value pair
- - [x] Send a valid custom command string
- - [x] Send an invalid custom command string
- - [x] Retrieve version
- - [x] Storing php type string
- - [x] Storing php type float
- - [x] Storing php type integer
- - [x] Storing php type array
- - [x] Storing php type object
- - [x] Storing php type null
- - [x] Storing php type boolean
- - [x] Increment a stored value
- - [x] Decrement a stored value
- - [x] Connect to a memcached daemon
- - [x] Retrieve stats
- - [x] Trigger and handle error
- - [x] Trigger and handle client error
- - [x] Trigger and handle server error
-
+### Tests
 The unit-tests are fired against an existing and real `Memcached` daemon. Please be aware that you need a running `Memcached` deamon on the host you run the unit-tests listening on the default port (11211). In Result the unit-tests are not that isolated cause they are bound to a running `Memcached` daemon and network as well.
 
 
@@ -147,11 +121,12 @@ For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0`
 
 ## Roadmap
 
+ - [ ] Hardening code - more stability!
  - [ ] `\Clickalicious\Memcached\Proxy`  
    This should become a proxy implementation which is able to act as `Memcache` or `Memcached` (both PECL) extension (emulate) for testing (primary mocking/stubbing).
  - [ ] `\Clickalicious\Memcached\Server`  
    This should become a virtual (emulated) mode which emulates a complete `Memcached` backend.
- - [ ] Refactor the ugly parts in code.
+ - [ ] Add compression support to be able to manipulate PECL Memcached stored data (FastLZ, zlib, LZW)
  - [ ] Replace explodes and array operations for data anlysis with regular expressions.
  - [ ] Increase coverage and cover (currently unused compression classes) more parts.
 
