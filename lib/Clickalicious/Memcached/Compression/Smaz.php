@@ -63,6 +63,8 @@ namespace Clickalicious\Memcached\Compression;
  * @see        https://github.com/zhenhao/smaz.php
  */
 
+require_once 'CompressionInterface.php';
+
 /**
  * Memcached.php
  *
@@ -78,7 +80,7 @@ namespace Clickalicious\Memcached\Compression;
  * @link       https://github.com/clickalicious/Memcached.php
  * @see        https://github.com/zhenhao/smaz.php
  */
-class Smaz
+class Smaz implements CompressionInterface
 {
     /**
      * The encode book.
@@ -177,10 +179,13 @@ class Smaz
     }
 
     /**
-     * Decompress function.
+     * Decompresses a buffer.
      *
-     * @param $buffer
-     * @return string
+     * @param string $buffer The buffer to decompress
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @return string The decompressed input
+     * @access protected
      */
     public function decompress($buffer)
     {
