@@ -144,12 +144,6 @@ If you are interested in any of these features too - please let me know. Maybe w
 </a>
 
 
-## Author
-
-| [![Benjamin Carl](http://de.gravatar.com/userimage/10744805/d0a6316a34accd0f2921519dfe4dee48.jpg?size=100)](http://www.clickalicious.de) |
-|---|
-| [Benjamin Carl](http://www.clickalicious.de) |
-
 ## Sponsors  
 Thanks to our sponsors and supporters:  
 <a href="https://www.jetbrains.com/phpstorm/" title="PHP IDE :: JetBrains PhpStorm" target="_blank">
