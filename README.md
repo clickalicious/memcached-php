@@ -1,6 +1,5 @@
 <img src="https://avatars2.githubusercontent.com/u/514566?v=3&u=4615dfc4970d93dea5d3eaf996b7903ee6e24e20&s=140" align="right" />
 ---
-# Memcached.php
 ![Logo of Memcached.php](docs/logo-large.png)
 Plain vanilla PHP `Memcached` client library.
 
