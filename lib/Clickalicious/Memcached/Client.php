@@ -2222,6 +2222,7 @@ class Client
         // At this point we retrieve a raw response containing at least a trailing terminator - rip it
         $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
         $lines    = explode(self::COMMAND_TERMINATOR, $response);
+        $result   = false;
 
         if (
             $command === self::COMMAND_GET ||

@@ -52,7 +52,12 @@
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once 'lib\Clickalicious\Memcached\Client.php';
+/**
+ * THE FOLLOWING REQUIRE IS ONLY REQUIRED AND RECOMMENDED IN DEVELOPMENT/FOR DEVELOPMENT OF Rng
+ * IT DOES NOT ONLY INSTALL AN ADDITIONAL AUTOLOADER (IN ADDITION TO COMPOSER) IT ALSO ADJUST
+ * THE DEBUG SETTINGS, ERROR-REPORTING AND THINGS LIKE THAT! SO DO NOT BOOTSTRAP IN PRODUCTION!
+ */
+require_once 'lib/Clickalicious/Rng/Bootstrap.php';
 
 use Clickalicious\Memcached\Client;
 
@@ -101,8 +106,6 @@ try {
 
 echo '<pre>';
 echo '<h1>Simple Demonstration</h1>';
-echo 'Result should be (int)5:<br />';
-var_dump(
-    $result
-);
+echo 'Result should be "5":<br />';
+echo $result;
 echo '</pre>';
