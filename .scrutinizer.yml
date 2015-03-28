@@ -1,6 +1,11 @@
 filter:
-    paths: [lib/*]
-    excluded_paths: [docs/*, tests/*, bin/*]
+    excluded_paths:
+      - docs/*
+      - tests/*
+      - bin/*
+      - lib/Clickalicious/Memcached/Bootstrap.php
+      - lib/Clickalicious/Memcached/Autoloader.php
+
 before_commands:
     - 'composer install --prefer-source --prefer-lowest'
 tools:
