@@ -75,6 +75,79 @@ use Psr\Cache\CacheItemInterface;
 class Cache extends Client implements CacheItemInterface
 {
     /**
+     * Returns the key for the current cache item.
      *
+     * The key is loaded by the Implementing Library, but should be available to
+     * the higher level callers when needed.
+     *
+     * @return string
+     *   The key string for this cache item.
      */
+    public function getKey()
+    {
+
+    }
+
+    /**
+     * Confirms if the cache item lookup resulted in a cache hit.
+     *
+     * Note: This method MUST NOT have a race condition between calling isHit()
+     * and calling get().
+     *
+     * @return boolean
+     *   True if the request resulted in a cache hit.  False otherwise.
+     */
+    public function isHit()
+    {
+
+    }
+
+    /**
+     * Confirms if the cache item exists in the cache.
+     *
+     * Note: This method MAY avoid retrieving the cached value for performance
+     * reasons, which could result in a race condition between exists() and get().
+     * To avoid that potential race condition use isHit() instead.
+     *
+     * @return boolean
+     *  True if item exists in the cache, false otherwise.
+     */
+    public function exists()
+    {
+
+    }
+
+    /**
+     * Sets the expiration for this cache item.
+     *
+     * @param int|\DateTime $ttl
+     *   - If an integer is passed, it is interpreted as the number of seconds
+     *     after which the item MUST be considered expired.
+     *   - If a DateTime object is passed, it is interpreted as the point in
+     *     time after which the item MUST be considered expired.
+     *   - If null is passed, a default value MAY be used. If none is set,
+     *     the value should be stored permanently or for as long as the
+     *     implementation allows.
+     *
+     * @return static
+     *   The called object.
+     */
+    public function setExpiration($ttl = null)
+    {
+
+    }
+
+    /**
+     * Returns the expiration time of a not-yet-expired cache item.
+     *
+     * If this cache item is a Cache Miss, this method MAY return the time at
+     * which the item expired or the current time if that is not available.
+     *
+     * @return \DateTime
+     *   The timestamp at which this cache item will expire.
+     */
+    public function getExpiration()
+    {
+
+    }
 }

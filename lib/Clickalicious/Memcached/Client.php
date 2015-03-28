@@ -992,7 +992,7 @@ class Client
      * @param string $data    The data to pass with command
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return mixed The result from Memcached daemon
+     * @return mixed|array The result from Memcached daemon
      * @access public
      * @throws \Clickalicious\Memcached\Exception
      */

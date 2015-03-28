@@ -113,7 +113,7 @@ class Autoloader
         }
 
         // retain the base directory for the namespace prefix
-        if ($prepend) {
+        if ($prepend === true) {
             array_unshift($this->prefixes[$prefix], $base_dir);
         } else {
             array_push($this->prefixes[$prefix], $base_dir);
@@ -145,7 +145,7 @@ class Autoloader
             // try to load a mapped file for the prefix and relative class
             $mapped_file = $this->loadMappedFile($prefix, $relative_class);
 
-            if ($mapped_file) {
+            if ($mapped_file !== false) {
                 return $mapped_file;
             }
 
@@ -163,8 +163,8 @@ class Autoloader
      *
      * @param string $prefix The namespace prefix.
      * @param string $relative_class The relative class name.
-     * @return mixed Boolean false if no mapped file can be loaded, or the
-     * name of the mapped file that was loaded.
+     *
+     * @return mixed Boolean false if no mapped file can be loaded, or the name of the mapped file that was loaded.
      */
     protected function loadMappedFile($prefix, $relative_class)
     {
