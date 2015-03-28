@@ -55,11 +55,7 @@ namespace Clickalicious\Memcached;
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-require_once 'Client.php';
-require_once '../../Psr/Cache/CacheItemInterface.php';
-require_once '../../Psr/Cache/CacheException.php';
-
-use \Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemInterface;
 
 /**
  * Memcached.php

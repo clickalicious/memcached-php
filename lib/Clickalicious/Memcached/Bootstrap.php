@@ -57,17 +57,13 @@ namespace Clickalicious\Memcached;
 // Include autoloader
 require_once 'Autoloader.php';
 
-// The base path to /lib/ if we don't have Composer we need to know root path
-define(
-    'CLICKALICIOUS_MEMCACHED_BASE_PATH',
-    realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) .
-    DIRECTORY_SEPARATOR
-);
-
-// Root node
-$root = realpath(CLICKALICIOUS_MEMCACHED_BASE_PATH . '../');
-
-
+/**
+ * Detects composer in global scope
+ *
+ * @author Benjamin Carl <opensource@clickalicious.de>
+ * @return bool TRUE if composer is active, otherwise FALSE
+ * @access public
+ */
 function composer_running()
 {
     $result = false;
@@ -83,18 +79,23 @@ function composer_running()
     return $result;
 }
 
-// Check for composer dev dependencies
-if (true === file_exists($root . '/vendor/autoload.php')) {
-    $composerExist   = true;
-    $composerRunning = true;
+
+// The base path to /lib/ if we don't have Composer we need to know root path
+define(
+    'CLICKALICIOUS_MEMCACHED_BASE_PATH',
+    realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) .
+    DIRECTORY_SEPARATOR
+);
+
+// Root node
+$root = realpath(CLICKALICIOUS_MEMCACHED_BASE_PATH . '../');
+
+// Check for composer existence
+if (true === $composerExist = $composerRunning = file_exists($root . '/vendor/autoload.php')) {
     include_once $root . '/vendor/autoload.php';
 
-} elseif (true === composer_running()) {
-    $composerExist = true;
-    $composerExist = true;
 } else {
-    $composerExist   = false;
-    $composerRunning = false;
+    $composerExist = $composerRunning = composer_running();
 }
 
 // No need to double detect and so on ...
