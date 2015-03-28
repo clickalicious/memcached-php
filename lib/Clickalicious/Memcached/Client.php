@@ -54,9 +54,6 @@ namespace Clickalicious\Memcached;
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
-use Clickalicious\Memcached\Compression\Lzw;
-use Clickalicious\Memcached\Compression\Zlib;
-use Clickalicious\Memcached\Compression\Smaz;
 use Clickalicious\Memcached\Exception;
 
 /**
