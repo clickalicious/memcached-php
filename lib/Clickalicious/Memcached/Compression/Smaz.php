@@ -146,7 +146,7 @@ class Smaz implements CompressionInterface
                 $code = isset($encodeBook[substr($buffer, $inIdx, $j)]) ?
                     $encodeBook[substr($buffer, $inIdx, $j)] : null;
 
-                if($code != null) {
+                if($code !== null) {
                     if(strlen($verbatim)) {
                         $output .= $this->flushVerbatim($verbatim);
                         $verbatim = '';

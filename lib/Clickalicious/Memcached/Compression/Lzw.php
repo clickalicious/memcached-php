@@ -113,8 +113,9 @@ class Lzw implements CompressionInterface
         $out        = array();
         $phrase     = $data[0];
         $code       = 256;
+        $countData  = count($data);
 
-        for ($i = 1; $i < count($data); ++$i) {
+        for ($i = 1; $i < $countData; ++$i) {
             $currentCharacter = $data[$i];
 
             if (isset($dictionary[$phrase.$currentCharacter])) {
@@ -149,7 +150,7 @@ class Lzw implements CompressionInterface
     public function decompress($buffer)
     {
         $dictionary       = array();
-        $data             = $this->mb_strsplit($buffer);
+        $data             = $this->multibyteStringSplit($buffer);
 
         $currentCharacter = $data[0];
         $oldPhrase        = $currentCharacter;
@@ -187,7 +188,7 @@ class Lzw implements CompressionInterface
      * @return array The splitted string
      * @access protected
      */
-    protected function mb_strsplit($string)
+    protected function multibyteStringSplit($string)
     {
         return preg_split('/(?<!^)(?!$)/u', $string);
     }

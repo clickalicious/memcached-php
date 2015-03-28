@@ -1084,16 +1084,14 @@ class Client
      *
      * @param string $key          The key to increment
      * @param int    $offset       How much to increment
-     * @param int    $initialValue Which value to set for not existing keys
-     * @param int    $expiration   When to expire
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
      * @access public
      */
-    public function increment($key, $offset = 1, $initialValue = 0, $expiration = 0)
+    public function increment($key, $offset = 1)
     {
-        return $this->incr($key, $offset, $initialValue, $expiration);
+        return $this->incr($key, $offset);
     }
 
     /**
@@ -1102,14 +1100,12 @@ class Client
      *
      * @param string $key          The key to increment
      * @param int    $offset       How much to increment
-     * @param int    $initialValue Which value to set for not existing keys
-     * @param int    $expiration   When to expire
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
      * @access public
      */
-    public function incr($key, $offset = 1, $initialValue = 0, $expiration = 0)
+    public function incr($key, $offset = 1)
     {
         /**
          * incr <key> <value> [noreply]\r\n
@@ -1128,16 +1124,14 @@ class Client
      *
      * @param string $key          The key to decrement
      * @param int    $offset       How much to decrement
-     * @param int    $initialValue Which value to set for not existing keys
-     * @param int    $expiration   When to expire
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
      * @access public
      */
-    public function decrement($key, $offset = 1, $initialValue = 0, $expiration = 0)
+    public function decrement($key, $offset = 1)
     {
-        return $this->decr($key, $offset, $initialValue, $expiration);
+        return $this->decr($key, $offset);
     }
 
     /**
@@ -1146,14 +1140,12 @@ class Client
      *
      * @param string $key          The key to decrement
      * @param int    $offset       How much to decrement
-     * @param int    $initialValue Which value to set for not existing keys
-     * @param int    $expiration   When to expire
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
      * @access public
      */
-    public function decr($key, $offset = 1, $initialValue = 0, $expiration = 0)
+    public function decr($key, $offset = 1)
     {
         /**
          * decr <key> <value> [noreply]\r\n
