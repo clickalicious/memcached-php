@@ -85,7 +85,7 @@ class Smaz implements CompressionInterface
     /**
      * The encode book.
      *
-     * @var array
+     * @var array|null
      * @access private
      * @static
      */
@@ -250,7 +250,7 @@ class Smaz implements CompressionInterface
      */
     protected function getEncodeBook()
     {
-        if (!self::$encodeBook) {
+        if (self::$encodeBook === null) {
             self::$encodeBook = array_flip(self::$decodeBook);
         }
 

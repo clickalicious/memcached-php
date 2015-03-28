@@ -1178,7 +1178,7 @@ class Client
          */
 
         // Run through our serializer
-        $serialized = $this->serializeValue($value, $flags, $bytes);
+        $serialized = $this->serializeValue($value);
 
         $value = $serialized['value'];
         $flags = $serialized['flags'];
@@ -1221,7 +1221,7 @@ class Client
          */
 
         // Run through our serializer
-        $serialized = $this->serializeValue($value, $flags, $bytes);
+        $serialized = $this->serializeValue($value);
 
         $value = $serialized['value'];
         $flags = $serialized['flags'];
@@ -1264,7 +1264,7 @@ class Client
          */
 
         // Run through our serializer
-        $serialized = $this->serializeValue($value, $flags, $bytes);
+        $serialized = $this->serializeValue($value);
 
         $value = $serialized['value'];
         $flags = $serialized['flags'];
@@ -1380,7 +1380,7 @@ class Client
          */
 
         // Run through our serializer
-        $serialized = $this->serializeValue($value, $flags, $bytes);
+        $serialized = $this->serializeValue($value);
 
         $value = $serialized['value'];
         $flags = $serialized['flags'];
@@ -2263,15 +2263,13 @@ class Client
      * Serializes a value if it is serializable in our meaning.
      *
      * @param mixed $value The value to serialize
-     * @param int   $flags The flags
-     * @param int   $bytes The number of bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return array ...
      * @access protected
      * @throws \Clickalicious\Memcached\Exception
      */
-    protected function serializeValue($value, $flags, $bytes)
+    protected function serializeValue($value)
     {
         if ($this->isSerializable($value) === true) {
             // Activate default bit to detect serialization
