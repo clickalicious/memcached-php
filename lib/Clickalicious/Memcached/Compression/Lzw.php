@@ -129,9 +129,10 @@ class Lzw implements CompressionInterface
             }
         }
 
-        $out[] = strlen($phrase) > 1 ? $dictionary[$phrase] : $this->charCodeAt($phrase,0);
+        $out[]    = strlen($phrase) > 1 ? $dictionary[$phrase] : $this->charCodeAt($phrase,0);
+        $countOut = count($out);
 
-        for ($i = 0; $i < count($out); ++$i) {
+        for ($i = 0; $i < $countOut; ++$i) {
             $out[$i] = $this->unichr($out[$i]);
         }
 
@@ -156,8 +157,9 @@ class Lzw implements CompressionInterface
         $oldPhrase        = $currentCharacter;
         $out              = array($currentCharacter);
         $code             = 256;
+        $countData        = count($data);
 
-        for ($i = 1; $i < count($data); ++$i) {
+        for ($i = 1; $i < $countData; ++$i) {
             $currCode = $this->uniord($data[$i]);
 
             if ($currCode < 256) {
