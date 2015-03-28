@@ -54,9 +54,71 @@ namespace Clickalicious\Memcached;
  * @link       https://github.com/clickalicious/Memcached.php
  */
 
+// Include autoloader
+require_once 'Autoloader.php';
+
 // The base path to /lib/ if we don't have Composer we need to know root path
 define(
     'CLICKALICIOUS_MEMCACHED_BASE_PATH',
     realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) .
     DIRECTORY_SEPARATOR
 );
+
+// Root node
+$root = realpath(CLICKALICIOUS_MEMCACHED_BASE_PATH . '../');
+
+
+function composer_running()
+{
+    $result = false;
+    $classes = get_declared_classes();
+    natsort($classes);
+    foreach ($classes as $class) {
+        if (stristr($class, 'ComposerAutoloaderInit')) {
+            $result = true;
+            break;
+        }
+    }
+
+    return $result;
+}
+
+// Check for composer dev dependencies
+if (true === file_exists($root . '/vendor/autoload.php')) {
+    $composerExist   = true;
+    $composerRunning = true;
+    include_once $root . '/vendor/autoload.php';
+
+} elseif (true === composer_running()) {
+    $composerExist = true;
+    $composerExist = true;
+} else {
+    $composerExist   = false;
+    $composerRunning = false;
+}
+
+// No need to double detect and so on ...
+define(
+    'CLICKALICIOUS_MEMCACHED_COMPOSER_EXISTS',
+    $composerExist
+);
+
+define(
+    'CLICKALICIOUS_MEMCACHED_COMPOSER_RUNNING',
+    $composerRunning
+);
+
+// Force reporting of all errors ...
+error_reporting(-1);
+
+// Retrieve SAPI PHP is running
+$sapi = strtolower(php_sapi_name());
+
+// Init autoloading
+$loader = new Autoloader();
+
+// register the autoloader
+$loader->register();
+
+// register the base directories for the namespace prefix
+$loader->addNamespace('Clickalicious\Memcached', CLICKALICIOUS_MEMCACHED_BASE_PATH . 'Clickalicious\Memcached');
