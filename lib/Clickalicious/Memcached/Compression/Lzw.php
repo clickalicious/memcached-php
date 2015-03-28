@@ -60,8 +60,7 @@ namespace Clickalicious\Memcached\Compression;
  * @see        http://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Welch
  */
 
-require_once 'CompressionInterface.php';
-
+use Clickalicious\Memcached\Compression\CompressionInterface;
 use Clickalicious\Memcached\Exception;
 
 /**

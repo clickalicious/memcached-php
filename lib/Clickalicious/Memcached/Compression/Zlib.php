@@ -57,7 +57,7 @@ namespace Clickalicious\Memcached\Compression;
  * @see        -
  */
 
-require_once 'CompressionInterface.php';
+use Clickalicious\Memcached\Compression\CompressionInterface;
 
 /**
  * Memcached.php
