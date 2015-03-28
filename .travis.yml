@@ -18,7 +18,7 @@ services:
   - memcached
 
 before_install:
-  - travis_retry composer self-update
+  - travis_retry composer selfupdate
   - composer --version
 
 env:
