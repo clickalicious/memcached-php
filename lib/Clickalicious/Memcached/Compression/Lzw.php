@@ -217,7 +217,7 @@ class Lzw implements CompressionInterface
      * @param string $character The character
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return array The unicode character
+     * @return string The unicode character
      * @access protected
      */
     protected function unichr($character)
