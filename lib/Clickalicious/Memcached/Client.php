@@ -829,7 +829,7 @@ class Client
      * Getter for host.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return string|null The host if set, otherwise NULL.
+     * @return string The host if set, otherwise NULL.
      * @access public
      */
     public function getHost()
@@ -870,7 +870,7 @@ class Client
      * Getter for port.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return string|null The port if set, otherwise NULL.
+     * @return string The port if set, otherwise NULL.
      * @access public
      */
     public function getPort()
@@ -911,7 +911,7 @@ class Client
      * Getter for timeout.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return int|null The timeout in seconds or NULL
+     * @return integer The timeout in seconds or NULL
      * @access public
      */
     public function getTimeout()
@@ -2313,6 +2313,8 @@ class Client
      * Checks if a decimal flag ($flag) is set in passed ($flags).
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     * @param integer $flags
+     * @param integer $flag
      * @return bool TRUE if flag is set in flags, otherwise FALSE
      * @access protected
      */
