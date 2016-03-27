@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        bootstrap="../lib/Clickalicious/Memcached/Bootstrap.php"
-        backupStaticAttributes="false"
+    bootstrap="../lib/Clickalicious/Memcached/Bootstrap.php"
+    backupStaticAttributes="false"
 
-        cacheTokens="false"
-        colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        forceCoversAnnotation="false"
-        mapTestClassNameToCoveredClassName="false"
+    cacheTokens="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    forceCoversAnnotation="false"
+    mapTestClassNameToCoveredClassName="false"
 
-        processIsolation="false"
-        stopOnError="false"
-        stopOnFailure="false"
-        stopOnIncomplete="false"
-        stopOnSkipped="false"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
 
-        verbose="false"
-        testdox="true"
-        >
+    verbose="false"
+    testdox="true"
+>
     <testsuites>
         <testsuite name="Memcached.php">
             <directory>.</directory>

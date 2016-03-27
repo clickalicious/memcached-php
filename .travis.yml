@@ -5,14 +5,14 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
-  
-sudo: false
 
 sudo: false
 
 matrix:
   allow_failures:
+    - php: 7.0
     - php: hhvm
   fast_finish: true
 
@@ -33,10 +33,10 @@ before_script:
   - mkdir -p ./build/logs
 
 script:
-  - phpunit --configuration tests/phpunit.xml --coverage-clover ./build/logs/clover.xml
+  - phpunit -c tests/phpunit.xml --coverage-clover ./build/logs/clover.xml
 
 after_script:
-  - php vendor/bin/coveralls
+  - php ./bin/coveralls
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --access-token=$SCRUTINIZERKEY --format=php-clover ./build/logs/clover.xml > /dev/null 2>&1
 
@@ -53,6 +53,7 @@ after_success:
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
   - git push --tags --quiet https://$GITHUBKEY@github.com/clickalicious/Memcached.php > /dev/null 2>&1
 
+# blacklist
 branches:
   except:
     - /^build-[0-9a-z\-]*/
