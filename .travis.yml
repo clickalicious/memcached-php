@@ -19,7 +19,7 @@ services:
   - memcached
 
 before_install:
-  - travis_retry composer selfupdate
+  - composer selfupdate
   - composer --version
 
 env:
@@ -27,7 +27,7 @@ env:
   - PREFER_LOWEST=""
 
 before_script:
-  - travis_retry composer update --prefer-source $PREFER_LOWEST
+  - composer update $PREFER_LOWEST
   - composer --optimize-autoloader
   - mkdir -p ./build/logs
 
