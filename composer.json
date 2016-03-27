@@ -21,8 +21,7 @@
   },
   "autoload": {
       "psr-4": {
-          "Clickalicious\\": "lib/Clickalicious/",
-          "Psr\\": "lib/Psr/"
+          "Clickalicious\\": "lib/Clickalicious/"
       }
   },
   "include-path": ["lib/"],
@@ -35,7 +34,7 @@
   ],
   "homepage": "https://github.com/clickalicious/Memcached.php",
   "license": [
-    "BSD-3-Clause"
+    "BSD-2.0"
   ],
   "support": {
     "email": "opensource@clickalicious.de",
