@@ -15,7 +15,6 @@
     "gpupo/cache": "~1.2.2"
   },
   "require-dev": {
-    "raulfraile/ladybug": "~1.0.13",
     "satooshi/php-coveralls": "~1.0.1",
     "phpunit/phpunit": "~4.8.9"
   },
