@@ -18,30 +18,29 @@ services:
   - memcached
 
 before_install:
-  - composer selfupdate
-  - composer --version
+  - composer self-update --no-interaction
+  - composer --version --no-interaction
 
 env:
   - PREFER_LOWEST="--prefer-lowest"
   - PREFER_LOWEST=""
 
 before_script:
-  - composer update $PREFER_LOWEST
-  - composer --optimize-autoloader
-  - mkdir -p ./build/logs
+  - composer update --prefer-dist $PREFER_LOWEST
+  - composer --optimize-autoloader --no-interaction
 
 script:
-  - phpunit -c tests/phpunit.xml --coverage-clover ./build/logs/clover.xml
+  - bin/phpunit -c tests/ --coverage-clover=coverage.clover --coverage-html=./docs/coverage
 
 after_script:
-  - php ./bin/coveralls
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --access-token=$SCRUTINIZERKEY --format=php-clover ./build/logs/clover.xml > /dev/null 2>&1
+  # We upload only for reference platform! This is our base for further code analyses and so on.
+  - if [ $(phpenv version-name) == "5.4" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [ $(phpenv version-name) == "5.4" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover > /dev/null 2>&1; fi
 
 after_success:
   # Push coverage to github pages branch
-  - chmod +x ./bin/update-gh-pages.sh
-  - bash ./bin/update-gh-pages.sh
+  - chmod +x ./update-gh-pages.sh
+  - if [ $(phpenv version-name) == "5.4" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then bash ./update-gh-pages.sh; fi
   # CREATE GIT TAG
   - git config --global user.email "builds@travis-ci.org"
   - git config --global user.name "Travis"
@@ -55,3 +54,12 @@ after_success:
 branches:
   except:
     - /^build-[0-9a-z\-]*/
+
+# Who to notify?
+notifications:
+  email:
+    recipients:
+      - opensource@clickalicious.de
+    on_success: always
+    on_failure: change
+  slack: clickalicious:$SLACKKEY
