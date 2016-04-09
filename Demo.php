@@ -57,7 +57,7 @@
  * IT DOES NOT ONLY INSTALL AN ADDITIONAL AUTOLOADER (IN ADDITION TO COMPOSER) IT ALSO ADJUST
  * THE DEBUG SETTINGS, ERROR-REPORTING AND THINGS LIKE THAT! SO DO NOT BOOTSTRAP IN PRODUCTION!
  */
-require_once 'lib/Clickalicious/Rng/Bootstrap.php';
+require_once 'src/Clickalicious/Memcached/Bootstrap.php';
 
 use Clickalicious\Memcached\Client;
 

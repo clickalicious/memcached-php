@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-    bootstrap="../lib/Clickalicious/Memcached/Bootstrap.php"
+    bootstrap="../src/Clickalicious/Memcached/Bootstrap.php"
     backupStaticAttributes="false"
 
     cacheTokens="false"
