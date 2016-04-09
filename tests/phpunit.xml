@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-    bootstrap="../src/Clickalicious/Memcached/Bootstrap.php"
-    backupStaticAttributes="false"
 
-    cacheTokens="false"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    forceCoversAnnotation="false"
-    mapTestClassNameToCoveredClassName="false"
-
-    processIsolation="false"
-    stopOnError="false"
-    stopOnFailure="false"
-    stopOnIncomplete="false"
-    stopOnSkipped="false"
-
-    verbose="false"
-    testdox="true"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/4.8/phpunit.xsd"
+         bootstrap="../src/Clickalicious/Memcached/Bootstrap.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         cacheTokens="false"
+         colors="true"
+         stopOnError="true"
+         stopOnFailure="true"
+         verbose="false"
+         testdox="true"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60"
 >
     <testsuites>
         <testsuite name="Memcached.php">

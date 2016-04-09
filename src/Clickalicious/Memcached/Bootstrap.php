@@ -112,9 +112,6 @@ define(
 // Force reporting of all errors ...
 error_reporting(-1);
 
-// Retrieve SAPI PHP is running
-$sapi = strtolower(php_sapi_name());
-
 // Init autoloading
 $loader = new Autoloader();
 
