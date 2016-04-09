@@ -22,10 +22,10 @@
   },
   "autoload": {
       "psr-4": {
-          "Clickalicious\\": "lib/Clickalicious/"
+          "Clickalicious\\": "src/Clickalicious/"
       }
   },
-  "include-path": ["lib/"],
+  "include-path": ["src/"],
   "keywords": [
     "Memcached",
     "Client",
