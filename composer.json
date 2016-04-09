@@ -7,16 +7,18 @@
       "name": "Benjamin Carl",
       "email": "opensource@clickalicious.de",
       "homepage": "https://www.clickalicious.de",
-      "role": "Developer"
+      "role": "Lead"
     }
   ],
+  "minimum-stability": "stable",
+  "prefer-stable": true,
   "require": {
     "php": ">=5.4.0",
     "gpupo/cache": "~1.2.2"
   },
   "require-dev": {
     "satooshi/php-coveralls": "~1.0.1",
-    "phpunit/phpunit": "~4.8.9"
+    "phpunit/phpunit": "~4.8."
   },
   "autoload": {
       "psr-4": {
@@ -24,7 +26,6 @@
       }
   },
   "include-path": ["lib/"],
-  "minimum-stability": "dev",
   "keywords": [
     "Memcached",
     "Client",
@@ -32,15 +33,14 @@
     "PHP"
   ],
   "homepage": "https://github.com/clickalicious/Memcached.php",
-  "license": [
-    "BSD-2.0"
-  ],
+  "license": "BSD-3-Clause",
   "support": {
     "email": "opensource@clickalicious.de",
     "issues": "https://github.com/clickalicious/Memcached.php/issues",
     "wiki": "https://github.com/clickalicious/Memcached.php/wiki"
   },
   "config" : {
-    "bin-dir" : "bin"
+    "bin-dir" : "bin",
+    "preferred-install": "dist"
   }
 }
