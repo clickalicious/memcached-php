@@ -18,7 +18,7 @@
   },
   "require-dev": {
     "satooshi/php-coveralls": "~1.0.1",
-    "phpunit/phpunit": "~4.8."
+    "phpunit/phpunit": "~4.8.23"
   },
   "autoload": {
       "psr-4": {
