@@ -1,12 +1,14 @@
 <img src="https://avatars2.githubusercontent.com/u/514566?v=3&u=4615dfc4970d93dea5d3eaf996b7903ee6e24e20&s=140" align="right" />
 ---
+
 ![Logo of Memcached.php](docs/logo-large.png)
+
 Plain vanilla PHP `Memcached` client library.
 
 
-| [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/Memcached.php.svg)](https://scrutinizer-ci.com/g/clickalicious/Memcached.php/) 	| [![clickalicious premium](https://img.shields.io/badge/clickalicious-premium-green.svg?style=flat)](https://www.clickalicious.de/) 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached.php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause) 	|
+| [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/Memcached.php.svg)](https://scrutinizer-ci.com/g/clickalicious/Memcached.php/) 	| [![Coverage Status](https://coveralls.io/repos/clickalicious/Memcached.php/badge.svg)](https://coveralls.io/r/clickalicious/Memcached.php/) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
 |---	|---	|---	|---	|
-| [![GitHub issues](https://img.shields.io/github/issues/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/issues) 	| [![Coverage Status](https://coveralls.io/repos/clickalicious/Memcached.php/badge.svg)](https://coveralls.io/r/clickalicious/Memcached.php/)  	| [![GitHub release](https://img.shields.io/github/release/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/releases) 	| [![GitHub stars](https://img.shields.io/github/stars/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/stargazers)  	|
+| [![GitHub release](https://img.shields.io/github/release/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/releases) 	| BBB  	| AAA 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached.php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause)  	|
 
 
 ## Features
