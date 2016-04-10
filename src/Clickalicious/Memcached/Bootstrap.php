@@ -80,7 +80,7 @@ function composer_running()
 }
 
 
-// The base path to /lib/ if we don't have Composer we need to know root path
+// The base path to /src/ if we don't have Composer we need to know root path
 define(
     'CLICKALICIOUS_MEMCACHED_BASE_PATH',
     realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) .
@@ -111,9 +111,6 @@ define(
 
 // Force reporting of all errors ...
 error_reporting(-1);
-
-// Retrieve SAPI PHP is running
-$sapi = strtolower(php_sapi_name());
 
 // Init autoloading
 $loader = new Autoloader();
