@@ -30,7 +30,9 @@
     "Memcached",
     "Client",
     "Memcache",
-    "PHP"
+    "PHP",
+    "memory",
+    "inmemory"
   ],
   "homepage": "https://github.com/clickalicious/Memcached.php",
   "license": "BSD-3-Clause",
