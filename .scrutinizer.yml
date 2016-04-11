@@ -1,23 +1,64 @@
+# language: php
+# .scrutinizer.yml
+before_commands:
+    - "composer update --prefer-source --no-interaction"
+
 filter:
     excluded_paths:
-      - docs/*
-      - tests/*
-      - bin/*
-      - lib/Clickalicious/Memcached/Bootstrap.php
-      - lib/Clickalicious/Memcached/Autoloader.php
+        - bin/*
+        - docs/*
+        - src/Clickalicious/Memcached/Bootstrap.php
+        - src/Clickalicious/Memcached/Autoloader.php
+    paths:
+        - src/*
+        - tests/*
 
-before_commands:
-    - 'composer install --prefer-source --prefer-lowest'
-tools:
-    external_code_coverage: true
-    php_mess_detector: true
-    php_code_sniffer: true
-    sensiolabs_security_checker: true
-    php_code_coverage: true
-    php_pdepend: true
-    php_loc:
-        enabled: true
-        excluded_dirs: [docs, tests, bin]
-    php_cpd:
-        enabled: true
-        excluded_dirs: [docs, tests, bin]
+checks:
+    php:
+        code_rating: true
+        duplication: true
+        remove_extra_empty_lines: true
+        remove_php_closing_tag: true
+        remove_trailing_whitespace: true
+        fix_use_statements:
+            remove_unused: true
+            preserve_multiple: false
+            preserve_blanklines: true
+            order_alphabetically: true
+        fix_php_opening_tag: true
+        fix_linefeed: true
+        fix_line_ending: true
+        fix_identation_4spaces: true
+        fix_doc_comments: true
+        use_self_instead_of_fqcn: true
+        uppercase_constants: true
+        simplify_boolean_return: true
+        return_doc_comments: true
+        properties_in_camelcaps: true
+        prefer_while_loop_over_for_loop: true
+        phpunit_assertions: true
+        parameters_in_camelcaps: true
+        optional_parameters_at_the_end: true
+        no_short_variable_names:
+            minimum: '3'
+        no_short_method_names:
+            minimum: '3'
+        no_new_line_at_end_of_file: true
+        no_long_variable_names:
+            maximum: '20'
+        no_goto: true
+        newline_at_end_of_file: true
+        line_length:
+            max_length: '120'
+        function_in_camel_caps: true
+        encourage_single_quotes: true
+        encourage_postdec_operator: true
+        avoid_perl_style_comments: true
+        avoid_multiple_statements_on_same_line: true
+        avoid_fixme_comments: true
+        align_assignments: true
+        return_doc_comment_if_not_inferrable: true
+        parameter_doc_comments: true
+        param_doc_comment_if_not_inferrable: true
+        more_specific_types_in_doc_comments: true
+        avoid_unnecessary_concatenation: true
