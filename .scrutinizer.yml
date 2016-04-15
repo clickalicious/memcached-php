@@ -4,6 +4,9 @@ before_commands:
     - "composer install --prefer-dist --no-interaction"
 
 filter:
+    paths:
+        - src/*
+        - tests/*
     excluded_paths:
         - docs/*
         - src/Clickalicious/Memcached/Autoloader.php
@@ -11,9 +14,6 @@ filter:
         - src/Clickalicious/Memcached/Cache.php
         - src/Clickalicious/Memcached/Exception.php
         - src/Clickalicious/Memcached/Compression/*
-    paths:
-        - src/*
-        - tests/*
 
 tools:
     php_code_sniffer:
@@ -21,14 +21,21 @@ tools:
         config:
             standard: PSR2
     php_cs_fixer:
-        command: php-cs-fixer
         enabled: true
         filter:
-            paths:                []
-            excluded_paths:       []
+            paths:
+                - src/*
+                - tests/*
+            excluded_paths:
+                - docs/*
+                - src/Clickalicious/Memcached/Autoloader.php
+                - src/Clickalicious/Memcached/Bootstrap.php
+                - src/Clickalicious/Memcached/Cache.php
+                - src/Clickalicious/Memcached/Exception.php
+                - src/Clickalicious/Memcached/Compression/*
         config:
-            level:                all
-            fixers:               []
+            level: all
+
 checks:
     php:
         code_rating: true
