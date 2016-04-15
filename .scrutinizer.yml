@@ -1,17 +1,40 @@
 # language: php
 # .scrutinizer.yml
 before_commands:
-    - "composer update --prefer-source --no-interaction"
+    - "composer install --prefer-dist --no-interaction"
 
 filter:
-    excluded_paths:
-        - bin/*
-        - docs/*
-        - src/Clickalicious/Memcached/Bootstrap.php
-        - src/Clickalicious/Memcached/Autoloader.php
     paths:
         - src/*
         - tests/*
+    excluded_paths:
+        - docs/*
+        - src/Clickalicious/Memcached/Autoloader.php
+        - src/Clickalicious/Memcached/Bootstrap.php
+        - src/Clickalicious/Memcached/Cache.php
+        - src/Clickalicious/Memcached/Exception.php
+        - src/Clickalicious/Memcached/Compression/*
+
+tools:
+    php_code_sniffer:
+        enabled: true
+        config:
+            standard: PSR2
+    php_cs_fixer:
+        enabled: true
+        filter:
+            paths:
+                - src/*
+                - tests/*
+            excluded_paths:
+                - docs/*
+                - src/Clickalicious/Memcached/Autoloader.php
+                - src/Clickalicious/Memcached/Bootstrap.php
+                - src/Clickalicious/Memcached/Cache.php
+                - src/Clickalicious/Memcached/Exception.php
+                - src/Clickalicious/Memcached/Compression/*
+        config:
+            level: all
 
 checks:
     php:
