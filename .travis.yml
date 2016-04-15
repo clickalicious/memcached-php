@@ -57,9 +57,9 @@ branches:
 
 # Who to notify?
 notifications:
+  slack: clickalicious:$SLACKKEY
   email:
     recipients:
       - opensource@clickalicious.de
     on_success: always
     on_failure: change
-  slack: clickalicious:$SLACKKEY
