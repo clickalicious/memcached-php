@@ -30,7 +30,7 @@
                 <directory>../src/Clickalicious/Memcached/Bootstrap.php</directory>
                 <directory>../src/Clickalicious/Memcached/Cache.php</directory>
                 <directory>../src/Clickalicious/Memcached/Exception.php</directory>
-                <directory>../src/Clickalicious/Compression</directory>
+                <directory>../src/Clickalicious/Memcached/Compression</directory>
             </exclude>
         </whitelist>
     </filter>
