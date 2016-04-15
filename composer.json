@@ -14,11 +14,11 @@
   "prefer-stable": true,
   "require": {
     "php": ">=5.4.0",
-    "gpupo/cache": "~1.2.2"
+    "gpupo/cache": "^1.2"
   },
   "require-dev": {
-    "satooshi/php-coveralls": "~1.0.1",
-    "phpunit/phpunit": "~4.8.23"
+    "satooshi/php-coveralls": "^1.0",
+    "phpunit/phpunit": "^4.8"
   },
   "autoload": {
       "psr-4": {
