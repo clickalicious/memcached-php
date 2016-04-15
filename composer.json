@@ -32,7 +32,8 @@
     "Memcache",
     "PHP",
     "memory",
-    "inmemory"
+    "inmemory",
+    "nosql"
   ],
   "homepage": "https://github.com/clickalicious/Memcached.php",
   "license": "BSD-3-Clause",
