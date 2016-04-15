@@ -6,7 +6,7 @@
 Plain vanilla PHP `Memcached` client library with full support of Memcached ASCII protocol
 
 
-| [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/Memcached.php.svg)](https://scrutinizer-ci.com/g/clickalicious/Memcached.php/) 	| [![Coverage Status](https://coveralls.io/repos/clickalicious/Memcached.php/badge.svg)](https://coveralls.io/r/clickalicious/Memcached.php/) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
+| [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/Memcached.php.svg)](https://scrutinizer-ci.com/g/clickalicious/Memcached.php/) 	| [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/clickalicious/Memcached.php.svg?maxAge=2592000)](http://clickalicious.github.io/Memcached.php/) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
 |---	|---	|---	|---	|
 | [![GitHub release](https://img.shields.io/github/release/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/releases) 	| [![Waffle.io](https://img.shields.io/waffle/label/clickalicious/Memcached.php/in%20progress.svg)](https://waffle.io/clickalicious/Memcached.php)  	| [![SensioLabsInsight](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c/mini.png)](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c) 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached.php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause)  	|
 
@@ -87,8 +87,8 @@ For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0`
 
 ## Roadmap
 
-- [ ] Target stable release `1.0.0`
-- [ ] `>= 90%` test coverage
+- [x] Target stable release `1.0.0`
+- [x] `>= 90%` test coverage
 - [ ] Security check through 3rd-Party (Please get in contact with me)
 
 [![Throughput Graph](https://graphs.waffle.io/clickalicious/Memcached.php/throughput.svg)](https://waffle.io/clickalicious/Memcached.php/metrics)
