@@ -50,16 +50,14 @@ after_success:
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
   - git push --tags --quiet https://$GITHUBKEY@github.com/clickalicious/Memcached.php > /dev/null 2>&1
 
-# blacklist
+# Blacklist the pushed tag from above to prevent black hole
 branches:
   except:
     - /^build-[0-9a-z\-]*/
 
 # Who to notify?
 notifications:
+  slack: clickalicious:$SLACKKEY
   email:
     recipients:
       - opensource@clickalicious.de
-    on_success: always
-    on_failure: change
-  slack: clickalicious:$SLACKKEY
