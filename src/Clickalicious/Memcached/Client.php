@@ -1836,9 +1836,9 @@ class Client
 
         // Iterator for lines ...
         $line = 0;
-
+        $frame_break = false;
         // Loop as long as line is !== END\r\n Terminator (1 line META 1 line DATA)
-        while ($lines[$line] !== self::RESPONSE_END) {
+        while ((!$frame_break && $lines[$line] !== self::RESPONSE_END)) {
             /**
              * Try to fetch metadata. Why try? Cause we can receive multiple lines for a value. If the current key
              * reference to a simple value like an integer (65000 for example) then we have one line <meta> data and
@@ -1868,6 +1868,10 @@ class Client
                 // Fetch whole & complete value!
                 while (strlen($value) < $length) {
                     ++$frame;
+                    if($lines[$line + $frame] === self::RESPONSE_END && !isset($lines[$line + $frame+1])) {
+                        $frame_break = true;
+                        break;
+                    }                     
                     $value .= $lines[$line + $frame];
                 }
             } else {
