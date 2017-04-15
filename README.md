@@ -1,15 +1,15 @@
-<img src="https://avatars0.githubusercontent.com/u/26927954?v=3&s=140" align="right" />
+<img src="https://avatars0.githubusercontent.com/u/26927954?v=3&s=80" align="right" />
 
 ---
 
 ![Logo of memcached-php](docs/logo-large.png)
 
-Plain vanilla PHP `Memcached` client library with full support of Memcached ASCII protocol
+Plain vanilla PHP `Memcached` client library with full support of Memcached ASCII protocol.
 
 
-| [![Build Status](https://travis-ci.org/clickalicious/memcached-php.svg?branch=master)](https://travis-ci.org/clickalicious/memcached-php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/memcached-php.svg)](https://scrutinizer-ci.com/g/clickalicious/memcached-php/) 	| [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/clickalicious/memcached-php.svg?maxAge=2592000)](http://clickalicious.github.io/memcached-php/) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
+| [![Build Status](https://travis-ci.org/clickalicious/memcached-php.svg?branch=master)](https://travis-ci.org/clickalicious/memcached-php) 	| [![Codacy branch grade](https://img.shields.io/codacy/grade/76a1648856b64c728b3e00c4954342ad/master.svg)](https://www.codacy.com/app/clickalicious/memcached-php?utm_source=github.com&utm_medium=referral&utm_content=clickalicious/memcached-php&utm_campaign=Badge_Grade) 	| [![Codacy coverage](https://img.shields.io/codacy/coverage/76a1648856b64c728b3e00c4954342ad.svg)](https://www.codacy.com/app/clickalicious/memcached-php?utm_source=github.com&utm_medium=referral&utm_content=clickalicious/webserver-daemon&utm_campaign=Badge_Grade) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
 |---	|---	|---	|---	|
-| [![GitHub release](https://img.shields.io/github/release/clickalicious/memcached-php.svg?style=flat)](https://github.com/clickalicious/memcached-php/releases) 	| [![Waffle.io](https://img.shields.io/waffle/label/clickalicious/memcached-php/in%20progress.svg)](https://waffle.io/clickalicious/memcached-php)  	| [![SensioLabsInsight](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c/mini.png)](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c) 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached-php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause)  	|
+| [![GitHub release](https://img.shields.io/github/release/clickalicious/memcached-php.svg?style=flat)](https://github.com/clickalicious/memcached-php/releases) 	|  [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT) 	| [![Issue Stats](https://img.shields.io/issuestats/i/github/clickalicious/memcached-php.svg)](https://github.com/clickalicious/memcached-php/issues) 	| [![Dependency Status](https://dependencyci.com/github/clickalicious/memcached-php/badge)](https://dependencyci.com/github/clickalicious/memcached-php)   	|
 
 
 ## Table of Contents
@@ -23,7 +23,6 @@ Plain vanilla PHP `Memcached` client library with full support of Memcached ASCI
 - [Security-Issues](#security-issues)  
 - [License »](LICENSE)  
 
-
 ## Features
 
  - ~ 100% of `Memcached` *ASCII*-protocol specification covered
@@ -31,8 +30,11 @@ Plain vanilla PHP `Memcached` client library with full support of Memcached ASCI
  - Increment & Decrement support
  - Efficient connection sharing  
  - Configurable connection close behavior 
- - Clean & well documented code
- - Unit-Tested
+ - High-quality & stable codebase (following PSR standards e.g. `PSR-1,2,4`)
+ - Built on top of good PHP libraries
+ - PHP >= 7.2 ready
+ - Clean + well documented code
+ - Unit-tested with a good coverage
 
 **memcached-php** covers almost 100% of the `Memcached` protocol specification. The code is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is high. The library supports \<incr\> and \<decr\> command on stored integers (strings) and the [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification. Last but not least it supports seven of [PHP's eight variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types") - in detail four scalar types:
 
@@ -55,12 +57,12 @@ So `resource` is the only type not supported.
 
 ## Example
 
- - Create a `client` instance and connect it (*lazy*) to `Memcached` daemon on host *127.0.0.1* (on default port [11211])
+ - Create a `Client` instance and connect it (*lazy*) to `Memcached` daemon on host *127.0.0.1* (on default port [11211])
  - Set *key* **foo** with *value* **1.00**
  - Retrieve *value* for *key* **foo**
 
 ```php
-$client = new \Clickalicious\Memcached\Client('127.0.0.1');
+$client = new \Clickalicious\Memcached\Php\Client('127.0.0.1');
 
 // Set a value of type float
 $client->set('foo', 1.00);
@@ -68,29 +70,23 @@ $client->set('foo', 1.00);
 // Returns 1.00 as PHP's type float!
 $client->get('foo');
 ```
-You will find a demonstration `Demo.php` showing in detail how to use the **memcached-php** `client`.
-
+You will find a demonstration [`Demo.php` »](Demo.php) showing in detail how to use the **memcached-php** `client`.
 
 ## Requirements
 
- - `PHP >= 5.4` (compatible up to version 5.6 as well as 7.x - but **not compatible** with HHVM)
-
+ - `PHP >= 5.6` (compatible up to version `7.2` as well as `HHVM`)
 
 ## Philosophy
 
 This client is neither tested nor designed to be used in heavy load environments. It was designed and developed by me as a client library for my [phpMemAdmin](https://github.com/clickalicious/phpMemAdmin "phpMemAdmin on github") project. So I was able to remove dependencies of both `Memcache` + `Memcached` (PECL) extensions - both are designed in a way i don't like. I've tried to align 100% with the Memcached protocol specification. In some cases I didn't liked the naming convention and so I created some proxies. As an example - I decided to implement increment() as proxy to incr() and decrement() as proxy to decr(). I will add some more responsibilities in some more classes like a [PSR compatible](https://github.com/php-fig/fig-standards/blob/master/proposed/cache.md "PSR Cache proposal") Caching proxy and a Pool/Cluster Class for management operations soon.
 
-
 ## Versioning
 
 For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0` http://semver.org. Its easy to understand, very common and known from many other software projects.
 
-
 ## Roadmap
 
-- [x] Target stable release `1.0.0`
-- [x] `>= 90%` test coverage
-- [ ] Security check through 3rd-Party (Please get in contact with me)
+- [ ] n.a.
 
 [![Throughput Graph](https://graphs.waffle.io/clickalicious/memcached-php/throughput.svg)](https://waffle.io/clickalicious/memcached-php/metrics)
 
@@ -102,7 +98,7 @@ The recommended way to install this library is through [Composer](http://getcomp
 ```json
 {
     "require": {
-        "clickalicious/memcached-php": "~0.1"
+        "clickalicious/memcachedphp": "^2.0"
     }
 }
 ```
@@ -181,4 +177,4 @@ Thanks to our sponsors and supporters:
 
 
 ###### Copyright
-Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+<div>Icons made by <a href="http://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>

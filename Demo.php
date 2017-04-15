@@ -1,80 +1,33 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Memcache.php
+ * (The MIT license)
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
- * Demo.php - Demonstration of memcached-php Memcached Client.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
  *
- * PHP versions 5.3
- *
- * LICENSE:
- * memcached-php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
- *
- * Copyright (c) 2014 - 2015, Benjamin Carl
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- *
- * - Neither the name of memcached-php nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Please feel free to contact us via e-mail: opensource@clickalicious.de
- *
- * @category   Clickalicious
- * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Demo
- * @author     Benjamin Carl <opensource@clickalicious.de>
- * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version    Git: $Id$
- * @link       https://github.com/clickalicious/memcached-php
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
-/**
- * THE FOLLOWING REQUIRE IS ONLY REQUIRED AND RECOMMENDED IN DEVELOPMENT/FOR DEVELOPMENT OF Rng
- * IT DOES NOT ONLY INSTALL AN ADDITIONAL AUTOLOADER (IN ADDITION TO COMPOSER) IT ALSO ADJUST
- * THE DEBUG SETTINGS, ERROR-REPORTING AND THINGS LIKE THAT! SO DO NOT BOOTSTRAP IN PRODUCTION!
- */
-require_once 'src/Clickalicious/Memcached/Bootstrap.php';
+require_once __DIR__.'vendor/autoload.php';
 
-use Clickalicious\Memcached\Client;
-
-/**
- * memcached-php
- *
- * Demonstration of memcached-php Memcached Client.
- *
- * @category   Clickalicious
- * @package    Clickalicious_Memcached
- * @subpackage Clickalicious_Memcached_Demo
- * @author     Benjamin Carl <opensource@clickalicious.de>
- * @copyright  2014 - 2015 Benjamin Carl
- * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @version    Git: $Id$
- * @link       https://github.com/clickalicious/memcached-php
- */
+use Clickalicious\Memcached\Php\Client;
 
 // Create memcached-php instance ...
 $memcached = new Client(
