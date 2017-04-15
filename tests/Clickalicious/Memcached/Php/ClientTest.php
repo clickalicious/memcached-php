@@ -46,7 +46,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Client instance
      *
-     * @var \Clickalicious\Memcached\Client
+     * @var \Clickalicious\Memcached\Php\Client
      * @access protected
      */
     protected $client;
@@ -264,7 +264,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException \Clickalicious\Memcached\Exception
+     * @expectedException \Clickalicious\Memcached\Php\Exception
      */
     public function testSendAnInvalidCustomCommandString()
     {
@@ -476,7 +476,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException \Clickalicious\Memcached\Exception
+     * @expectedException \Clickalicious\Memcached\Php\Exception
      */
     public function testConnectToAMemcachedDaemon()
     {
@@ -567,7 +567,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException \Clickalicious\Memcached\Exception
+     * @expectedException \Clickalicious\Memcached\Php\Exception
      */
     public function testTriggerAndHandleError()
     {
@@ -580,7 +580,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException \Clickalicious\Memcached\Exception
+     * @expectedException \Clickalicious\Memcached\Php\Exception
      */
     public function testTriggerAndHandleClientError()
     {
@@ -593,7 +593,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException \Clickalicious\Memcached\Exception
+     * @expectedException \Clickalicious\Memcached\Php\Exception
      */
     public function testTriggerAndHandleServerError()
     {

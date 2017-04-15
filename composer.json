@@ -25,12 +25,14 @@
   "autoload": {
     "psr-4": {
       "Clickalicious\\": "src/Clickalicious/"
-    }
+    },
+    "files": ["src/Clickalicious/Memcached/Php/Util.php"]
   },
   "autoload-dev": {
     "psr-4": {
       "Clickalicious\\": "src/Clickalicious/"
-    }
+    },
+    "files": ["src/Clickalicious/Memcached/Php/Util.php"]
   },
   "keywords": [
     "Memcached",

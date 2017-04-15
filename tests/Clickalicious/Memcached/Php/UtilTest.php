@@ -119,7 +119,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             [3] => Peter
         )
         */
-        $data = \Clickalicious\Memcached\Php\array_column_emulation($this->data, 'first_name');
+        $data = array_column_emulation($this->data, 'first_name');
 
         $this->assertContains('John',  $data);
         $this->assertContains('Sally', $data);
@@ -150,7 +150,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             [5623] => Doe
         )
          */
-        $data = \Clickalicious\Memcached\Php\array_column_emulation($this->data, 'first_name', 'id');
+        $data = array_column_emulation($this->data, 'first_name', 'id');
 
         $this->assertContains('John',  $data);
         $this->assertContains('Sally', $data);
@@ -181,7 +181,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             [5623] => Doe
         )
         */
-        $data = \Clickalicious\Memcached\Php\array_column_emulation($this->data, 'foo');
+        $data = array_column_emulation($this->data, 'foo');
         $this->assertArrayHasKey(0, $data);
         $this->assertArrayHasKey(1, $data);
         $this->assertArrayHasKey(2, $data);
@@ -206,7 +206,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             [5623] => Doe
         )
          */
-        $data = \Clickalicious\Memcached\Php\array_column_emulation($this->data, 'first_name', 1);
+        $data = array_column_emulation($this->data, 'first_name', 1);
         $this->assertArrayHasKey(0, $data);
         $this->assertArrayHasKey(1, $data);
         $this->assertArrayHasKey(2, $data);
@@ -231,7 +231,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             [5623] => Doe
         )
         */
-        $data = \Clickalicious\Memcached\Php\array_column_emulation($this->data, 'first_name', 'foo');
+        $data = array_column_emulation($this->data, 'first_name', 'foo');
         $this->assertArrayHasKey(0, $data);
         $this->assertArrayHasKey(1, $data);
         $this->assertArrayHasKey(2, $data);
@@ -244,11 +244,11 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit_Framework_Error
      */
     public function testArrayColumnEmulationErrorHandlingWrongSecondArgument()
     {
-        \Clickalicious\Memcached\Php\array_column_emulation($this->data, new stdClass());
+        array_column_emulation($this->data, new \stdClass());
     }
 
     /**
@@ -257,11 +257,11 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return void
      * @access protected
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit_Framework_Error
      */
     public function testArrayColumnEmulationErrorHandlingWrongThirdArgument()
     {
-        \Clickalicious\Memcached\Php\array_column_emulation($this->data, 'first_name', new stdClass());
+        array_column_emulation($this->data, 'first_name', new \stdClass());
     }
 
     /**
