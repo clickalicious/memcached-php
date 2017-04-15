@@ -4,13 +4,13 @@
 /**
  * Memcache.php
  *
- * Demo.php - Demonstration of Memcached.php Memcached Client.
+ * Demo.php - Demonstration of memcached-php Memcached Client.
  *
  *
  * PHP versions 5.3
  *
  * LICENSE:
- * Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
+ * memcached-php - Plain vanilla PHP Memcached client with full support of Memcached protocol.
  *
  * Copyright (c) 2014 - 2015, Benjamin Carl
  * All rights reserved.
@@ -25,7 +25,7 @@
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
  *
- * - Neither the name of Memcached.php nor the names of its
+ * - Neither the name of memcached-php nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
  *
@@ -49,7 +49,7 @@
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
- * @link       https://github.com/clickalicious/Memcached.php
+ * @link       https://github.com/clickalicious/memcached-php
  */
 
 /**
@@ -62,9 +62,9 @@ require_once 'src/Clickalicious/Memcached/Bootstrap.php';
 use Clickalicious\Memcached\Client;
 
 /**
- * Memcached.php
+ * memcached-php
  *
- * Demonstration of Memcached.php Memcached Client.
+ * Demonstration of memcached-php Memcached Client.
  *
  * @category   Clickalicious
  * @package    Clickalicious_Memcached
@@ -73,10 +73,10 @@ use Clickalicious\Memcached\Client;
  * @copyright  2014 - 2015 Benjamin Carl
  * @license    http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @version    Git: $Id$
- * @link       https://github.com/clickalicious/Memcached.php
+ * @link       https://github.com/clickalicious/memcached-php
  */
 
-// Create Memcached.php instance ...
+// Create memcached-php instance ...
 $memcached = new Client(
     '127.0.0.1'
 );

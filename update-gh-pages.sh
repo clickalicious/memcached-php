@@ -11,7 +11,7 @@ if [ $TRAVIS_PULL_REQUEST == 'false' ]; then
   git config --global user.name "Travis"
 
   #using token clone gh-pages branch
-  git clone --quiet --branch=gh-pages https://$GITHUBKEY@github.com/clickalicious/Memcached.php.git gh-pages > /dev/null 2>&1
+  git clone --quiet --branch=gh-pages https://$GITHUBKEY@github.com/clickalicious/memcached-php.git gh-pages > /dev/null 2>&1
 
   #go into diractory and copy data we're interested in to that directory
   cd gh-pages
