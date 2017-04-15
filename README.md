@@ -2,14 +2,14 @@
 
 ---
 
-![Logo of Memcached.php](docs/logo-large.png)
+![Logo of memcached-php](docs/logo-large.png)
 
 Plain vanilla PHP `Memcached` client library with full support of Memcached ASCII protocol
 
 
-| [![Build Status](https://travis-ci.org/clickalicious/Memcached.php.svg?branch=master)](https://travis-ci.org/clickalicious/Memcached.php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/Memcached.php.svg)](https://scrutinizer-ci.com/g/clickalicious/Memcached.php/) 	| [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/clickalicious/Memcached.php.svg?maxAge=2592000)](http://clickalicious.github.io/Memcached.php/) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
+| [![Build Status](https://travis-ci.org/clickalicious/memcached-php.svg?branch=master)](https://travis-ci.org/clickalicious/memcached-php) 	| [![Scrutinizer](https://img.shields.io/scrutinizer/g/clickalicious/memcached-php.svg)](https://scrutinizer-ci.com/g/clickalicious/memcached-php/) 	| [![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/clickalicious/memcached-php.svg?maxAge=2592000)](http://clickalicious.github.io/memcached-php/) 	| [![clickalicious open-source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
 |---	|---	|---	|---	|
-| [![GitHub release](https://img.shields.io/github/release/clickalicious/Memcached.php.svg?style=flat)](https://github.com/clickalicious/Memcached.php/releases) 	| [![Waffle.io](https://img.shields.io/waffle/label/clickalicious/Memcached.php/in%20progress.svg)](https://waffle.io/clickalicious/Memcached.php)  	| [![SensioLabsInsight](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c/mini.png)](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c) 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached.php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause)  	|
+| [![GitHub release](https://img.shields.io/github/release/clickalicious/memcached-php.svg?style=flat)](https://github.com/clickalicious/memcached-php/releases) 	| [![Waffle.io](https://img.shields.io/waffle/label/clickalicious/memcached-php/in%20progress.svg)](https://waffle.io/clickalicious/memcached-php)  	| [![SensioLabsInsight](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c/mini.png)](https://insight.sensiolabs.com/projects/57efa79c-5ece-4296-abab-5c3eb9053c2c) 	| [![Packagist](https://img.shields.io/packagist/l/clickalicious/memcached-php.svg?style=flat)](http://opensource.org/licenses/BSD-3-Clause)  	|
 
 
 ## Table of Contents
@@ -34,7 +34,7 @@ Plain vanilla PHP `Memcached` client library with full support of Memcached ASCI
  - Clean & well documented code
  - Unit-Tested
 
-**Memcached.php** covers almost 100% of the `Memcached` protocol specification. The code is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is high. The library supports \<incr\> and \<decr\> command on stored integers (strings) and the [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification. Last but not least it supports seven of [PHP's eight variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types") - in detail four scalar types:
+**memcached-php** covers almost 100% of the `Memcached` protocol specification. The code is clean, full documented and developed following the PSR coding standards (PSR-0/4, PSR-1, PSR-2). The code is unit-tested (PHPUnit) and the coverage is high. The library supports \<incr\> and \<decr\> command on stored integers (strings) and the [connection handling is done like recommended](https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L10 "Keep connections open and share them via a pool across instances.") in the `Memcached` protocol specification. Last but not least it supports seven of [PHP's eight variable types](http://php.net/manual/en/language.types.intro.php "PHP's variable types") - in detail four scalar types:
 
     boolean
     integer
@@ -68,7 +68,7 @@ $client->set('foo', 1.00);
 // Returns 1.00 as PHP's type float!
 $client->get('foo');
 ```
-You will find a demonstration `Demo.php` showing in detail how to use the **Memcached.php** `client`.
+You will find a demonstration `Demo.php` showing in detail how to use the **memcached-php** `client`.
 
 
 ## Requirements
@@ -92,22 +92,22 @@ For a consistent versioning i decided to make use of `Semantic Versioning 2.0.0`
 - [x] `>= 90%` test coverage
 - [ ] Security check through 3rd-Party (Please get in contact with me)
 
-[![Throughput Graph](https://graphs.waffle.io/clickalicious/Memcached.php/throughput.svg)](https://waffle.io/clickalicious/Memcached.php/metrics)
+[![Throughput Graph](https://graphs.waffle.io/clickalicious/memcached-php/throughput.svg)](https://waffle.io/clickalicious/memcached-php/metrics)
 
 
 ## Installation
 
-The recommended way to install this library is through [Composer](http://getcomposer.org/). Require the `clickalicious/memcached.php` package into your `composer.json` file:
+The recommended way to install this library is through [Composer](http://getcomposer.org/). Require the `clickalicious/memcached-php` package into your `composer.json` file:
 
 ```json
 {
     "require": {
-        "clickalicious/memcached.php": "~0.1"
+        "clickalicious/memcached-php": "~0.1"
     }
 }
 ```
 
-**Memcached.php** is also available as [download from github packed as zip-file](https://github.com/clickalicious/Memcached.php/archive/master.zip "zip package containing library for download") or via `git clone https://github.com/clickalicious/Memcached.php.git .`
+**memcached-php** is also available as [download from github packed as zip-file](https://github.com/clickalicious/memcached-php/archive/master.zip "zip package containing library for download") or via `git clone https://github.com/clickalicious/memcached-php.git .`
 
 
 ## Data
@@ -122,17 +122,17 @@ The recommended way to install this library is through [Composer](http://getcomp
 of 16, but you might want to restrict yourself to 16 bits for
 compatibility with older versions.
 
-**Memcached.php** uses this field for its meta data. The meta data is required to mark data for serialization and stuff like this. This meta data is stored via the clients` flags field. The lower first **8 Bits** (*lowest Byte*) are reserved by **Memcached.php**. The other 8 Bits (half of the 16 Bits) can be used by your app.
+**memcached-php** uses this field for its meta data. The meta data is required to mark data for serialization and stuff like this. This meta data is stored via the clients` flags field. The lower first **8 Bits** (*lowest Byte*) are reserved by **memcached-php**. The other 8 Bits (half of the 16 Bits) can be used by your app.
 
 
 ## Documentation
 
-The best and currently only existing documentation is the inline documentation of this project. So please have a look at the source to understand how **Memcached.php** works internally.
+The best and currently only existing documentation is the inline documentation of this project. So please have a look at the source to understand how **memcached-php** works internally.
 
 
 ## Tests
 
-**Memcached.php** is unit-tested and the code coverage is high. For an in-detail view have a look at this always up to date [Code Coverage report](http://clickalicious.github.io/Memcached.php/dashboard.html "Code Coverage").
+**memcached-php** is unit-tested and the code coverage is high. For an in-detail view have a look at this always up to date [Code Coverage report](http://clickalicious.github.io/memcached-php/dashboard.html "Code Coverage").
 
 Running the Tests  
 You will find a PHPUnit configuration including testsuites in directory `tests/`. To run those configuration execute the following command on `cli`:
@@ -167,7 +167,7 @@ If you are interested in any of these features too - please let me know. Maybe w
 ## Participate & share
 
 ... yeah. If you're a code monkey too - maybe we can build a force ;) If you would like to participate in either **Code**, **Comments**, **Documentation**, **Wiki**, **Bug-Reports**, **Unit-Tests**, **Bug-Fixes**, **Feedback** and/or **Critic** then please let me know as well!
-<a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=%23Memcached.php%20-%20Plain%20vanilla%20PHP%20%40Memcached%20client%20https%3A%2F%2Fgithub.com%2Fclickalicious%2FMemcached.php&tw_p=tweetbutton" target="_blank">
+<a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=%23memcached-php%20-%20Plain%20vanilla%20PHP%20%40Memcached%20client%20https%3A%2F%2Fgithub.com%2Fclickalicious%2Fmemcached-php&tw_p=tweetbutton" target="_blank">
   <img src="http://jpillora.com/github-twitter-button/img/tweet.png"></img>
 </a>
 
