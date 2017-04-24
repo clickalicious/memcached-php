@@ -1,6 +1,9 @@
 language: php
 
 php:
+  - 5.3
+  - 5.4
+  - 5.5
   - 5.6
   - 7.0
   - 7.1
@@ -11,6 +14,9 @@ sudo: false
 
 matrix:
   allow_failures:
+    - php: 5.3
+    - php: 5.4
+    - php: 5.5
     - php: nightly
     - php: hhvm
   fast_finish: true
@@ -27,14 +33,13 @@ env:
   - PREFER_LOWEST=""
 
 before_script:
-  - composer update --prefer-dist $PREFER_LOWEST
+  - composer update --ignore-platform-reqs --prefer-dist $PREFER_LOWEST
   - composer --optimize-autoloader --no-interaction
 
 script:
   - bin/phpunit --configuration . --coverage-clover=build/logs/clover.xml --coverage-html=build/html/coverage
 
 after_script:
-  # We upload only for reference platform! This is our base for further code analyses and so on.
   - if [ $(phpenv version-name) == "5.6" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then bin/codacycoverage clover build/logs/clover.xml > /dev/null 2>&1; fi
 
 after_success:

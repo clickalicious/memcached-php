@@ -958,7 +958,7 @@ class Client
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return mixed|array The result from Memcached daemon
      * @access public
-     * @throws \Clickalicious\Memcached\Exception
+     * @throws \Clickalicious\Memcached\Php\Exception
      */
     public function send($command, $data = '')
     {
@@ -1791,7 +1791,7 @@ class Client
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return array|bool Response parsed as collection, otherwise FALSE (ERROR)
      * @access protected
-     * @throws \Clickalicious\Memcached\Exception
+     * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function parseReadResponse($buffer, array $lines)
     {
@@ -2005,7 +2005,7 @@ class Client
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return array|bool The stats as collection indexed by hostname?, otherwise FALSE (ERROR)
      * @access protected
-     * @throws \Clickalicious\Memcached\Exception
+     * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function parseStatsResponse(array $lines)
     {
@@ -2166,7 +2166,7 @@ class Client
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return bool|mixed FALSE on error, otherwise parsed response
      * @access protected
-     * @throws \Clickalicious\Memcached\Exception
+     * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function parseResponse($command, $buffer)
     {
@@ -2235,7 +2235,7 @@ class Client
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return array ...
      * @access protected
-     * @throws \Clickalicious\Memcached\Exception
+     * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function serializeValue($value)
     {

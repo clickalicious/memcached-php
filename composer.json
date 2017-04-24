@@ -24,15 +24,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Clickalicious\\": "src/Clickalicious/"
+      "Clickalicious\\Memcached\\Php\\": "src/"
     },
-    "files": ["src/Clickalicious/Memcached/Php/Util.php"]
+    "files": ["src/Util.php"]
   },
   "autoload-dev": {
     "psr-4": {
-      "Clickalicious\\": "src/Clickalicious/"
-    },
-    "files": ["src/Clickalicious/Memcached/Php/Util.php"]
+      "Clickalicious\\Memcached\\Php\\": "tests/"
+    }
   },
   "keywords": [
     "Memcached",
@@ -53,6 +52,6 @@
   },
   "config" : {
     "bin-dir" : "bin",
-    "preferred-install": "source"
+    "preferred-install": "dist"
   }
 }

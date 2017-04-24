@@ -1,4 +1,3 @@
-*                       text=auto
 *.java        eol=lf    text       ident  diff=java
 *.c           eol=lf    text       ident  diff=cpp
 *.h           eol=lf    text       ident  diff=cpp
@@ -6,9 +5,23 @@
 *.xml         eol=lf    text       ident  diff=html
 *.vm                    text       ident
 *.php         eol=lf    text       ident  diff=php
+*.phps        eol=lf    text       ident  diff=php
 *.properties            text       ident
-*.js                    text       ident  diff=html
-*.css                   text       ident  diff=html
+*.js          eol=lf    text       ident  diff=java
+*.json        eol=lf    text       ident  diff=java
+*.css         eol=lf    text       ident  diff=html
 *.sh          eol=lf    text       ident
 *.bat         eol=crlf  text       ident
+*.cmd         eol=crlf  text       ident
 *.vcproj      eol=crlf  text       ident
+*.md          eol=lf    text       ident  diff=html
+*.gif                   binary
+*.png                   binary
+*.jpg                   binary
+*.jar                   binary
+*.class                 binary
+*.gz                    binary
+*.tar                   binary
+*.dll                   binary
+*.exe                   binary
+*.zip                   binary
