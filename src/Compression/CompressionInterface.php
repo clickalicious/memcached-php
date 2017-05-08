@@ -2,7 +2,7 @@
 
 /**
  * (The MIT license)
- * Copyright 2017 clickalicious, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -28,9 +28,8 @@
 namespace Clickalicious\Memcached\Php\Compression;
 
 /**
- * Interface CompressionInterface
+ * Interface CompressionInterface.
  *
- * @package Clickalicious\Memcached\Php\Compression
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
 interface CompressionInterface
@@ -41,8 +40,8 @@ interface CompressionInterface
      * @param string $buffer The buffer to compress
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The compressed input
-     * @access protected
      */
     public function compress($buffer);
 
@@ -52,8 +51,8 @@ interface CompressionInterface
      * @param string $buffer The buffer to decompress
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The decompressed input
-     * @access protected
      */
     public function decompress($buffer);
 }

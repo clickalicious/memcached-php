@@ -2,7 +2,7 @@
 
 /**
  * (The MIT license)
- * Copyright 2017 clickalicious, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -24,8 +24,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__).'/vendor/autoload.php';
 
 use \Clickalicious\Memcached\Php\Client;
 
@@ -38,7 +37,6 @@ $dummy = md5(rand(1111, 9999));
 
 // Try to do some stuff with memcached instance ...
 try {
-
     $memcached->set($dummy, 1);
     $memcached->increment($dummy, 2);
     $memcached->increment($dummy, 2);
@@ -53,4 +51,4 @@ try {
     $result = $e->getMessage();
 }
 
-echo sprintf('Result = "%s" (should be "5")', $result) . PHP_EOL;
+echo sprintf('Result = "%s" (should be "5")', $result).PHP_EOL;

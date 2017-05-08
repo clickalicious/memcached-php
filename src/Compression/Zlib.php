@@ -2,7 +2,7 @@
 
 /**
  * (The MIT license)
- * Copyright 2017 clickalicious, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -28,13 +28,12 @@
 namespace Clickalicious\Memcached\Php\Compression;
 
 /**
- * Class Zlib
+ * Class Zlib.
  *
  * Zlib.php - ZLIB-compression.
  *
  * ZLIB-compression interface to builtin PHP functionality.
  *
- * @package Clickalicious\Memcached\Php\Compression
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
 class Zlib implements CompressionInterface
@@ -45,8 +44,8 @@ class Zlib implements CompressionInterface
      * @param string $buffer The buffer to compress
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The compressed input
-     * @access protected
      */
     public function compress($buffer)
     {
@@ -59,8 +58,8 @@ class Zlib implements CompressionInterface
      * @param string $buffer The buffer to decompress
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The decompressed input
-     * @access protected
      */
     public function decompress($buffer)
     {

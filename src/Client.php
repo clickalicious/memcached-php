@@ -2,7 +2,7 @@
 
 /**
  * (The MIT license)
- * Copyright 2017 clickalicious, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -28,9 +28,8 @@
 namespace Clickalicious\Memcached\Php;
 
 /**
- * Class Client
+ * Class Client.
  *
- * @package Clickalicious\Memcached\Php
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
 class Client
@@ -39,7 +38,6 @@ class Client
      * The persistent ID of the instance for sharing connections via static!
      *
      * @var string
-     * @access protected
      */
     protected $persistentId;
 
@@ -47,7 +45,6 @@ class Client
      * The Memcached daemons host.
      *
      * @var string
-     * @access protected
      */
     protected $host;
 
@@ -55,23 +52,20 @@ class Client
      * The Memcached daemons port.
      *
      * @var string
-     * @access protected
      */
     protected $port;
 
     /**
-     * The timeout for connecting in seconds
+     * The timeout for connecting in seconds.
      *
      * @var int
-     * @access protected
      */
     protected $timeout;
 
     /**
-     * Weather compression enabled
+     * Weather compression enabled.
      *
      * @var bool
-     * @access protected
      */
     protected $compression;
 
@@ -79,23 +73,20 @@ class Client
      * The default compressor used.
      *
      * @var string
-     * @access protected
      */
     protected $compressor = self::DEFAULT_COMPRESSOR;
 
     /**
-     * All open connections
+     * All open connections.
      *
      * @var array
-     * @access protected
      */
     protected static $connections = array();
 
     /**
-     * Last result
+     * Last result.
      *
      * @var int
-     * @access protected
      */
     protected $lastResponse = 0;
 
@@ -103,7 +94,6 @@ class Client
      * Signals for transfer ended. Send as terminator by Memcached instance.
      *
      * @var array
-     * @access protected
      */
     protected $sigsEnd = array(
         self::RESPONSE_END,
@@ -122,7 +112,6 @@ class Client
      * A VALUE intro - used to detect VALUES response of get() & gets().
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_VALUE = 'VALUE';
@@ -131,7 +120,6 @@ class Client
      * A STAT intro - used to detect STAT response of <stats>.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_STAT = 'STAT';
@@ -140,106 +128,94 @@ class Client
      * A STAT VALUE intro - used to detect STAT VALUE response of <stats>.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_ITEM = 'ITEM';
 
     /**
-     * Response END
+     * Response END.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_END = 'END';
 
     /**
-     * Response DELETED
+     * Response DELETED.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_DELETED = 'DELETED';
 
     /**
-     * Response NOT_FOUND
+     * Response NOT_FOUND.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_NOT_FOUND = 'NOT_FOUND';
 
     /**
-     * Response OK
+     * Response OK.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_OK = 'OK';
 
     /**
-     * Response EXISTS
+     * Response EXISTS.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_EXISTS = 'EXISTS';
 
     /**
-     * Response ERROR
+     * Response ERROR.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_ERROR = 'ERROR';
 
     /**
-     * Response RESET
+     * Response RESET.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_RESET = 'RESET';
 
     /**
-     * Response STORED
+     * Response STORED.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_STORED = 'STORED';
 
     /**
-     * Response NOT_STORED
+     * Response NOT_STORED.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_NOT_STORED = 'NOT_STORED';
 
     /**
-     * Response VERSION
+     * Response VERSION.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_VERSION = 'VERSION';
 
     /**
-     * Response CLIENT_ERROR
+     * Response CLIENT_ERROR.
      *
      * @var string
-     * @access public
      * @const
      */
     const RESPONSE_CLIENT_ERROR = 'CLIENT_ERROR';
@@ -248,7 +224,6 @@ class Client
      * A collection of allowed commands which can be send to Memcached instance.
      *
      * @var array
-     * @access protected
      */
     protected $allowedCommands = array(
         self::COMMAND_SET,
@@ -273,7 +248,6 @@ class Client
      * The command for setting a key value pair to a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_SET = 'set';
@@ -282,7 +256,6 @@ class Client
      * Command for adding data to if not already exists.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_ADD = 'add';
@@ -291,7 +264,6 @@ class Client
      * Command for replacing a value with another one.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_REPLACE = 'replace';
@@ -300,7 +272,6 @@ class Client
      * Command for append data to existing data of an existing key.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_APPEND = 'append';
@@ -309,7 +280,6 @@ class Client
      * Command for prepend data to existing data of an existing key.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_PREPEND = 'prepend';
@@ -318,7 +288,6 @@ class Client
      * Command for cas.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_CAS = 'cas';
@@ -327,7 +296,6 @@ class Client
      * Command for incr.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_INCR = 'incr';
@@ -336,7 +304,6 @@ class Client
      * Command for decr.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_DECR = 'decr';
@@ -345,7 +312,6 @@ class Client
      * Command for retrieving a key and its value from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_GET = 'get';
@@ -354,7 +320,6 @@ class Client
      * Command for retrieving multiple keys and the values from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_GETS = 'gets';
@@ -363,7 +328,6 @@ class Client
      * The command for deleting a key value pair from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_DELETE = 'delete';
@@ -372,7 +336,6 @@ class Client
      * The command for touching a key value pair from a Memcached instance to change expiration time.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_TOUCH = 'touch';
@@ -381,7 +344,6 @@ class Client
      * The command for retrieving the version from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_VERSION = 'version';
@@ -390,7 +352,6 @@ class Client
      * The command for retrieving the stats from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS = 'stats';
@@ -399,7 +360,6 @@ class Client
      * The command for flushing all keys from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_FLUSH_ALL = 'flush_all';
@@ -408,7 +368,6 @@ class Client
      * The command which will fail for unit testing.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_PHPUNIT = 'phpunit';
@@ -417,7 +376,6 @@ class Client
      * The command for retrieving the stats settings from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_SETTINGS = 'settings';
@@ -426,7 +384,6 @@ class Client
      * The command for retrieving the stats items from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_ITEMS = 'items';
@@ -435,7 +392,6 @@ class Client
      * The command for retrieving the stats slabs from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_SLABS = 'slabs';
@@ -444,7 +400,6 @@ class Client
      * The command for retrieving the stats reset from a Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_RESET = 'reset';
@@ -453,7 +408,6 @@ class Client
      * Command for retrieving stats sizes.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_SIZES = 'sizes';
@@ -462,7 +416,6 @@ class Client
      * Command for retrieving stats conns.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_CONNS = 'conns';
@@ -471,7 +424,6 @@ class Client
      * Command for retrieving stats cachedump.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_STATS_CACHEDUMP = 'cachedump';
@@ -480,7 +432,6 @@ class Client
      * The settings stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_SETTINGS = self::COMMAND_STATS_SETTINGS;
@@ -489,7 +440,6 @@ class Client
      * The items stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_ITEMS = self::COMMAND_STATS_ITEMS;
@@ -498,7 +448,6 @@ class Client
      * The slabs stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_SLABS = self::COMMAND_STATS_SLABS;
@@ -507,7 +456,6 @@ class Client
      * The reset stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_RESET = self::COMMAND_STATS_RESET;
@@ -516,7 +464,6 @@ class Client
      * The conns stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_CONNS = self::COMMAND_STATS_CONNS;
@@ -525,7 +472,6 @@ class Client
      * The cachedump stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_CACHEDUMP = self::COMMAND_STATS_CACHEDUMP;
@@ -534,7 +480,6 @@ class Client
      * The sizes stats type.
      *
      * @var string
-     * @access public
      * @const
      */
     const STATS_TYPE_SIZES = self::COMMAND_STATS_SIZES;
@@ -543,7 +488,6 @@ class Client
      * Number of bytes fetched in one cycle from socket.
      *
      * @var int
-     * @access public
      * @const
      */
     const SOCKET_READ_FETCH_BYTES = 256;
@@ -552,7 +496,6 @@ class Client
      * Maximum items to fetch if not overridden.
      *
      * @var int
-     * @access public
      * @const
      */
     const CACHEDUMP_ITEMS_MAX = PHP_INT_MAX;
@@ -561,7 +504,6 @@ class Client
      * The default compressor.
      *
      * @var string
-     * @access public
      * @const
      */
     const DEFAULT_COMPRESSOR = 'SMAZ';
@@ -570,7 +512,6 @@ class Client
      * The default port of a host added.
      *
      * @var int
-     * @access public
      * @const
      */
     const DEFAULT_PORT = 11211;
@@ -579,7 +520,6 @@ class Client
      * The default timeout when connecting to instance.
      *
      * @var null
-     * @access public
      * @const
      */
     const DEFAULT_TIMEOUT = null;
@@ -588,7 +528,6 @@ class Client
      * The separator for building commandline for Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_SEPARATOR = ' ';
@@ -597,7 +536,6 @@ class Client
      * The terminator used to terminate a commandline send to Memcached instance.
      *
      * @var string
-     * @access public
      * @const
      */
     const COMMAND_TERMINATOR = "\r\n";
@@ -606,7 +544,6 @@ class Client
      * The default and generic Memcached error.
      *
      * @var string
-     * @access public
      * @const
      */
     const ERROR = 'ERROR';
@@ -615,7 +552,6 @@ class Client
      * The Memcached error for client error.
      *
      * @var string
-     * @access public
      * @const
      */
     const ERROR_CLIENT = 'CLIENT_ERROR';
@@ -624,7 +560,6 @@ class Client
      * The Memcached error for server error.
      *
      * @var string
-     * @access public
      * @const
      */
     const ERROR_SERVER = 'SERVER_ERROR';
@@ -633,17 +568,15 @@ class Client
      * The default bitmask to detect serialization support.
      *
      * @var int
-     * @access public
      * @const
      */
     const FLAG_DEFAULT = 4;
 
     /**
-     * Flags for PHP types
+     * Flags for PHP types.
      *
      * (Memcached PHP extension compatible)
      *
-     * @access public
      * @const
      */
     const FLAG_DECIMAL_STRING = 0;  // PHP Type "string"            Mask - Decimal: 0 - Bit(s): 0
@@ -657,7 +590,7 @@ class Client
     const FLAG_DECIMAL_SERIALIZED = 4;  // PHP Type "object" || "array" Mask - Decimal: 4 - Bit(s): 4
 
     /**
-     * Memcached Constant Values
+     * Memcached Constant Values.
      */
     const MEMCACHED_SUCCESS = 0;
 
@@ -764,7 +697,7 @@ class Client
      * Constructor.
      *
      * @param string   $host         The host name this instance works on
-     * @param int      $port         The port to connect to.
+     * @param int      $port         the port to connect to
      * @param int|null $timeout      The timeout for connecting in seconds
      * @param string   $persistentId By default the Memcached instances are destroyed at the end of the request.
      *                               To create an instance that persists between requests, use persistent_id to specify
@@ -773,8 +706,8 @@ class Client
      * @param bool     $compression  TRUE to enable compression (default), FALSE to disable
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return Client
-     * @access public
      */
     public function __construct(
         $host = null,
@@ -782,8 +715,7 @@ class Client
         $timeout = self::DEFAULT_TIMEOUT,
         $persistentId = null,
         $compression = true
-    )
-    {
+    ) {
         // Extract host and port from host string
         if ($host !== null) {
             $this
@@ -816,11 +748,9 @@ class Client
     /**
      * Setter for host.
      *
-     * @param string $host The host to set.
+     * @param string $host the host to set
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return void
-     * @access public
      */
     public function setHost($host)
     {
@@ -830,11 +760,11 @@ class Client
     /**
      * Setter for host.
      *
-     * @param string $host The host to set.
+     * @param string $host the host to set
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access public
      */
     public function host($host)
     {
@@ -847,8 +777,8 @@ class Client
      * Getter for host.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return string The host if set, otherwise NULL.
-     * @access public
+     *
+     * @return string the host if set, otherwise NULL
      */
     public function getHost()
     {
@@ -858,11 +788,9 @@ class Client
     /**
      * Setter for port.
      *
-     * @param string $port The port to set.
+     * @param string $port the port to set
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return void
-     * @access public
      */
     public function setPort($port)
     {
@@ -872,11 +800,11 @@ class Client
     /**
      * Setter for port.
      *
-     * @param string $port The port to set.
+     * @param string $port the port to set
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access public
      */
     public function port($port)
     {
@@ -889,8 +817,8 @@ class Client
      * Getter for port.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return string The port if set, otherwise NULL.
-     * @access public
+     *
+     * @return string the port if set, otherwise NULL
      */
     public function getPort()
     {
@@ -903,8 +831,6 @@ class Client
      * @param int $timeout Timeout for connecting in seconds!!!
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return void
-     * @access public
      */
     public function setTimeout($timeout)
     {
@@ -917,8 +843,8 @@ class Client
      * @param int $timeout Timeout for connecting in seconds!!!
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access public
      */
     public function timeout($timeout)
     {
@@ -931,8 +857,8 @@ class Client
      * Getter for timeout.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return integer The timeout in seconds or NULL
-     * @access public
+     *
+     * @return int The timeout in seconds or NULL
      */
     public function getTimeout()
     {
@@ -947,8 +873,8 @@ class Client
      * @param int|null $timeout Timeout in seconds
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return resource|null The resource (socket) on success, otherwise NULL
-     * @access public
      *
      * @throws \Clickalicious\Memcached\Php\Exception
      */
@@ -1012,8 +938,9 @@ class Client
      * @param string $data    The data to pass with command
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed|array The result from Memcached daemon
-     * @access public
+     *
      * @throws \Clickalicious\Memcached\Php\Exception
      */
     public function send($command, $data = '')
@@ -1039,7 +966,6 @@ class Client
 
         // Fetch while receiving data ...
         while ((!feof($socket))) {
-
             // Fetch Bytes from socket ...
             $buffer .= fgets($socket, self::SOCKET_READ_FETCH_BYTES);
 
@@ -1049,7 +975,7 @@ class Client
             }
 
             foreach ($this->sigsEnd as $sigEnd) {
-                if (preg_match('/^' . $sigEnd . '/imu', $buffer)) {
+                if (preg_match('/^'.$sigEnd.'/imu', $buffer)) {
                     break 2;
                 }
             }
@@ -1062,7 +988,7 @@ class Client
                     'Error "%s" while sending command "%s" to host "%s"',
                     $this->getLastResponse(),
                     $command,
-                    $this->getHost() . ':' . $this->getPort()
+                    $this->getHost().':'.$this->getPort()
                 )
             );
         }
@@ -1078,33 +1004,33 @@ class Client
      * @param int    $expiration When to expire
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The result of operation
-     * @access public
      * @codeCoverageIgnore
      */
     public function touch($key, $expiration)
     {
         /**
-         * touch <key> <exptime> [noreply]\r\n
+         * touch <key> <exptime> [noreply]\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_TOUCH . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_TOUCH.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_TOUCH, $data);
     }
 
     /**
-     * Proxy to: incr()
+     * Proxy to: incr().
      *
      * @param string $key    The key to increment
      * @param int    $offset How much to increment
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The result of operation
-     * @access public
      */
     public function increment($key, $offset = 1)
     {
@@ -1119,19 +1045,19 @@ class Client
      * @param int    $offset How much to increment
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The result of operation
-     * @access public
      */
     public function incr($key, $offset = 1)
     {
         /**
-         * incr <key> <value> [noreply]\r\n
+         * incr <key> <value> [noreply]\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_INCR . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $offset . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_INCR.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $offset.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_INCR, $data);
     }
@@ -1143,8 +1069,8 @@ class Client
      * @param int    $offset How much to decrement
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The result of operation
-     * @access public
      */
     public function decrement($key, $offset = 1)
     {
@@ -1159,19 +1085,19 @@ class Client
      * @param int    $offset How much to decrement
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The result of operation
-     * @access public
      */
     public function decr($key, $offset = 1)
     {
         /**
-         * decr <key> <value> [noreply]\r\n
+         * decr <key> <value> [noreply]\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_DECR . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $offset . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_DECR.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $offset.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_DECR, $data);
     }
@@ -1187,14 +1113,14 @@ class Client
      * @param int|null $bytes      The length in bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command set
-     * @access public
      */
     public function set($key, $value, $expiration = 0, $flags = 0, $bytes = null)
     {
         /**
          * set <key> <flags> <exptime> <bytes> [noreply]\r\n
-         * <value>\r\n
+         * <value>\r\n.
          */
 
         // Run through our serializer
@@ -1208,12 +1134,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_SET . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $flags . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_SEPARATOR .
-                $bytes . self::COMMAND_TERMINATOR .
-                $value . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_SET.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $flags.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_SEPARATOR.
+                $bytes.self::COMMAND_TERMINATOR.
+                $value.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_SET, $data);
     }
@@ -1230,14 +1156,14 @@ class Client
      * @param int|null $bytes      The length in bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command add
-     * @access public
      */
     public function add($key, $value, $expiration = 0, $flags = 0, $bytes = null)
     {
         /**
          * add <key> <flags> <exptime> <bytes> [noreply]\r\n
-         * <value>\r\n
+         * <value>\r\n.
          */
 
         // Run through our serializer
@@ -1251,12 +1177,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_ADD . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $flags . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_SEPARATOR .
-                $bytes . self::COMMAND_TERMINATOR .
-                $value . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_ADD.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $flags.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_SEPARATOR.
+                $bytes.self::COMMAND_TERMINATOR.
+                $value.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_ADD, $data);
     }
@@ -1273,14 +1199,14 @@ class Client
      * @param int|null $bytes      The length in bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command replace
-     * @access public
      */
     public function replace($key, $value, $expiration = 0, $flags = 0, $bytes = null)
     {
         /**
          * replace <key> <flags> <exptime> <bytes> [noreply]\r\n
-         * <value>\r\n
+         * <value>\r\n.
          */
 
         // Run through our serializer
@@ -1294,12 +1220,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_REPLACE . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $flags . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_SEPARATOR .
-                $bytes . self::COMMAND_TERMINATOR .
-                $value . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_REPLACE.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $flags.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_SEPARATOR.
+                $bytes.self::COMMAND_TERMINATOR.
+                $value.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_REPLACE, $data);
     }
@@ -1315,26 +1241,26 @@ class Client
      * @param int|null $bytes      The length in bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command append
-     * @access public
      */
     public function append($key, $value, $expiration = 0, $flags = self::FLAG_DEFAULT, $bytes = null)
     {
         /**
          * replace <key> <flags> <exptime> <bytes> [noreply]\r\n
-         * <value>\r\n
+         * <value>\r\n.
          */
 
         // Calculate bytes if not precalculated
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_APPEND . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $flags . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_SEPARATOR .
-                $bytes . self::COMMAND_TERMINATOR .
-                $value . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_APPEND.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $flags.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_SEPARATOR.
+                $bytes.self::COMMAND_TERMINATOR.
+                $value.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_APPEND, $data);
     }
@@ -1350,26 +1276,26 @@ class Client
      * @param int|null $bytes      The length in bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command prepend
-     * @access public
      */
     public function prepend($key, $value, $expiration = 0, $flags = self::FLAG_DEFAULT, $bytes = null)
     {
         /**
          * replace <key> <flags> <exptime> <bytes> [noreply]\r\n
-         * <value>\r\n
+         * <value>\r\n.
          */
 
         // Calculate bytes if not precalculated
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_PREPEND . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $flags . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_SEPARATOR .
-                $bytes . self::COMMAND_TERMINATOR .
-                $value . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_PREPEND.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $flags.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_SEPARATOR.
+                $bytes.self::COMMAND_TERMINATOR.
+                $value.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_PREPEND, $data);
     }
@@ -1389,14 +1315,14 @@ class Client
      * @param int|null $bytes      The length in bytes
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command cas
-     * @access public
      */
     public function cas($token, $key, $value, $expiration = 0, $flags = self::FLAG_DEFAULT, $bytes = null)
     {
         /**
          * cas <key> <flags> <exptime> <bytes> <cas unique> [noreply]\r\n
-         * <value>\r\n
+         * <value>\r\n.
          */
 
         // Run through our serializer
@@ -1410,13 +1336,13 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_CAS . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_SEPARATOR .
-                $flags . self::COMMAND_SEPARATOR .
-                $expiration . self::COMMAND_SEPARATOR .
-                $bytes . self::COMMAND_SEPARATOR .
-                $token . self::COMMAND_TERMINATOR .
-                $value . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_CAS.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_SEPARATOR.
+                $flags.self::COMMAND_SEPARATOR.
+                $expiration.self::COMMAND_SEPARATOR.
+                $bytes.self::COMMAND_SEPARATOR.
+                $token.self::COMMAND_TERMINATOR.
+                $value.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_CAS, $data);
     }
@@ -1424,22 +1350,22 @@ class Client
     /**
      * Returns the response for passed key.
      *
-     * @param string $key      The key to return response for.
+     * @param string $key      the key to return response for
      * @param bool   $metadata TRUE to return metadata like lifetime ... as well, FALSE to return value only
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command get
-     * @access public
      */
     public function get($key, $metadata = false)
     {
         /**
-         * get <key>*\r\n
+         * get <key>*\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_GET . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_GET.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_TERMINATOR;
 
         $result = $this->send(self::COMMAND_GET, $data);
 
@@ -1455,25 +1381,25 @@ class Client
     /**
      * Returns the response for passed keys.
      *
-     * @param array $keys     The keys to return response for.
+     * @param array $keys     the keys to return response for
      * @param bool  $metadata TRUE to return metadata like lifetime ... as well, FALSE to return value only
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command get
-     * @access public
      */
     public function gets(array $keys, $metadata = false)
     {
         /**
-         * gets <key>*\r\n
+         * gets <key>*\r\n.
          */
 
         // Build key request string
         $keys = implode(self::COMMAND_SEPARATOR, $keys);
 
         // Build packet to send ...
-        $data = self::COMMAND_GETS . self::COMMAND_SEPARATOR .
-                $keys . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_GETS.self::COMMAND_SEPARATOR.
+                $keys.self::COMMAND_TERMINATOR;
 
         $result = $this->send(self::COMMAND_GETS, $data);
 
@@ -1488,21 +1414,21 @@ class Client
     /**
      * Deletes an element/key (+ its data) from Memcached instance.
      *
-     * @param string $key The key to delete.
+     * @param string $key the key to delete
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command delete
-     * @access public
      */
     public function delete($key)
     {
         /**
-         * delete <key> [noreply]\r\n
+         * delete <key> [noreply]\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_DELETE . self::COMMAND_SEPARATOR .
-                $key . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_DELETE.self::COMMAND_SEPARATOR.
+                $key.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_DELETE, $data);
     }
@@ -1510,42 +1436,41 @@ class Client
     /**
      * Stats - sends the stats command with default or custom type to Memcached instance.
      *
-     * @param string $type      The type to send to Memcached instance.
-     * @param string $argument1 Optional additional argument.
-     * @param string $argument2 Optional additional argument.
+     * @param string $type      the type to send to Memcached instance
+     * @param string $argument1 optional additional argument
+     * @param string $argument2 optional additional argument
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command stats
-     * @access public
      */
     public function stats($type = '', $argument1 = '', $argument2 = '')
     {
-        /**
+        /*
          * stats <type> [noreply]\r\n
          * [TYPES <reset, malloc, maps, cachedump, slabs, items, sizes>]
          */
 
         if ($type !== '') {
-            $type = self::COMMAND_SEPARATOR . $type;
+            $type = self::COMMAND_SEPARATOR.$type;
         }
 
         if ($argument1 !== '') {
-            $argument1 = self::COMMAND_SEPARATOR . $argument1;
+            $argument1 = self::COMMAND_SEPARATOR.$argument1;
         }
 
         if ($argument2 !== '') {
-            $argument2 = self::COMMAND_SEPARATOR . $argument2;
+            $argument2 = self::COMMAND_SEPARATOR.$argument2;
         }
 
         // Build packet to send ...
-        $data = self::COMMAND_STATS . $type .
-                $argument1 .
-                $argument2 .
+        $data = self::COMMAND_STATS.$type.
+                $argument1.
+                $argument2.
                 self::COMMAND_TERMINATOR;
 
         // Generic stats requires us to fetch as long as data arrives ...
         if ($type === '') {
-
             // Initial fetch ...
             $result = $this->send(self::COMMAND_STATS, $data);
 
@@ -1559,20 +1484,17 @@ class Client
                     $result[$key] = $value;
                 }
             }
-        } elseif ($type === self::COMMAND_SEPARATOR . self::STATS_TYPE_SLABS) {
-
+        } elseif ($type === self::COMMAND_SEPARATOR.self::STATS_TYPE_SLABS) {
             // Initial fetch ...
             $result = $this->send(self::COMMAND_STATS, $data);
 
             // Now read until whole structure contains finally "active_slabs" key!
             while (isset($result['active_slabs']) === false) {
-
                 // Issue stat command ...
                 $memory = $this->send(self::COMMAND_STATS, $data);
 
                 // Iterate Slabs from response
                 foreach ($memory as $key => $value) {
-
                     // Now check for slabId or meta-data key. Slab = numeric, otherwise String.
                     if (is_numeric($key) === true) {
                         // Slab!
@@ -1608,27 +1530,27 @@ class Client
      * Version - sends the version command to Memcached instance and returns the result.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command version
-     * @access public
      */
     public function version()
     {
         /**
-         * version\r\n
+         * version\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_VERSION . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_VERSION.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_VERSION, $data);
     }
 
     /**
-     * Proxy to: flush_all()
+     * Proxy to: flush_all().
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command version
-     * @access public
      */
     public function flush()
     {
@@ -1639,17 +1561,17 @@ class Client
      * Flush - sends the flush_all command to Memcached instance and returns the result.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return mixed The response for command version
-     * @access public
      */
     public function flush_all()
     {
         /**
-         * flush_all\r\n
+         * flush_all\r\n.
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_FLUSH_ALL . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_FLUSH_ALL.self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_FLUSH_ALL, $data);
     }
@@ -1664,8 +1586,6 @@ class Client
      * @param bool $compression TRUE or FALSE
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return void
-     * @access public
      */
     protected function setCompression($compression)
     {
@@ -1678,8 +1598,8 @@ class Client
      * @param bool $compression TRUE or FALSE
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access public
      */
     protected function compression($compression)
     {
@@ -1692,8 +1612,8 @@ class Client
      * Getter for compression.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool TRUE if compression is enabled, otherwise FALSE
-     * @access public
      * @codeCoverageIgnore
      */
     protected function getCompression()
@@ -1707,8 +1627,6 @@ class Client
      * @param string $persistentId The persistent Id to store
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return void
-     * @access protected
      */
     protected function setPersistentId($persistentId)
     {
@@ -1721,8 +1639,8 @@ class Client
      * @param string $persistentId The persistent Id to store
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access protected
      */
     protected function persistentId($persistentId)
     {
@@ -1735,8 +1653,8 @@ class Client
      * Getter for persistent Id.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The persistent Id set at instantiation or generated by this instance
-     * @access protected
      */
     protected function getPersistentId()
     {
@@ -1749,14 +1667,14 @@ class Client
      * @param int $response The response
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return boolean TRUE if response valid (0) was set, otherwise FALSE
-     * @access protected
+     *
+     * @return bool TRUE if response valid (0) was set, otherwise FALSE
      */
     protected function setLastResponse($response)
     {
         $this->lastResponse = $response;
 
-        return ($response === 0);
+        return $response === 0;
     }
 
     /**
@@ -1765,8 +1683,8 @@ class Client
      * @param int $response The response array (command => buffer)
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access protected
      */
     protected function lastResponse($response)
     {
@@ -1779,8 +1697,8 @@ class Client
      * Getter for lastResponse.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return int The last response
-     * @access protected
      */
     protected function getLastResponse()
     {
@@ -1791,8 +1709,8 @@ class Client
      * Simple generic hashing of dynamic input.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The calculated UUID
-     * @access protected
      */
     protected function uuid()
     {
@@ -1807,28 +1725,28 @@ class Client
      * @param mixed $value The value to check
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool TRUE if is serializable, otherwise FALSE
-     * @access public
      */
     protected function isSerializable($value)
     {
         $type = gettype($value);
 
-        return (
-            $type !== "string" &&      // Mask - Decimal: 0 - Bit(s): 0
-            $type !== "integer" &&      // Mask - Decimal: 1 - Bit(s): 1
-            $type !== "double" &&      // Mask - Decimal: 2 - Bit(s): 2
-            $type !== "boolean"         // Mask - Decimal: 3 - Bit(s): 1 & 2
+        return
+            $type !== 'string' &&      // Mask - Decimal: 0 - Bit(s): 0
+            $type !== 'integer' &&      // Mask - Decimal: 1 - Bit(s): 1
+            $type !== 'double' &&      // Mask - Decimal: 2 - Bit(s): 2
+            $type !== 'boolean'         // Mask - Decimal: 3 - Bit(s): 1 & 2
             // Mask - Decimal: 4 - Bit(s): 4
-        );
+        ;
     }
 
     /**
      * Resets state to clean fresh as new instantiated.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return $this Instance for chaining
-     * @access protected
      */
     protected function reset()
     {
@@ -1844,8 +1762,9 @@ class Client
      * @param array  $lines  The buffer separated into single lines in a collection
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return array|bool Response parsed as collection, otherwise FALSE (ERROR)
-     * @access protected
+     *
      * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function parseReadResponse($buffer, array $lines)
@@ -1862,7 +1781,7 @@ class Client
              * Try to fetch metadata. Why try? Cause we can receive multiple lines for a value. If the current key
              * reference to a simple value like an integer (65000 for example) then we have one line <meta> data and
              * one line <value> data. But if the value contains a "\r\n" itself it breaks this simple assumption so
-             * that we must
+             * that we must.
              */
             $metaData = explode(self::COMMAND_SEPARATOR, $lines[$line]);
 
@@ -1878,15 +1797,15 @@ class Client
             // Value must be at least starting on next line - and can continue to spawn on n following lines ...
             $key = $metaData[1];
             $value = '';
-            $flags = (int)$metaData[2];
+            $flags = (int) $metaData[2];
             $length = $metaData[3];
-            $cas = (isset($metaData[4])) ? (float)$metaData[4] : null;
+            $cas = (isset($metaData[4])) ? (float) $metaData[4] : null;
             $frame = 0;
 
             if ($length > 0) {
                 // Fetch whole & complete value!
                 while (strlen($value) < $length) {
-                    ++ $frame;
+                    ++$frame;
                     if ($lines[$line + $frame] === self::RESPONSE_END && !isset($lines[$line + $frame + 1])) {
                         $frame_break = true;
                         break;
@@ -1901,14 +1820,14 @@ class Client
             $result[$key] = array(
                 // 1st bit set = we use un-/serialize to keep the values intact ...
                 //'value' => $value,
-                'key'  => $key,
+                'key' => $key,
                 'meta' => array(
-                    'key'    => $key,
-                    'flags'  => $flags,
+                    'key' => $key,
+                    'flags' => $flags,
                     'length' => $length,
-                    'cas'    => $cas,
-                    'frames' => $frame
-                )
+                    'cas' => $cas,
+                    'frames' => $frame,
+                ),
             );
 
             if ($this->isFlagSet($flags, self::FLAG_DECIMAL_SERIALIZED) === true) {
@@ -1947,7 +1866,7 @@ class Client
     }
 
     /**
-     * Parser for response of write operations like: <set> <add> <replace> <append> <prepend> <cas>
+     * Parser for response of write operations like: <set> <add> <replace> <append> <prepend> <cas>.
      *
      * - "STORED\r\n"     to indicate success.
      * - "NOT_STORED\r\n" to indicate the data was not stored, but not because of an error. This normally means that the
@@ -1960,13 +1879,13 @@ class Client
      * @param array  $lines  Response split into single lines
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool TRUE if write operation was successful (STORED), otherwise (ALL OTHER CASE) FALSE
-     * @access protected
      */
     protected function parseWriteResponse($buffer, array $lines)
     {
         // We assume that everything beside "STORED" is an error case ...
-        $result = ($buffer === self::RESPONSE_STORED . self::COMMAND_TERMINATOR);
+        $result = ($buffer === self::RESPONSE_STORED.self::COMMAND_TERMINATOR);
 
         // Successful?
         if ($result === true) {
@@ -1996,25 +1915,25 @@ class Client
     }
 
     /**
-     * Parser for response of flush operation: <flush_all>
+     * Parser for response of flush operation: <flush_all>.
      *
      * SUCCESS = RESPONSE = "OK"
      * FAILED  = RESPONSE = "?"
      *
-     * @param string $buffer We do only need the buffer.
+     * @param string $buffer we do only need the buffer
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool TRUE if flush operation was successful (STORED), otherwise (ALL OTHER CASE) FALSE
-     * @access protected
      */
     protected function parseFlushResponse($buffer)
     {
         // We assume that everything beside "OK" is an error case ...
-        return ($buffer === self::RESPONSE_OK . self::COMMAND_TERMINATOR);
+        return $buffer === self::RESPONSE_OK.self::COMMAND_TERMINATOR;
     }
 
     /**
-     * Parser for response of delete operation: <delete>
+     * Parser for response of delete operation: <delete>.
      *
      * SUCCESS = RESPONSE = "DELETED"
      * FAILED  = RESPONSE = "NOT_FOUND"
@@ -2022,8 +1941,8 @@ class Client
      * @param array $lines Response split into single lines
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool TRUE if delete operation was successful (STORED), otherwise (ALL OTHER CASE) FALSE
-     * @access protected
      */
     protected function parseDeleteResponse(array $lines)
     {
@@ -2046,13 +1965,14 @@ class Client
     /**
      * Parser for response of stats* operation: <stats*>
      * Try to fetch in this way: split descriptor/key from value - each stats entry is on one line
-     * STAT <key> <value>\r\n
+     * STAT <key> <value>\r\n.
      *
      * @param array $lines The buffer separated into single lines in a collection
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return array|bool The stats as collection indexed by hostname?, otherwise FALSE (ERROR)
-     * @access protected
+     *
      * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function parseStatsResponse(array $lines)
@@ -2103,9 +2023,9 @@ class Client
                 $key = array_shift($metaData);
                 $value = implode(self::COMMAND_SEPARATOR, $metaData);
                 $result[$key] = $value;
-            };
+            }
 
-            ++ $line;
+            ++$line;
         }
 
         $this->lastResponse(self::MEMCACHED_SUCCESS);
@@ -2122,8 +2042,8 @@ class Client
      * @param array $lines Response split into single lines
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string|bool The version as string if valid, otherwise FALSE
-     * @access protected
      */
     protected function parseVersionResponse(array $lines)
     {
@@ -2150,8 +2070,8 @@ class Client
      * @param array  $lines  Response split into single lines
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string|bool The version as string if valid, otherwise FALSE
-     * @access protected
      */
     protected function parseArithmeticResponse($buffer, array $lines)
     {
@@ -2159,11 +2079,11 @@ class Client
         $metaData = explode(self::COMMAND_SEPARATOR, $lines[0]);
 
         // Check buffer for failure response
-        if ($buffer === self::RESPONSE_NOT_FOUND . self::COMMAND_TERMINATOR) {
+        if ($buffer === self::RESPONSE_NOT_FOUND.self::COMMAND_TERMINATOR) {
             $result = $this->setLastResponse(self::MEMCACHED_NOTFOUND);
         } else {
             // Insert the response (= new value) as result
-            $result = (float)$metaData[0];
+            $result = (float) $metaData[0];
         }
 
         return $result;
@@ -2175,19 +2095,19 @@ class Client
      * @param string $buffer The buffer to check
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool TRUE on success, otherwise FALSE if response contains ERROR(s)
-     * @access protected
      */
     protected function checkResponse($buffer)
     {
         // Check for HARD errors. Not an unsuccessful response from command -> here = real errors
-        if (preg_match('/' . self::ERROR . '(.*)\R/mu', $buffer, $error) > 0) {
+        if (preg_match('/'.self::ERROR.'(.*)\R/mu', $buffer, $error) > 0) {
             // ERROR\r\n
             $result = self::MEMCACHED_FAILURE;
-        } elseif (preg_match('/' . self::ERROR_CLIENT . '(.*)\R/mu', $buffer, $error) > 0) {
+        } elseif (preg_match('/'.self::ERROR_CLIENT.'(.*)\R/mu', $buffer, $error) > 0) {
             // CLIENT_ERROR\r\n
             $result = self::RESPONSE_CLIENT_ERROR;
-        } elseif (preg_match('/' . self::ERROR_SERVER . '(.*)\R/mu', $buffer, $error) > 0) {
+        } elseif (preg_match('/'.self::ERROR_SERVER.'(.*)\R/mu', $buffer, $error) > 0) {
             // SERVER_ERROR\r\n
             $result = self::ERROR_SERVER;
         } else {
@@ -2199,14 +2119,15 @@ class Client
     }
 
     /**
-     * Parses a response from a Memcached daemon
+     * Parses a response from a Memcached daemon.
      *
-     * @param string $command The command which has triggered the buffer response from instance.
-     * @param string $buffer  The buffer to parse.
+     * @param string $command the command which has triggered the buffer response from instance
+     * @param string $buffer  the buffer to parse
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return bool|mixed FALSE on error, otherwise parsed response
-     * @access protected
+     *
      * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function parseResponse($command, $buffer)
@@ -2269,8 +2190,9 @@ class Client
      * @param mixed $value The value to serialize
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return array ...
-     * @access protected
+     *
      * @throws \Clickalicious\Memcached\Php\Exception
      */
     protected function serializeValue($value)
@@ -2312,22 +2234,23 @@ class Client
      * Checks if a decimal flag ($flag) is set in passed ($flags).
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @param integer $flags
-     * @param integer $flag
+     *
+     * @param int $flags
+     * @param int $flag
+     *
      * @return bool TRUE if flag is set in flags, otherwise FALSE
-     * @access protected
      */
     protected function isFlagSet($flags, $flag)
     {
-        return (($flags & $flag) === $flag);
+        return ($flags & $flag) === $flag;
     }
 
     /**
      * Sets a decimal flag ($lfag) in passed flags ($flags).
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return int The flags after setting new flag
-     * @access protected
      */
     protected function setFlag($flags, $flag)
     {
@@ -2336,4 +2259,3 @@ class Client
         return $flags;
     }
 }
-

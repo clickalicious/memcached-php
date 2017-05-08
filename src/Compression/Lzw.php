@@ -2,7 +2,7 @@
 
 /**
  * (The MIT license)
- * Copyright 2017 clickalicious, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -30,7 +30,7 @@ namespace Clickalicious\Memcached\Php\Compression;
 use Clickalicious\Memcached\Php\Exception;
 
 /**
- * Class Lzw
+ * Class Lzw.
  *
  * Lzw.php - LZW-compression (LZW = Lempel–Ziv–Welch).
  * http://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Welch
@@ -39,7 +39,6 @@ use Clickalicious\Memcached\Php\Exception;
  *
  * Originally from: https://code.google.com/p/smt2/
  *
- * @package Clickalicious\Memcached\Php\Compression
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
 class Lzw implements CompressionInterface
@@ -48,8 +47,9 @@ class Lzw implements CompressionInterface
      * Constructor.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return Lzw
-     * @access public
+     *
      * @throws Exception
      */
     public function __construct()
@@ -67,33 +67,32 @@ class Lzw implements CompressionInterface
      * @param string $buffer The buffer to compress
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The compressed input
-     * @access protected
      */
     public function compress($buffer)
     {
         $dictionary = array();
-        $data       = str_split($buffer . '');
-        $out        = array();
-        $phrase     = $data[0];
-        $code       = 256;
-        $countData  = count($data);
+        $data = str_split($buffer.'');
+        $out = array();
+        $phrase = $data[0];
+        $code = 256;
+        $countData = count($data);
 
         for ($i = 1; $i < $countData; ++$i) {
             $currentCharacter = $data[$i];
 
             if (isset($dictionary[$phrase.$currentCharacter])) {
                 $phrase .= $currentCharacter;
-
             } else {
-                $out[] = strlen($phrase) > 1 ? $dictionary[$phrase] : $this->charCodeAt($phrase,0);
+                $out[] = strlen($phrase) > 1 ? $dictionary[$phrase] : $this->charCodeAt($phrase, 0);
                 $dictionary[$phrase.$currentCharacter] = $code;
-                $code++;
+                ++$code;
                 $phrase = $currentCharacter;
             }
         }
 
-        $out[]    = strlen($phrase) > 1 ? $dictionary[$phrase] : $this->charCodeAt($phrase,0);
+        $out[] = strlen($phrase) > 1 ? $dictionary[$phrase] : $this->charCodeAt($phrase, 0);
         $countOut = count($out);
 
         for ($i = 0; $i < $countOut; ++$i) {
@@ -109,35 +108,34 @@ class Lzw implements CompressionInterface
      * @param string $buffer The buffer to decompress
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The decompressed input
-     * @access protected
      */
     public function decompress($buffer)
     {
-        $dictionary       = array();
-        $data             = $this->multibyteStringSplit($buffer);
+        $dictionary = array();
+        $data = $this->multibyteStringSplit($buffer);
 
         $currentCharacter = $data[0];
-        $oldPhrase        = $currentCharacter;
-        $out              = array($currentCharacter);
-        $code             = 256;
-        $countData        = count($data);
+        $oldPhrase = $currentCharacter;
+        $out = array($currentCharacter);
+        $code = 256;
+        $countData = count($data);
 
         for ($i = 1; $i < $countData; ++$i) {
             $currCode = $this->uniord($data[$i]);
 
             if ($currCode < 256) {
                 $phrase = $data[$i];
-
             } else {
                 $phrase = isset($dictionary[$currCode]) ? $dictionary[$currCode] : $oldPhrase.$currentCharacter;
             }
 
-            $out[]             = $phrase;
-            $currentCharacter  = $phrase[0];
-            $dictionary[$code] = $oldPhrase . $currentCharacter;
+            $out[] = $phrase;
+            $currentCharacter = $phrase[0];
+            $dictionary[$code] = $oldPhrase.$currentCharacter;
 
-            $code++;
+            ++$code;
 
             $oldPhrase = $phrase;
         }
@@ -151,8 +149,8 @@ class Lzw implements CompressionInterface
      * @param string $string The input to split
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return array The splitted string
-     * @access protected
      */
     protected function multibyteStringSplit($string)
     {
@@ -166,8 +164,8 @@ class Lzw implements CompressionInterface
      * @param int    $position The position to return character from
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return int The position
-     * @access protected
      */
     protected function charCodeAt($buffer, $position)
     {
@@ -181,8 +179,8 @@ class Lzw implements CompressionInterface
      * @param string $character The character
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return string The unicode character
-     * @access protected
      */
     protected function unichr($character)
     {
@@ -198,8 +196,8 @@ class Lzw implements CompressionInterface
      * @param string $buffer The buffer to return character from
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
      * @return int The ASCII value of the character
-     * @access protected
      */
     protected function uniord($buffer)
     {

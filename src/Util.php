@@ -2,7 +2,7 @@
 
 /**
  * (The MIT license)
- * Copyright 2017 clickalicious, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -31,7 +31,7 @@ namespace Clickalicious\Memcached\Php;
 | General Tools & Helper
 +---------------------------------------------------------------------------------------------------------------------*/
 
-/**
+/*
  * Copyright (c) 2013 Ben Ramsey <http://benramsey.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,24 +58,24 @@ namespace Clickalicious\Memcached\Php;
  * @codeCoverageIgnore
  */
 if (false === function_exists('array_column')) {
-
     /**
      * Returns the values from a single column of the input array, identified by the $columnKey.
      *
      * Optionally, you may provide an $indexKey to index the values in the returned array by the values from the
      * $indexKey column in the input array.
      *
-     * @param array $input      A multi-dimensional array (record set) from which to pull a column of values.
+     * @param array $input      a multi-dimensional array (record set) from which to pull a column of values
      * @param mixed $column_key The column of values to return. This value may be the integer key of the column you
      *                          wish to retrieve, or it may be the string key name for an associative array.
      * @param mixed $index_key  (Optional.) The column to use as the index/keys for the returned array. This value
      *                          may be the integer key of the column, or it may be the string key name.
+     *
      * @return array
      * @codeCoverageIgnore
      */
     function array_column(array $input, $column_key, $index_key = null)
     {
-        /**
+        /*
          * Proxy call to array_column_emulation(): makes it a bit cleaner and testing on all systems possible
          */
         return array_column_emulation($input, $column_key, $index_key);
@@ -88,11 +88,12 @@ if (false === function_exists('array_column')) {
  * Optionally, you may provide an $indexKey to index the values in the returned array by the values from the
  * $indexKey column in the input array.
  *
- * @param array $input      A multi-dimensional array (record set) from which to pull a column of values.
+ * @param array $input      a multi-dimensional array (record set) from which to pull a column of values
  * @param mixed $column_key The column of values to return. This value may be the integer key of the column you
  *                          wish to retrieve, or it may be the string key name for an associative array.
  * @param mixed $index_key  (Optional.) The column to use as the index/keys for the returned array. This value
  *                          may be the integer key of the column, or it may be the string key name.
+ *
  * @return array
  */
 function array_column_emulation(array $input, $column_key, $index_key = null)
@@ -130,9 +131,9 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
     // Check for passed index key
     if (null !== $index_key) {
         if (is_float($index_key) || is_int($index_key)) {
-            $index_key = (int)$index_key;
+            $index_key = (int) $index_key;
         } else {
-            $index_key = (string)$index_key;
+            $index_key = (string) $index_key;
         }
     }
 
@@ -144,7 +145,7 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
 
         if (null !== $index_key && true === is_array($row) && true === array_key_exists($index_key, $row)) {
             $keySet = true;
-            $key = (string)$row[$index_key];
+            $key = (string) $row[$index_key];
         }
 
         if (true === is_array($row) && true === array_key_exists($column_key, $row)) {
@@ -163,7 +164,7 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
     return $result;
 }
 
-/**
+/*
  * Alternative implementation of boolval() for PHP releases < 5.5.
  *
  * @param mixed $boolean The potential boolean
@@ -174,20 +175,19 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
  * @codeCoverageIgnore
  */
 if (false === function_exists('boolval')) {
-
     /**
      * Alternative implementation of boolval() for PHP releases < 5.5.
      *
      * @param mixed $boolean The potential boolean
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
-     * @return bool TRUE || FALSE depending on input.
-     * @access public
+     *
+     * @return bool tRUE || FALSE depending on input
      * @codeCoverageIgnore
      */
     function boolval($boolean)
     {
-        /**
+        /*
          * Proxy call to boolval_emulation()
          */
         return boolval_emulation($boolean);
@@ -200,8 +200,8 @@ if (false === function_exists('boolval')) {
  * @param mixed $boolean The potential boolean
  *
  * @author Benjamin Carl <opensource@clickalicious.de>
- * @return bool TRUE || FALSE depending on input.
- * @access public
+ *
+ * @return bool tRUE || FALSE depending on input
  */
 function boolval_emulation($boolean)
 {
