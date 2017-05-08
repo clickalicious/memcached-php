@@ -67,7 +67,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     protected $value;
 
-
     /**
      * Prepare some stuff.
      *
@@ -77,7 +76,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->key   = md5(microtime(true));
+        $this->key = md5(microtime(true));
         $this->value = sha1($this->key);
 
         $this->client = new Client(
@@ -275,7 +274,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->client->send(Client::COMMAND_VERSION, $testCommand);
     }
 
-
     /**
      * Test: Retrieve version.
      *
@@ -431,9 +429,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Test: <increment> a stored value.
      *
-     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @author  Benjamin Carl <opensource@clickalicious.de>
      * @return void
-     * @access protected
+     * @access  protected
      * @depends testStoringPhpTypeInteger
      */
     public function testIncrementAStoredValue()
@@ -452,9 +450,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /**
      * Test: <decrement> a stored value.
      *
-     * @author Benjamin Carl <opensource@clickalicious.de>
+     * @author  Benjamin Carl <opensource@clickalicious.de>
      * @return void
-     * @access protected
+     * @access  protected
      * @depends testStoringPhpTypeInteger
      */
     public function testDecrementAStoredValue()
@@ -542,7 +540,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $cachedump = array();
 
-        for ($i = 1; $i <= $slabs; ++$i) {
+        for ($i = 1; $i <= $slabs; ++ $i) {
             $cachedumpTemp = $this->client->stats(
                 Client::STATS_TYPE_CACHEDUMP,
                 $i,

@@ -69,7 +69,7 @@ $client->set('foo', 1.00);
 // Returns 1.00 as PHP's type float!
 $client->get('foo');
 ```
-You will find a demonstration [`Demo.php` »](Demo.php) showing in detail how to use the **memcached-php** `client`.
+You will find a demonstration [`Demo.php` »](demo/Client.php) showing in detail how to use the **memcached-php** `client`.
 
 ### Data
 

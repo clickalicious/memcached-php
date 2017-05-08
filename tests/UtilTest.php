@@ -59,7 +59,6 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      */
     protected $data;
 
-
     /**
      * Prepare some stuff.
      *
@@ -79,24 +78,24 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         // Test data
         $this->data = array(
             array(
-                'id' => 2135,
+                'id'         => 2135,
                 'first_name' => 'John',
-                'last_name' => 'Doe',
+                'last_name'  => 'Doe',
             ),
             array(
-                'id' => 3245,
+                'id'         => 3245,
                 'first_name' => 'Sally',
-                'last_name' => 'Smith',
+                'last_name'  => 'Smith',
             ),
             array(
-                'id' => 5342,
+                'id'         => 5342,
                 'first_name' => 'Jane',
-                'last_name' => 'Jones',
+                'last_name'  => 'Jones',
             ),
             array(
-                'id' => 5623,
+                'id'         => 5623,
                 'first_name' => 'Peter',
-                'last_name' => 'Doe',
+                'last_name'  => 'Doe',
             )
         );
     }
@@ -111,25 +110,25 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testArrayColumnEmulation()
     {
         /**
-        Array
-        (
-            [0] => John
-            [1] => Sally
-            [2] => Jane
-            [3] => Peter
-        )
-        */
+         * Array
+         * (
+         * [0] => John
+         * [1] => Sally
+         * [2] => Jane
+         * [3] => Peter
+         * )
+         */
         $data = array_column_emulation($this->data, 'first_name');
 
-        $this->assertContains('John',  $data);
+        $this->assertContains('John', $data);
         $this->assertContains('Sally', $data);
-        $this->assertContains('Jane',  $data);
+        $this->assertContains('Jane', $data);
         $this->assertContains('Peter', $data);
 
-        $this->assertArrayHasKey(0,  $data);
-        $this->assertArrayHasKey(1,  $data);
-        $this->assertArrayHasKey(2,  $data);
-        $this->assertArrayHasKey(3,  $data);
+        $this->assertArrayHasKey(0, $data);
+        $this->assertArrayHasKey(1, $data);
+        $this->assertArrayHasKey(2, $data);
+        $this->assertArrayHasKey(3, $data);
     }
 
     /**
@@ -142,19 +141,19 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testArrayColumnEmulationCustomIndex()
     {
         /**
-        Array
-        (
-            [2135] => Doe
-            [3245] => Smith
-            [5342] => Jones
-            [5623] => Doe
-        )
+         * Array
+         * (
+         * [2135] => Doe
+         * [3245] => Smith
+         * [5342] => Jones
+         * [5623] => Doe
+         * )
          */
         $data = array_column_emulation($this->data, 'first_name', 'id');
 
-        $this->assertContains('John',  $data);
+        $this->assertContains('John', $data);
         $this->assertContains('Sally', $data);
-        $this->assertContains('Jane',  $data);
+        $this->assertContains('Jane', $data);
         $this->assertContains('Peter', $data);
 
         $this->assertArrayHasKey(2135, $data);
@@ -173,14 +172,14 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testArrayColumnEmulationWrongColumnString()
     {
         /**
-        Array
-        (
-            [2135] => Doe
-            [3245] => Smith
-            [5342] => Jones
-            [5623] => Doe
-        )
-        */
+         * Array
+         * (
+         * [2135] => Doe
+         * [3245] => Smith
+         * [5342] => Jones
+         * [5623] => Doe
+         * )
+         */
         $data = array_column_emulation($this->data, 'foo');
         $this->assertArrayHasKey(0, $data);
         $this->assertArrayHasKey(1, $data);
@@ -198,13 +197,13 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testArrayColumnEmulationCustomIndexInt()
     {
         /**
-        Array
-        (
-            [2135] => Doe
-            [3245] => Smith
-            [5342] => Jones
-            [5623] => Doe
-        )
+         * Array
+         * (
+         * [2135] => Doe
+         * [3245] => Smith
+         * [5342] => Jones
+         * [5623] => Doe
+         * )
          */
         $data = array_column_emulation($this->data, 'first_name', 1);
         $this->assertArrayHasKey(0, $data);
@@ -223,14 +222,14 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testArrayColumnEmulationCustomIndexString()
     {
         /**
-        Array
-        (
-            [2135] => Doe
-            [3245] => Smith
-            [5342] => Jones
-            [5623] => Doe
-        )
-        */
+         * Array
+         * (
+         * [2135] => Doe
+         * [3245] => Smith
+         * [5342] => Jones
+         * [5623] => Doe
+         * )
+         */
         $data = array_column_emulation($this->data, 'first_name', 'foo');
         $this->assertArrayHasKey(0, $data);
         $this->assertArrayHasKey(1, $data);
@@ -275,33 +274,29 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     {
         if ($this->testProxy === true) {
             /**
-            Array
-            (
-                [0] => John
-                [1] => Sally
-                [2] => Jane
-                [3] => Peter
-            )
+             * Array
+             * (
+             * [0] => John
+             * [1] => Sally
+             * [2] => Jane
+             * [3] => Peter
+             * )
              */
             $data = \Clickalicious\Memcached\Php\array_column($this->data, 'first_name');
 
-            $this->assertContains('John',  $data);
+            $this->assertContains('John', $data);
             $this->assertContains('Sally', $data);
-            $this->assertContains('Jane',  $data);
+            $this->assertContains('Jane', $data);
             $this->assertContains('Peter', $data);
 
-            $this->assertArrayHasKey(0,  $data);
-            $this->assertArrayHasKey(1,  $data);
-            $this->assertArrayHasKey(2,  $data);
-            $this->assertArrayHasKey(3,  $data);
-
-
+            $this->assertArrayHasKey(0, $data);
+            $this->assertArrayHasKey(1, $data);
+            $this->assertArrayHasKey(2, $data);
+            $this->assertArrayHasKey(3, $data);
         } else {
             $this->assertTrue(true);
         }
     }
-
-
 
     /**
      * Test: Set a key value pair.

@@ -591,7 +591,7 @@ class Client
      * @access public
      * @const
      */
-    const COMMAND_SEPARATOR  = ' ';
+    const COMMAND_SEPARATOR = ' ';
 
     /**
      * The terminator used to terminate a commandline send to Memcached instance.
@@ -642,70 +642,123 @@ class Client
      * Flags for PHP types
      *
      * (Memcached PHP extension compatible)
+     *
      * @access public
      * @const
      */
-    const FLAG_DECIMAL_STRING     = 0;  // PHP Type "string"            Mask - Decimal: 0 - Bit(s): 0
-    const FLAG_DECIMAL_INTEGER    = 1;  // PHP Type "integer"           Mask - Decimal: 1 - Bit(s): 1
-    const FLAG_DECIMAL_FLOAT      = 2;  // PHP Type "float"             Mask - Decimal: 2 - Bit(s): 2
-    const FLAG_DECIMAL_BOOLEAN    = 3;  // PHP Type "boolean"           Mask - Decimal: 3 - Bit(s): 1 & 2
+    const FLAG_DECIMAL_STRING = 0;  // PHP Type "string"            Mask - Decimal: 0 - Bit(s): 0
+
+    const FLAG_DECIMAL_INTEGER = 1;  // PHP Type "integer"           Mask - Decimal: 1 - Bit(s): 1
+
+    const FLAG_DECIMAL_FLOAT = 2;  // PHP Type "float"             Mask - Decimal: 2 - Bit(s): 2
+
+    const FLAG_DECIMAL_BOOLEAN = 3;  // PHP Type "boolean"           Mask - Decimal: 3 - Bit(s): 1 & 2
+
     const FLAG_DECIMAL_SERIALIZED = 4;  // PHP Type "object" || "array" Mask - Decimal: 4 - Bit(s): 4
 
     /**
      * Memcached Constant Values
      */
-    const MEMCACHED_SUCCESS                          =  0;
-    const MEMCACHED_FAILURE                          =  1;
-    const MEMCACHED_HOST_LOOKUP_FAILURE              =  2;
-    const MEMCACHED_CONNECTION_FAILURE               =  3;
-    const MEMCACHED_CONNECTION_BIND_FAILURE          =  4;
-    const MEMCACHED_WRITE_FAILURE                    =  5;
-    const MEMCACHED_READ_FAILURE                     =  6;
-    const MEMCACHED_UNKNOWN_READ_FAILURE             =  7;
-    const MEMCACHED_PROTOCOL_ERROR                   =  8;
-    const MEMCACHED_CLIENT_ERROR                     =  9;
-    const MEMCACHED_SERVER_ERROR                     = 10;
-    const MEMCACHED_CONNECTION_SOCKET_CREATE_FAILURE = 11;
-    const MEMCACHED_DATA_EXISTS                      = 12;
-    const MEMCACHED_DATA_DOES_NOT_EXIST              = 13;
-    const MEMCACHED_NOTSTORED                        = 14;
-    const MEMCACHED_STORED                           = 15;
-    const MEMCACHED_NOTFOUND                         = 16;
-    const MEMCACHED_MEMORY_ALLOCATION_FAILURE        = 17;
-    const MEMCACHED_PARTIAL_READ                     = 18;
-    const MEMCACHED_SOME_ERRORS                      = 19;
-    const MEMCACHED_NO_SERVERS                       = 20;
-    const MEMCACHED_END                              = 21;
-    const MEMCACHED_DELETED                          = 22;
-    const MEMCACHED_VALUE                            = 23;
-    const MEMCACHED_STAT                             = 24;
-    const MEMCACHED_ITEM                             = 25;
-    const MEMCACHED_ERRNO                            = 26;
-    const MEMCACHED_FAIL_UNIX_SOCKET                 = 27;
-    const MEMCACHED_NOT_SUPPORTED                    = 28;
-    const MEMCACHED_NO_KEY_PROVIDED                  = 29; /* Deprecated. Use const MEMCACHED_BAD_KEY_PROVIDED! */
-    const MEMCACHED_FETCH_NOTFINISHED                = 30;
-    const MEMCACHED_TIMEOUT                          = 31;
-    const MEMCACHED_BUFFERED                         = 32;
-    const MEMCACHED_BAD_KEY_PROVIDED                 = 33;
-    const MEMCACHED_INVALID_HOST_PROTOCOL            = 34;
-    const MEMCACHED_SERVER_MARKED_DEAD               = 35;
-    const MEMCACHED_UNKNOWN_STAT_KEY                 = 36;
-    const MEMCACHED_E2BIG                            = 37;
-    const MEMCACHED_INVALID_ARGUMENTS                = 38;
-    const MEMCACHED_KEY_TOO_BIG                      = 39;
-    const MEMCACHED_AUTH_PROBLEM                     = 40;
-    const MEMCACHED_AUTH_FAILURE                     = 41;
-    const MEMCACHED_AUTH_CONTINUE                    = 42;
-    const MEMCACHED_PARSE_ERROR                      = 43;
-    const MEMCACHED_PARSE_USER_ERROR                 = 44;
-    const MEMCACHED_DEPRECATED                       = 45;
-    const MEMCACHED_IN_PROGRESS                      = 46;
-    const MEMCACHED_SERVER_TEMPORARILY_DISABLED      = 47;
-    const MEMCACHED_SERVER_MEMORY_ALLOCATION_FAILURE = 48;
-    const MEMCACHED_MAXIMUM_RETURN                   = 49;
-    /* Always add new error code before */
+    const MEMCACHED_SUCCESS = 0;
 
+    const MEMCACHED_FAILURE = 1;
+
+    const MEMCACHED_HOST_LOOKUP_FAILURE = 2;
+
+    const MEMCACHED_CONNECTION_FAILURE = 3;
+
+    const MEMCACHED_CONNECTION_BIND_FAILURE = 4;
+
+    const MEMCACHED_WRITE_FAILURE = 5;
+
+    const MEMCACHED_READ_FAILURE = 6;
+
+    const MEMCACHED_UNKNOWN_READ_FAILURE = 7;
+
+    const MEMCACHED_PROTOCOL_ERROR = 8;
+
+    const MEMCACHED_CLIENT_ERROR = 9;
+
+    const MEMCACHED_SERVER_ERROR = 10;
+
+    const MEMCACHED_CONNECTION_SOCKET_CREATE_FAILURE = 11;
+
+    const MEMCACHED_DATA_EXISTS = 12;
+
+    const MEMCACHED_DATA_DOES_NOT_EXIST = 13;
+
+    const MEMCACHED_NOTSTORED = 14;
+
+    const MEMCACHED_STORED = 15;
+
+    const MEMCACHED_NOTFOUND = 16;
+
+    const MEMCACHED_MEMORY_ALLOCATION_FAILURE = 17;
+
+    const MEMCACHED_PARTIAL_READ = 18;
+
+    const MEMCACHED_SOME_ERRORS = 19;
+
+    const MEMCACHED_NO_SERVERS = 20;
+
+    const MEMCACHED_END = 21;
+
+    const MEMCACHED_DELETED = 22;
+
+    const MEMCACHED_VALUE = 23;
+
+    const MEMCACHED_STAT = 24;
+
+    const MEMCACHED_ITEM = 25;
+
+    const MEMCACHED_ERRNO = 26;
+
+    const MEMCACHED_FAIL_UNIX_SOCKET = 27;
+
+    const MEMCACHED_NOT_SUPPORTED = 28;
+
+    const MEMCACHED_NO_KEY_PROVIDED = 29; /* Deprecated. Use const MEMCACHED_BAD_KEY_PROVIDED! */
+    const MEMCACHED_FETCH_NOTFINISHED = 30;
+
+    const MEMCACHED_TIMEOUT = 31;
+
+    const MEMCACHED_BUFFERED = 32;
+
+    const MEMCACHED_BAD_KEY_PROVIDED = 33;
+
+    const MEMCACHED_INVALID_HOST_PROTOCOL = 34;
+
+    const MEMCACHED_SERVER_MARKED_DEAD = 35;
+
+    const MEMCACHED_UNKNOWN_STAT_KEY = 36;
+
+    const MEMCACHED_E2BIG = 37;
+
+    const MEMCACHED_INVALID_ARGUMENTS = 38;
+
+    const MEMCACHED_KEY_TOO_BIG = 39;
+
+    const MEMCACHED_AUTH_PROBLEM = 40;
+
+    const MEMCACHED_AUTH_FAILURE = 41;
+
+    const MEMCACHED_AUTH_CONTINUE = 42;
+
+    const MEMCACHED_PARSE_ERROR = 43;
+
+    const MEMCACHED_PARSE_USER_ERROR = 44;
+
+    const MEMCACHED_DEPRECATED = 45;
+
+    const MEMCACHED_IN_PROGRESS = 46;
+
+    const MEMCACHED_SERVER_TEMPORARILY_DISABLED = 47;
+
+    const MEMCACHED_SERVER_MEMORY_ALLOCATION_FAILURE = 48;
+
+    const MEMCACHED_MAXIMUM_RETURN = 49;
+
+    /* Always add new error code before */
 
     /**
      * Constructor.
@@ -714,22 +767,23 @@ class Client
      * @param int      $port         The port to connect to.
      * @param int|null $timeout      The timeout for connecting in seconds
      * @param string   $persistentId By default the Memcached instances are destroyed at the end of the request.
-     *                               To create an instance that persists between requests, use persistent_id to specify a
-     *                               unique ID for the instance. All instances created with the same persistent_id will
-     *                               share the same connection.
-     * @param bool   $compression    TRUE to enable compression (default), FALSE to disable
+     *                               To create an instance that persists between requests, use persistent_id to specify
+     *                               a unique ID for the instance. All instances created with the same persistent_id
+     *                               will share the same connection.
+     * @param bool     $compression  TRUE to enable compression (default), FALSE to disable
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return Client
      * @access public
      */
     public function __construct(
-        $host         = null,
-        $port         = self::DEFAULT_PORT,
-        $timeout      = self::DEFAULT_TIMEOUT,
+        $host = null,
+        $port = self::DEFAULT_PORT,
+        $timeout = self::DEFAULT_TIMEOUT,
         $persistentId = null,
-        $compression  = true
-    ) {
+        $compression = true
+    )
+    {
         // Extract host and port from host string
         if ($host !== null) {
             $this
@@ -785,6 +839,7 @@ class Client
     public function host($host)
     {
         $this->setHost($host);
+
         return $this;
     }
 
@@ -826,6 +881,7 @@ class Client
     public function port($port)
     {
         $this->setPort($port);
+
         return $this;
     }
 
@@ -867,6 +923,7 @@ class Client
     public function timeout($timeout)
     {
         $this->setTimeout($timeout);
+
         return $this;
     }
 
@@ -941,7 +998,6 @@ class Client
 
             // Store for further access/use ...
             self::$connections[$this->getPersistentId()][$uuid] = $connection;
-
         } else {
             $connection = self::$connections[$this->getPersistentId()][$uuid];
         }
@@ -1033,9 +1089,9 @@ class Client
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_TOUCH . self::COMMAND_SEPARATOR   .
-            $key                    . self::COMMAND_SEPARATOR   .
-            $expiration             . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_TOUCH . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_TOUCH, $data);
     }
@@ -1043,8 +1099,8 @@ class Client
     /**
      * Proxy to: incr()
      *
-     * @param string $key          The key to increment
-     * @param int    $offset       How much to increment
+     * @param string $key    The key to increment
+     * @param int    $offset How much to increment
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
@@ -1059,8 +1115,8 @@ class Client
      * Increments an existing key by offset.
      * Does currently not support the creation of not existing keys.
      *
-     * @param string $key          The key to increment
-     * @param int    $offset       How much to increment
+     * @param string $key    The key to increment
+     * @param int    $offset How much to increment
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
@@ -1073,9 +1129,9 @@ class Client
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_INCR . self::COMMAND_SEPARATOR   .
-                $key                   . self::COMMAND_SEPARATOR   .
-                $offset                . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_INCR . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $offset . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_INCR, $data);
     }
@@ -1083,8 +1139,8 @@ class Client
     /**
      * Proxy to: decr().
      *
-     * @param string $key          The key to decrement
-     * @param int    $offset       How much to decrement
+     * @param string $key    The key to decrement
+     * @param int    $offset How much to decrement
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
@@ -1099,8 +1155,8 @@ class Client
      * Decrements an existing key by offset.
      * Does currently not support the creation of not existing keys.
      *
-     * @param string $key          The key to decrement
-     * @param int    $offset       How much to decrement
+     * @param string $key    The key to decrement
+     * @param int    $offset How much to decrement
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string The result of operation
@@ -1113,9 +1169,9 @@ class Client
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_DECR . self::COMMAND_SEPARATOR   .
-                $key                   . self::COMMAND_SEPARATOR   .
-                $offset                . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_DECR . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $offset . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_DECR, $data);
     }
@@ -1152,12 +1208,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_SET . self::COMMAND_SEPARATOR   .
-            $key                  . self::COMMAND_SEPARATOR   .
-            $flags                . self::COMMAND_SEPARATOR   .
-            $expiration           . self::COMMAND_SEPARATOR   .
-            $bytes                . self::COMMAND_TERMINATOR  .
-            $value                . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_SET . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $flags . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_SEPARATOR .
+                $bytes . self::COMMAND_TERMINATOR .
+                $value . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_SET, $data);
     }
@@ -1195,12 +1251,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_ADD . self::COMMAND_SEPARATOR   .
-            $key                  . self::COMMAND_SEPARATOR   .
-            $flags                . self::COMMAND_SEPARATOR   .
-            $expiration           . self::COMMAND_SEPARATOR   .
-            $bytes                . self::COMMAND_TERMINATOR  .
-            $value                . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_ADD . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $flags . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_SEPARATOR .
+                $bytes . self::COMMAND_TERMINATOR .
+                $value . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_ADD, $data);
     }
@@ -1238,12 +1294,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_REPLACE . self::COMMAND_SEPARATOR   .
-            $key                      . self::COMMAND_SEPARATOR   .
-            $flags                    . self::COMMAND_SEPARATOR   .
-            $expiration               . self::COMMAND_SEPARATOR   .
-            $bytes                    . self::COMMAND_TERMINATOR  .
-            $value                    . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_REPLACE . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $flags . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_SEPARATOR .
+                $bytes . self::COMMAND_TERMINATOR .
+                $value . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_REPLACE, $data);
     }
@@ -1273,12 +1329,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_APPEND . self::COMMAND_SEPARATOR   .
-            $key                     . self::COMMAND_SEPARATOR   .
-            $flags                   . self::COMMAND_SEPARATOR   .
-            $expiration              . self::COMMAND_SEPARATOR   .
-            $bytes                   . self::COMMAND_TERMINATOR  .
-            $value                   . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_APPEND . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $flags . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_SEPARATOR .
+                $bytes . self::COMMAND_TERMINATOR .
+                $value . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_APPEND, $data);
     }
@@ -1308,12 +1364,12 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_PREPEND . self::COMMAND_SEPARATOR   .
-            $key                      . self::COMMAND_SEPARATOR   .
-            $flags                    . self::COMMAND_SEPARATOR   .
-            $expiration               . self::COMMAND_SEPARATOR   .
-            $bytes                    . self::COMMAND_TERMINATOR  .
-            $value                    . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_PREPEND . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $flags . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_SEPARATOR .
+                $bytes . self::COMMAND_TERMINATOR .
+                $value . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_PREPEND, $data);
     }
@@ -1354,13 +1410,13 @@ class Client
         $bytes = ($bytes !== null) ? $bytes : strlen($value);
 
         // Build packet to send ...
-        $data = self::COMMAND_CAS . self::COMMAND_SEPARATOR   .
-            $key                  . self::COMMAND_SEPARATOR   .
-            $flags                . self::COMMAND_SEPARATOR   .
-            $expiration           . self::COMMAND_SEPARATOR   .
-            $bytes                . self::COMMAND_SEPARATOR   .
-            $token                . self::COMMAND_TERMINATOR  .
-            $value                . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_CAS . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_SEPARATOR .
+                $flags . self::COMMAND_SEPARATOR .
+                $expiration . self::COMMAND_SEPARATOR .
+                $bytes . self::COMMAND_SEPARATOR .
+                $token . self::COMMAND_TERMINATOR .
+                $value . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_CAS, $data);
     }
@@ -1382,8 +1438,8 @@ class Client
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_GET . self::COMMAND_SEPARATOR   .
-            $key                  . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_GET . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_TERMINATOR;
 
         $result = $this->send(self::COMMAND_GET, $data);
 
@@ -1416,8 +1472,8 @@ class Client
         $keys = implode(self::COMMAND_SEPARATOR, $keys);
 
         // Build packet to send ...
-        $data = self::COMMAND_GETS . self::COMMAND_SEPARATOR   .
-            $keys                  . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_GETS . self::COMMAND_SEPARATOR .
+                $keys . self::COMMAND_TERMINATOR;
 
         $result = $this->send(self::COMMAND_GETS, $data);
 
@@ -1445,8 +1501,8 @@ class Client
          */
 
         // Build packet to send ...
-        $data = self::COMMAND_DELETE . self::COMMAND_SEPARATOR  .
-            $key                     . self::COMMAND_TERMINATOR;
+        $data = self::COMMAND_DELETE . self::COMMAND_SEPARATOR .
+                $key . self::COMMAND_TERMINATOR;
 
         return $this->send(self::COMMAND_DELETE, $data);
     }
@@ -1483,9 +1539,9 @@ class Client
 
         // Build packet to send ...
         $data = self::COMMAND_STATS . $type .
-            $argument1 .
-            $argument2 .
-            self::COMMAND_TERMINATOR;
+                $argument1 .
+                $argument2 .
+                self::COMMAND_TERMINATOR;
 
         // Generic stats requires us to fetch as long as data arrives ...
         if ($type === '') {
@@ -1503,7 +1559,6 @@ class Client
                     $result[$key] = $value;
                 }
             }
-
         } elseif ($type === self::COMMAND_SEPARATOR . self::STATS_TYPE_SLABS) {
 
             // Initial fetch ...
@@ -1526,15 +1581,12 @@ class Client
                         }
 
                         $result[$key] = array_merge($result[$key], $value);
-
                     } else {
                         // Meta!
                         $result[$key] = $value;
-
                     }
                 }
             }
-
         } else {
             // Issue stat command ...
             $result = $this->send(self::COMMAND_STATS, $data);
@@ -1632,6 +1684,7 @@ class Client
     protected function compression($compression)
     {
         $this->setCompression($compression);
+
         return $this;
     }
 
@@ -1674,6 +1727,7 @@ class Client
     protected function persistentId($persistentId)
     {
         $this->setPersistentId($persistentId);
+
         return $this;
     }
 
@@ -1701,6 +1755,7 @@ class Client
     protected function setLastResponse($response)
     {
         $this->lastResponse = $response;
+
         return ($response === 0);
     }
 
@@ -1716,6 +1771,7 @@ class Client
     protected function lastResponse($response)
     {
         $this->setLastResponse($response);
+
         return $this;
     }
 
@@ -1759,11 +1815,11 @@ class Client
         $type = gettype($value);
 
         return (
-            $type !== "string"  &&      // Mask - Decimal: 0 - Bit(s): 0
+            $type !== "string" &&      // Mask - Decimal: 0 - Bit(s): 0
             $type !== "integer" &&      // Mask - Decimal: 1 - Bit(s): 1
-            $type !== "double"  &&      // Mask - Decimal: 2 - Bit(s): 2
+            $type !== "double" &&      // Mask - Decimal: 2 - Bit(s): 2
             $type !== "boolean"         // Mask - Decimal: 3 - Bit(s): 1 & 2
-                                        // Mask - Decimal: 4 - Bit(s): 4
+            // Mask - Decimal: 4 - Bit(s): 4
         );
     }
 
@@ -1779,7 +1835,6 @@ class Client
         return
             $this
                 ->lastResponse(0);
-
     }
 
     /**
@@ -1821,18 +1876,18 @@ class Client
             // @codeCoverageIgnoreEnd
 
             // Value must be at least starting on next line - and can continue to spawn on n following lines ...
-            $key    = $metaData[1];
-            $value  = '';
-            $flags  = (int)$metaData[2];
+            $key = $metaData[1];
+            $value = '';
+            $flags = (int)$metaData[2];
             $length = $metaData[3];
-            $cas    = (isset($metaData[4])) ? (float)$metaData[4] : null;
-            $frame  = 0;
+            $cas = (isset($metaData[4])) ? (float)$metaData[4] : null;
+            $frame = 0;
 
             if ($length > 0) {
                 // Fetch whole & complete value!
                 while (strlen($value) < $length) {
-                    ++$frame;
-                    if($lines[$line + $frame] === self::RESPONSE_END && !isset($lines[$line + $frame+1])) {
+                    ++ $frame;
+                    if ($lines[$line + $frame] === self::RESPONSE_END && !isset($lines[$line + $frame + 1])) {
                         $frame_break = true;
                         break;
                     }
@@ -1846,8 +1901,8 @@ class Client
             $result[$key] = array(
                 // 1st bit set = we use un-/serialize to keep the values intact ...
                 //'value' => $value,
-                'key'   => $key,
-                'meta'  => array(
+                'key'  => $key,
+                'meta' => array(
                     'key'    => $key,
                     'flags'  => $flags,
                     'length' => $length,
@@ -1858,22 +1913,19 @@ class Client
 
             if ($this->isFlagSet($flags, self::FLAG_DECIMAL_SERIALIZED) === true) {
                 $length = strlen($value);
-                $value  = unserialize($value);
-
+                $value = unserialize($value);
             } elseif ($this->isFlagSet($flags, self::FLAG_DECIMAL_BOOLEAN) === true) {
-                $value  = boolval($value);
+                $value = boolval($value);
                 $length = strlen($value);
-
             } elseif ($this->isFlagSet($flags, self::FLAG_DECIMAL_FLOAT) === true) {
-                $value  = floatval($value);
+                $value = floatval($value);
                 $length = strlen($value);
-
             } elseif ($this->isFlagSet($flags, self::FLAG_DECIMAL_INTEGER) === true) {
-                $value  = intval($value);
+                $value = intval($value);
                 $length = strlen($value);
             }
 
-            $result[$key]['value']          = $value;
+            $result[$key]['value'] = $value;
             $result[$key]['meta']['length'] = $length;
 
             // Increment by one and check
@@ -1887,10 +1939,8 @@ class Client
 
             // Memcached compatible success
             $this->lastResponse(self::MEMCACHED_SUCCESS);
-
         } else {
             $result = $this->setLastResponse(self::MEMCACHED_NOTFOUND);
-
         }
 
         return $result;
@@ -1921,7 +1971,6 @@ class Client
         // Successful?
         if ($result === true) {
             $this->lastResponse(self::MEMCACHED_SUCCESS);
-
         } else {
             // Default error case
             $this->lastResponse(self::MEMCACHED_FAILURE);
@@ -1985,7 +2034,6 @@ class Client
         if ($metaData[0] !== self::RESPONSE_DELETED) {
             if ($metaData[0] === self::RESPONSE_NOT_FOUND) {
                 $result = $this->setLastResponse(self::MEMCACHED_NOTFOUND);
-
             } else {
                 // Generic error
                 $result = $this->setLastResponse(self::MEMCACHED_FAILURE);
@@ -2031,7 +2079,7 @@ class Client
             }
             // @codeCoverageIgnoreEnd
 
-            $nodes      = explode(':', $metaData[1]);
+            $nodes = explode(':', $metaData[1]);
             $countNodes = count($nodes);
 
             if ($countNodes === 2) {
@@ -2040,7 +2088,6 @@ class Client
                     $result[$nodes[0]] = array();
                 }
                 $result[$nodes[0]][$nodes[1]] = $metaData[2];
-
             } elseif ($countNodes === 3) {
                 // ???
                 if (isset($result[$nodes[0]]) === false) {
@@ -2051,15 +2098,14 @@ class Client
                     }
                 }
                 $result[$nodes[0]][$nodes[1]][$nodes[2]] = $metaData[2];
-
             } else {
-                $identifier   = array_shift($metaData);
-                $key          = array_shift($metaData);
-                $value        = implode(self::COMMAND_SEPARATOR, $metaData);
+                $identifier = array_shift($metaData);
+                $key = array_shift($metaData);
+                $value = implode(self::COMMAND_SEPARATOR, $metaData);
                 $result[$key] = $value;
             };
 
-            ++$line;
+            ++ $line;
         }
 
         $this->lastResponse(self::MEMCACHED_SUCCESS);
@@ -2073,7 +2119,7 @@ class Client
      * SUCCESS = RESPONSE = "\r\n"
      * FAILED  = RESPONSE = "???"
      *
-     * @param array  $lines  Response split into single lines
+     * @param array $lines Response split into single lines
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      * @return string|bool The version as string if valid, otherwise FALSE
@@ -2087,7 +2133,6 @@ class Client
         // If Version response valid
         if ($metaData[0] === strtoupper(self::COMMAND_VERSION)) {
             $result = $metaData[1];
-
         } else {
             $result = $this->setLastResponse(self::MEMCACHED_FAILURE);
         }
@@ -2116,7 +2161,6 @@ class Client
         // Check buffer for failure response
         if ($buffer === self::RESPONSE_NOT_FOUND . self::COMMAND_TERMINATOR) {
             $result = $this->setLastResponse(self::MEMCACHED_NOTFOUND);
-
         } else {
             // Insert the response (= new value) as result
             $result = (float)$metaData[0];
@@ -2140,15 +2184,12 @@ class Client
         if (preg_match('/' . self::ERROR . '(.*)\R/mu', $buffer, $error) > 0) {
             // ERROR\r\n
             $result = self::MEMCACHED_FAILURE;
-
         } elseif (preg_match('/' . self::ERROR_CLIENT . '(.*)\R/mu', $buffer, $error) > 0) {
             // CLIENT_ERROR\r\n
             $result = self::RESPONSE_CLIENT_ERROR;
-
         } elseif (preg_match('/' . self::ERROR_SERVER . '(.*)\R/mu', $buffer, $error) > 0) {
             // SERVER_ERROR\r\n
             $result = self::ERROR_SERVER;
-
         } else {
             $result = self::MEMCACHED_SUCCESS;
         }
@@ -2172,8 +2213,8 @@ class Client
     {
         // At this point we retrieve a raw response containing at least a trailing terminator - rip it
         $response = substr($buffer, 0, strlen($buffer) - strlen(self::COMMAND_TERMINATOR));
-        $lines    = explode(self::COMMAND_TERMINATOR, $response);
-        $result   = false;
+        $lines = explode(self::COMMAND_TERMINATOR, $response);
+        $result = false;
 
         if (
             $command === self::COMMAND_GET ||
@@ -2181,36 +2222,31 @@ class Client
         ) {
             // PARSER for <get> <gets>
             $result = $this->parseReadResponse($buffer, $lines);
-
         } elseif (
-            $command === self::COMMAND_SET     ||
-            $command === self::COMMAND_ADD     ||
+            $command === self::COMMAND_SET ||
+            $command === self::COMMAND_ADD ||
             $command === self::COMMAND_REPLACE ||
-            $command === self::COMMAND_APPEND  ||
+            $command === self::COMMAND_APPEND ||
             $command === self::COMMAND_PREPEND ||
             $command === self::COMMAND_CAS
         ) {
             // PARSER for <set> <add> <replace> <append> <prepend> <cas>
             $result = $this->parseWriteResponse($buffer, $lines);
-
         } elseif (
             $command === self::COMMAND_DELETE
         ) {
             // PARSER for <delete>
             $result = $this->parseDeleteResponse($lines);
-
         } elseif (
             $command === self::COMMAND_STATS
         ) {
             // PARSER for <stats*>
             $result = $this->parseStatsResponse($lines);
-
         } elseif (
             $command === self::COMMAND_VERSION
         ) {
             // PARSER for <version>
             $result = $this->parseVersionResponse($lines);
-
         } elseif (
             $command === self::COMMAND_INCR ||
             $command === self::COMMAND_DECR
@@ -2244,23 +2280,18 @@ class Client
             $value = serialize($value);
             $bytes = strlen($value);
             $flags = self::FLAG_DECIMAL_SERIALIZED;
-
         } else {
             // Real numbers should keep real numbers - Bit 2 = int , 3 = double/float
             if (is_int($value) === true) {
                 $flags = self::FLAG_DECIMAL_INTEGER;
-
             } elseif (is_float($value) === true) {
                 $flags = self::FLAG_DECIMAL_FLOAT;
-
             } elseif (is_string($value) === true) {
                 // Never serialize strings! Otherwise append() & prepend() won't work!
                 $flags = self::FLAG_DECIMAL_STRING;
-
             } elseif (is_bool($value) === true) {
                 $value = strval($value);
                 $flags = self::FLAG_DECIMAL_BOOLEAN;
-
             } else {
                 throw new Exception(
                     sprintf('Unhandable value. Don\'t know how to process!')
@@ -2301,6 +2332,7 @@ class Client
     protected function setFlag($flags, $flag)
     {
         $flags |= $flag;
+
         return $flags;
     }
 }

@@ -52,9 +52,9 @@ namespace Clickalicious\Memcached\Php;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
- * @author Ben Ramsey <http://benramsey.com>
+ * @author    Ben Ramsey <http://benramsey.com>
  * @copyright 2013 Ben Ramsey
- * @license http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  * @codeCoverageIgnore
  */
 if (false === function_exists('array_column')) {
@@ -98,10 +98,10 @@ if (false === function_exists('array_column')) {
 function array_column_emulation(array $input, $column_key, $index_key = null)
 {
     // Check for ...
-    if (!is_int($column_key)    &&
-        !is_float($column_key)  &&
+    if (!is_int($column_key) &&
+        !is_float($column_key) &&
         !is_string($column_key) &&
-        $column_key !== null    &&
+        $column_key !== null &&
         !(
             is_object($column_key) && method_exists($column_key, '__toString')
         )
@@ -113,10 +113,10 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
     }
 
     // Check for ...
-    if (null !== $index_key     &&
-        !is_int($index_key)     &&
-        !is_float($index_key)   &&
-        !is_string($index_key)  &&
+    if (null !== $index_key &&
+        !is_int($index_key) &&
+        !is_float($index_key) &&
+        !is_string($index_key) &&
         !(
             is_object($index_key) && method_exists($index_key, '__toString')
         )
@@ -139,12 +139,12 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
     $result = array();
 
     foreach ($input as $row) {
-        $key    = null;
+        $key = null;
         $keySet = false;
 
         if (null !== $index_key && true === is_array($row) && true === array_key_exists($index_key, $row)) {
             $keySet = true;
-            $key    = (string)$row[$index_key];
+            $key = (string)$row[$index_key];
         }
 
         if (true === is_array($row) && true === array_key_exists($column_key, $row)) {
@@ -156,7 +156,7 @@ function array_column_emulation(array $input, $column_key, $index_key = null)
         if ($keySet === true) {
             $result[$key] = $value;
         } else {
-            $result[]     = $value;
+            $result[] = $value;
         }
     }
 
