@@ -1,0 +1,8 @@
+title: Memcached.php
+description: Plain vanilla PHP Memcached client library with nearly full support of the Memcached ASCII-protocol specification.
+google_analytics: UA-905793-8
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
