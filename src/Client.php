@@ -2019,7 +2019,7 @@ class Client
                 }
                 $result[$nodes[0]][$nodes[1]][$nodes[2]] = $metaData[2];
             } else {
-                $identifier = array_shift($metaData);
+                array_shift($metaData);
                 $key = array_shift($metaData);
                 $value = implode(self::COMMAND_SEPARATOR, $metaData);
                 $result[$key] = $value;

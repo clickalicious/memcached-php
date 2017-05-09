@@ -151,21 +151,21 @@ class Smaz implements CompressionInterface
     {
         $decodeBook = $this->getDecodeBook();
         $output = '';
-        $i = 0;
+        $count = 0;
 
-        while ($i < strlen($buffer)) {
-            $code = ord($buffer[$i]);
+        while ($count < strlen($buffer)) {
+            $code = ord($buffer[$count]);
 
-            if ($code == 254) {
-                $output .= $buffer[$i + 1];
-                $i += 2;
-            } elseif ($code == 255) {
-                $len = ord($buffer[$i + 1]);
-                $output .= substr($buffer, $i + 2, $len);
-                $i += 2 + $len;
+            if (254 === $code) {
+                $output .= $buffer[$count + 1];
+                $count += 2;
+            } elseif (255 === $code) {
+                $len = ord($buffer[$count + 1]);
+                $output .= substr($buffer, $count + 2, $len);
+                $count += 2 + $len;
             } else {
                 $output .= $decodeBook[$code];
-                ++$i;
+                ++$count;
             }
         }
 
