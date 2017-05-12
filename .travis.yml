@@ -1,16 +1,17 @@
 language: php
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
   - 7.0
+  - 7.1
+  - nightly
   - hhvm
 
 sudo: false
 
 matrix:
   allow_failures:
+    - php: nightly
     - php: hhvm
   fast_finish: true
 
@@ -26,21 +27,20 @@ env:
   - PREFER_LOWEST=""
 
 before_script:
-  - composer update --prefer-dist $PREFER_LOWEST
+  - composer update --ignore-platform-reqs --prefer-dist $PREFER_LOWEST
   - composer --optimize-autoloader --no-interaction
 
 script:
-  - bin/phpunit -c tests/ --coverage-clover=coverage.clover --coverage-html=./docs/coverage
+  - bin/phpunit --configuration . --coverage-clover=build/logs/clover.xml --coverage-html=build/html/coverage
 
 after_script:
-  # We upload only for reference platform! This is our base for further code analyses and so on.
-  - if [ $(phpenv version-name) == "5.4" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [ $(phpenv version-name) == "5.4" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover > /dev/null 2>&1; fi
+  - if [ $(phpenv version-name) == "5.6" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then bin/codacycoverage clover build/logs/clover.xml > /dev/null 2>&1; fi
+  - if [ $(phpenv version-name) == "5.6" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then cat build/logs/clover.xml; fi
 
 after_success:
   # Push coverage to github pages branch
   - chmod +x ./update-gh-pages.sh
-  - if [ $(phpenv version-name) == "5.4" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then bash ./update-gh-pages.sh; fi
+  - if [ $(phpenv version-name) == "5.6" ] && [ "$PREFER_LOWEST" == "--prefer-lowest" ]; then bash ./update-gh-pages.sh; fi
   # CREATE GIT TAG
   - git config --global user.email "builds@travis-ci.org"
   - git config --global user.name "Travis"
@@ -48,7 +48,7 @@ after_success:
   - echo -n $GIT_TAG > public/version
   - git commit -m "Set build VERSION number" public/version
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
-  - git push --tags --quiet https://$GITHUBKEY@github.com/clickalicious/Memcached.php > /dev/null 2>&1
+  - git push --tags --quiet https://$GITHUBKEY@github.com/clickalicious/memcached-php > /dev/null 2>&1
 
 # Blacklist the pushed tag from above to prevent black hole
 branches:
@@ -57,7 +57,8 @@ branches:
 
 # Who to notify?
 notifications:
-  slack: clickalicious:$SLACKKEY
+  slack:
+    secure: UFIXK2u7xalPWZppJ+X8aU9qjHWompS6qpBxyjYd8NyYIdTC8HvrovatS150F/b0QUnZXGaHe416vmooKRVDv6JgsR+v+sf/XAiAsc/vPSDO734zWZgubQCF3+jmKV2rD7OGnHgn/LBnREJhF26o10ox3A2UQ3G4kkFwP1q+i6g=
   email:
     recipients:
       - opensource@clickalicious.de
